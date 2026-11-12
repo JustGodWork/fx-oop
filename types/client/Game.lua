@@ -65,6 +65,14 @@ local GameStatic = {}
 ---@return fx.Promise<string?>
 function GameStatic.keyboardAsync(options) end
 
+---Height of the ground under `position` once its collision is loaded (GET_GROUND_Z_FOR_3D_COORD). Looks below
+---`position.z` first, then from the sky, so a waypoint without a real height works. The area must be streamed in:
+---far from the player, move the player there first (`entity:teleportAsync(pos, { ground = true })` does both).
+---@param position vector3
+---@param timeoutMs? integer Default 10000
+---@return fx.Promise<number>
+function GameStatic.getGroundZAsync(position, timeoutMs) end
+
 --- **Native**: `ABSF` (`0x73D57CFFDD12C355`)
 ---@param value number
 ---@return number result

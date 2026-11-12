@@ -22,6 +22,7 @@
 ---@field background? integer HUD colour index (THEFEED_SET_NEXT_POST_BACKGROUND_COLOR)
 ---@field picture? fx.NotifyPicture
 ---@class fx.Hud
+---@field waypoint vector3? The map waypoint, nil when none. Its z is not the ground: see `fx.Game.getGroundZAsync`. Assign a vector2 / vector3 to set it, nil to remove it.
 ---@field currentFrontendMenuVersion integer (read-only) [GET_CURRENT_FRONTEND_MENU_VERSION]
 ---@field currentWebpageId integer (read-only) [GET_CURRENT_WEBPAGE_ID]
 ---@field currentWebsiteId integer (read-only) [GET_CURRENT_WEBSITE_ID]
@@ -92,6 +93,13 @@ function HudStatic.drawText(text, x, y, options) end
 ---@param options? fx.TextOptions
 function HudStatic.drawText3d(text, position, options) end
 
+---Loads a block of game texts (GXT) into a slot (REQUEST_ADDITIONAL_TEXT) and resolves with its name: the labels of
+---minigames and missions are not in memory until then.
+---@param gxt string Text block, such as "MP_FM"
+---@param slot integer Text slot, 0 to 19
+---@param timeoutMs? integer Default 10000
+---@return fx.Promise<string>
+function HudStatic.loadAdditionalTextAsync(gxt, slot, timeoutMs) end
 --- Does stuff like this:\
 --- gyazo.com/7fcb78ea3520e3dbc5b2c0c0f3712617\
 --- Example:\

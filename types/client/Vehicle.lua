@@ -469,6 +469,18 @@ function Vehicle:setProperties(props) end
 ---@return fx.Promise<fx.Vehicle>
 function Vehicle:setPropertiesAsync(props, timeoutMs) end
 
+---Loads the model, creates a ped in a seat of the vehicle (CREATE_PED_INSIDE_VEHICLE), releases the model, then
+---waits for `readyAsync()`. Never yields.
+---```lua
+---local driver <const> = veh:createPedInsideAsync("s_m_y_cop_01", -1):await()
+---driver:taskVehicleDriveWander(veh, 20.0, 786603)
+---```
+---@param model fx.Model|integer|string
+---@param seat? integer -1 driver (default), 0 front passenger, 1 and up the back seats
+---@param options? fx.PedCreateOptions
+---@return fx.Promise<fx.Ped>
+function Vehicle:createPedInsideAsync(model, seat, options) end
+
 ---Promise resolved with the entity once it really exists (and, if networked, once it has a network id).
 ---Rejects with a TimeoutError after `timeoutMs` (default 10000). Works on any wrapper.
 ---@param timeoutMs? integer
@@ -493,6 +505,16 @@ function Vehicle:loadCollisionAsync(timeoutMs) end
 ---@param ... any
 ---@return any
 function Vehicle:invoke(hash, ...) end
+
+---Moves the entity, holding it frozen until the collision around it is loaded, so it does not fall through the map.
+---Never yields. This client must control the entity (the local player ped, or after `takeControlAsync`).
+---```lua
+---Player.ped:teleportAsync(fx.Hud.waypoint, { ground = true }):await()
+---```
+---@param position vector3|vector4
+---@param options? fx.TeleportOptions
+---@return fx.Promise<fx.Vehicle>
+function Vehicle:teleportAsync(position, options) end
 
 --- **Native**: `ACTIVATE_PHYSICS` (`0x710311ADF0E20730`)
 ---@return fx.Vehicle self
@@ -5683,6 +5705,15 @@ function Vehicle:waypointPlaybackUseDefaultSpeed() end
 ---@field numWindowTints integer (read-only) [GET_NUM_VEHICLE_WINDOW_TINTS]
 ---@field playersLast? fx.Vehicle (read-only) [GET_PLAYERS_LAST_VEHICLE] ### Warning This native will return `0` if the last vehicle the player was in was destroyed. ### Alternative You can use [GET_VEHICLE_PED_IS_IN](#\_0x9A9112A0F…
 local VehicleStatic = {}
+
+---Loads every train model, creates a train of a trains.xml variation (CREATE_MISSION_TRAIN), releases the models,
+---then waits for `readyAsync()`. The position must be on a track. Never yields.
+---@param variation integer Variation index of trains.xml (0 to 26 in the base game)
+---@param position vector3
+---@param direction? boolean Direction along the track, default false
+---@param timeoutMs? integer Default 10000
+---@return fx.Promise<fx.Vehicle>
+function VehicleStatic.createMissionTrainAsync(variation, position, direction, timeoutMs) end
 
 ---Loads the model, creates the vehicle, releases the model, then waits for `readyAsync()`. Never yields.
 ---Rejects on an invalid model (`Vehicle.createAsync: invalid model 'addr'`) or on timeout.

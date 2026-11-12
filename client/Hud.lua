@@ -3405,6 +3405,44 @@ statics.drawText3d = function(text, position, opts)
   ClearDrawOrigin()
 end
 
+local RequestAdditionalText, HasThisAdditionalTextLoaded = RequestAdditionalText, HasThisAdditionalTextLoaded
+
+---@param gxt any
+---@param slot any
+---@return boolean
+local function validText(gxt, slot) return type(gxt) == "string" and gxt ~= "" and math.type(slot) == "integer" end
+
+---@param gxt string
+---@param slot integer
+---@param timeoutMs? integer
+---@return fx.Promise<string>
+statics.loadAdditionalTextAsync = function(gxt, slot, timeoutMs)
+  return rt.load("Hud.loadAdditionalTextAsync", "text block or slot", RequestAdditionalText, HasThisAdditionalTextLoaded,
+    validText, timeoutMs, gxt, slot)
+end
+
+local IsWaypointActive, GetFirstBlipInfoId, GetBlipInfoIdCoord = IsWaypointActive, GetFirstBlipInfoId, GetBlipInfoIdCoord
+local SetNewWaypoint, SetWaypointOff = SetNewWaypoint, SetWaypointOff
+-- blip sprite 8 = the waypoint
+local WAYPOINT_SPRITE = 8
+
+---@return vector3?
+staticGetters.waypoint = function()
+  local active = IsWaypointActive()
+  if active ~= true and active ~= 1 then return nil end
+  local blip = GetFirstBlipInfoId(WAYPOINT_SPRITE)
+  if not blip or blip == 0 then return nil end
+  return GetBlipInfoIdCoord(blip)
+end
+
+---@param v vector2|vector3|nil
+staticSetters.waypoint = function(v)
+  if v == nil then SetWaypointOff(); return end
+  local t = type(v)
+  if t ~= "vector3" and t ~= "vector2" then error("Hud.waypoint: expected a vector2, a vector3 or nil, got " .. t, 3) end
+  SetNewWaypoint(v.x + 0.0, v.y + 0.0)
+end
+
 end
 
 return rt.finalizeModule(T)

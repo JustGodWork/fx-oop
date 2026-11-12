@@ -435,6 +435,33 @@ end
 ---@return fx.Ped?
 getters.ped = function(self) return wrapEntity(GetPlayerPed(self.handle)) end
 
+local GetNumPlayerIdentifiers, GetPlayerIdentifier = GetNumPlayerIdentifiers, GetPlayerIdentifier
+local GetNumPlayerTokens, GetPlayerToken = GetNumPlayerTokens, GetPlayerToken
+
+---@param self fx.Player
+---@return table<string, string>
+getters.identifiers = function(self)
+  local src, out = tostring(self.handle), {}
+  for i = 0, (GetNumPlayerIdentifiers(src) or 0) - 1 do
+    local id = GetPlayerIdentifier(src, i)
+    local kind = id and id:match("^([^:]+):")
+    -- the first of a type wins, like GET_PLAYER_IDENTIFIER_BY_TYPE
+    if kind and out[kind] == nil then out[kind] = id end
+  end
+  return out
+end
+
+---@param self fx.Player
+---@return string[]
+getters.tokens = function(self)
+  local src, out = tostring(self.handle), {}
+  for i = 0, (GetNumPlayerTokens(src) or 0) - 1 do
+    local token = GetPlayerToken(src, i)
+    if token then out[#out + 1] = token end
+  end
+  return out
+end
+
 ---@type table<fx.Player, fx.StateBag>
 local statesCache = setmetatable({}, { __mode = "k" })
 ---@param self fx.Player

@@ -7992,6 +7992,79 @@ end, function(h, k, v)
   setDamage(h, { [k] = v })
 end)
 
+local CreatePedInsideVehicle, CreateMissionTrain, IsModelAPed = CreatePedInsideVehicle, CreateMissionTrain, IsModelAPed
+local DoesEntityExist, DeleteEntity, SetModelAsNoLongerNeeded = DoesEntityExist, DeleteEntity, SetModelAsNoLongerNeeded
+local wrapPed = rt.lazyWrap("Ped")
+local Promise = fx.Promise
+
+---Waits for a new entity, deleting it when it never gets ready: nobody holds the wrapper to delete it later.
+---@generic E : fx.Entity
+---@param e E
+---@param timeoutMs? integer
+---@return fx.Promise<E>
+local function readyOrDelete(e, timeoutMs)
+  ---@cast e fx.Entity
+  return e:readyAsync(timeoutMs):next(nil, function(err)
+    if DoesEntityExist(e.handle) then DeleteEntity(e.handle) end
+    rt.forget(e)
+    return Promise.reject(err)
+  end)
+end
+
+---@param self fx.Vehicle
+---@param model fx.Model|integer|string
+---@param seat? integer
+---@param options? fx.PedCreateOptions
+---@return fx.Promise<fx.Ped>
+methods.createPedInsideAsync = function(self, model, seat, options)
+  local label = tostring(self) .. ":createPedInsideAsync"
+  local hash = rt.hash(model)
+  if type(hash) ~= "number" or not (IsModelInCdimage(hash) and IsModelAPed(hash)) then
+    return rt.fail(("%s: invalid model '%s'"):format(label, tostring(model)))
+  end
+  local timeout = options and options.timeout
+  local vehicle = self.handle
+  return rt.loadModel(label, hash, timeout):next(function()
+    local net = not (options and options.networked == false)
+    local p = wrapPed(CreatePedInsideVehicle(vehicle, options and options.pedType or 4, hash, seat or -1, net,
+      options and options.scriptHostPed or false))
+    SetModelAsNoLongerNeeded(hash)
+    if not p then error(label .. ": creation failed (native returned 0)", 0) end
+    if net then rt.netIntent[p] = true end
+    return readyOrDelete(p, timeout)
+  end)
+end
+
+-- every model a variation of trains.xml may use; the ones missing from the game build are left out
+local TRAIN_MODELS = { "freight", "freightcar", "freightcar2", "freightgrain", "freightcont1", "freightcont2",
+  "freighttrailer", "tankercar", "metrotrain" }
+
+---@param variation integer
+---@param position vector3
+---@param direction? boolean
+---@param timeoutMs? integer
+---@return fx.Promise<fx.Vehicle>
+statics.createMissionTrainAsync = function(variation, position, direction, timeoutMs)
+  if math.type(variation) ~= "integer" then return rt.fail("Vehicle.createMissionTrainAsync: variation must be an integer") end
+  ---@type integer[]
+  local hashes = {}
+  ---@type fx.Promise[]
+  local loads = {}
+  for _, name in ipairs(TRAIN_MODELS) do
+    local hash = GetHashKey(name)
+    if IsModelInCdimage(hash) then
+      hashes[#hashes + 1] = hash
+      loads[#loads + 1] = rt.loadModel("Vehicle.createMissionTrainAsync", hash, timeoutMs)
+    end
+  end
+  return Promise.all(loads):next(function()
+    local v = T.wrap(CreateMissionTrain(variation, position.x + 0.0, position.y + 0.0, position.z + 0.0, direction == true))
+    for _, hash in ipairs(hashes) do SetModelAsNoLongerNeeded(hash) end
+    if not v then error("Vehicle.createMissionTrainAsync: creation failed (invalid variation?)", 0) end
+    return readyOrDelete(v, timeoutMs)
+  end)
+end
+
 end
 
 return rt.finalize(T)

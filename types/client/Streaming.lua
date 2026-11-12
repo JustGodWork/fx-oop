@@ -33,6 +33,23 @@ local StreamingStatic = {}
 ---@return fx.Promise
 function StreamingStatic.loadSceneAsync(position, radius, timeoutMs) end
 
+---Loads a texture dictionary for DRAW_SPRITE and the like (REQUEST_STREAMED_TEXTURE_DICT) and resolves with its name.
+---Release it with `fx.Graphics.setStreamedTextureDictAsNoLongerNeeded(dict)` once it is not drawn any more.
+---```lua
+---local dict <const> = fx.Streaming.loadTextureDictAsync("commonmenu"):await()
+---DrawSprite(dict, "shop_box_tick", 0.5, 0.5, 0.05, 0.05, 0.0, 255, 255, 255, 255)
+---```
+---@param dict string
+---@param timeoutMs? integer Default 10000
+---@return fx.Promise<string>
+function StreamingStatic.loadTextureDictAsync(dict, timeoutMs) end
+
+---Loads an IPL (map data: interiors, props of a place) and resolves with its name once active.
+---@param name string
+---@param timeoutMs? integer Default 10000
+---@return fx.Promise<string>
+function StreamingStatic.loadIplAsync(name, timeoutMs) end
+
 --- **Native**: `ALLOW_PLAYER_SWITCH_ASCENT` (`0x8E2A065ABDAE6994`)
 function StreamingStatic.allowPlayerSwitchAscent() end
 

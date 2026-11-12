@@ -325,7 +325,7 @@ end
 
 ---@param name string
 ---@return fx.ResourceRef
-T.call = function(name)
+local function ref(name)
   if type(name) ~= "string" or name == "" then error("fx.Resource: name must be a non-empty string", 3) end
   local self = byName[name]
   if not self then
@@ -334,15 +334,17 @@ T.call = function(name)
   end
   return self
 end
+-- rawset: T.call is also set by the other callable modules, a plain assignment reads as a duplicate field
+rawset(T, "call", ref)
 
 ---@return fx.ResourceRef
-staticGetters.current = function() return T.call(GetCurrentResourceName()) end
+staticGetters.current = function() return ref(GetCurrentResourceName()) end
 
 ---@return fx.ResourceRef?
 staticGetters.invoking = function()
   local name = GetInvokingResource()
   if name == nil or name == "" then return nil end
-  return T.call(name)
+  return ref(name)
 end
 
 ---@return fx.ResourceRef[]
@@ -350,7 +352,7 @@ statics.all = function()
   local out = {}
   for i = 0, (GetNumResources() or 0) - 1 do
     local name = GetResourceByFindIndex(i)
-    if name ~= nil and name ~= "" then out[#out + 1] = T.call(name) end
+    if name ~= nil and name ~= "" then out[#out + 1] = ref(name) end
   end
   return out
 end

@@ -1851,6 +1851,34 @@ methods.destroy = function(self, ease, easeTime)
   return nil
 end
 
+local DoScreenFadeOut, DoScreenFadeIn, IsScreenFadedOut, IsScreenFadedIn =
+  DoScreenFadeOut, DoScreenFadeIn, IsScreenFadedOut, IsScreenFadedIn
+
+---@param label string
+---@param duration any
+---@return integer
+local function fadeDuration(label, duration)
+  if duration == nil then return 500 end
+  if math.type(duration) ~= "integer" or duration < 0 then error(label .. ": duration must be a positive integer (ms)", 3) end
+  return duration
+end
+
+---@param duration? integer
+---@return fx.Promise
+statics.fadeOutAsync = function(duration)
+  local ms = fadeDuration("Cam.fadeOutAsync", duration)
+  DoScreenFadeOut(ms)
+  return rt.waitUntil("Cam.fadeOutAsync", IsScreenFadedOut, ms + rt.DEFAULT_TIMEOUT)
+end
+
+---@param duration? integer
+---@return fx.Promise
+statics.fadeInAsync = function(duration)
+  local ms = fadeDuration("Cam.fadeInAsync", duration)
+  DoScreenFadeIn(ms)
+  return rt.waitUntil("Cam.fadeInAsync", IsScreenFadedIn, ms + rt.DEFAULT_TIMEOUT)
+end
+
 end
 
 return rt.finalize(T)

@@ -592,6 +592,5 @@ function EventsTxAdmin.onConsoleCommand(fn) end
 ---@field Cfx fx.Events.Cfx
 ---@field Game fx.Events.Game
 ---@field TxAdmin fx.Events.TxAdmin
-
 local EventsStatic = {}
 

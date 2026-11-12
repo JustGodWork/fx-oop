@@ -2473,6 +2473,26 @@ statics.keyboardAsync = function(o)
   end)
 end
 
+local RequestCollisionAtCoord, GetGroundZFor_3dCoord = RequestCollisionAtCoord, GetGroundZFor_3dCoord
+
+---@param position vector3
+---@param timeoutMs? integer
+---@return fx.Promise<number>
+statics.getGroundZAsync = function(position, timeoutMs)
+  local x, y, z = position.x + 0.0, position.y + 0.0, position.z + 0.0
+  ---@type number
+  local ground = 0.0
+  return rt.waitUntil("Game.getGroundZAsync", function()
+    RequestCollisionAtCoord(x, y, z)
+    -- below the given height first, then from the sky for a position whose height is unknown (a waypoint)
+    for _, probe in ipairs({ z, 1000.0 }) do
+      local found, gz = GetGroundZFor_3dCoord(x, y, probe, false)
+      if found == true or found == 1 then ground = gz; return true end
+    end
+    return false
+  end, timeoutMs):next(function() return ground end)
+end
+
 end
 
 return rt.finalizeModule(T)

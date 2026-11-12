@@ -9,7 +9,6 @@ local Model = {}
 
 ---@class fx.ModelStatic
 ---@overload fun(model: fx.Model|integer|string): fx.Model Model from a name, a backtick hash or a hash (one cached object per hash).
-
 local ModelStatic = {}
 
 --- True when value is an fx.Model, or a subtype of it (a Ped is an Entity).

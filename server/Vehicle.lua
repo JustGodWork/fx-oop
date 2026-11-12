@@ -829,6 +829,29 @@ end
 
 statics.createAsync = rt.makeCreate("Vehicle.createAsync", statics.createRaw)
 
+local CreatePedInsideVehicle, DoesEntityExist, DeleteEntity = CreatePedInsideVehicle, DoesEntityExist, DeleteEntity
+local wrapPed = rt.lazyWrap("Ped")
+
+---@param self fx.Vehicle
+---@param model fx.Model|integer|string
+---@param seat? integer
+---@param options? fx.ServerPedInsideOptions
+---@return fx.Promise<fx.Ped>
+methods.createPedInsideAsync = function(self, model, seat, options)
+  local label = tostring(self) .. ":createPedInsideAsync"
+  local hash = rt.hash(model)
+  if type(hash) ~= "number" then return rt.fail(("%s: invalid model '%s'"):format(label, tostring(model))) end
+  local p = wrapPed(CreatePedInsideVehicle(self.handle, options and options.pedType or 4, hash, seat or -1, true, true))
+  if not p then return rt.fail(label .. ": creation failed (invalid vehicle or model)") end
+  rt.applyServerOptions(p, options)
+  return p:readyAsync(options and options.timeout, not (options and options.waitOwner == false)):next(nil, function(err)
+    -- nobody holds the wrapper: a ped left behind is never cleaned up
+    if DoesEntityExist(p.handle) then DeleteEntity(p.handle) end
+    rt.forget(p)
+    return fx.Promise.reject(err)
+  end)
+end
+
 end
 
 return rt.finalize(T)

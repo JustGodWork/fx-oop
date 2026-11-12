@@ -9897,6 +9897,107 @@ getters.tattoos = proxy("tattoos", {
 }, function(_, k) fail(("ped.tattoos: no field '%s' (use :get(), :add(), :remove()...)"):format(tostring(k))) end,
   function(_, k) fail(("ped.tattoos: cannot assign '%s' (use :set(list))"):format(tostring(k))) end)
 
+local ClonePed, DoesEntityExist, DeleteEntity = ClonePed, DoesEntityExist, DeleteEntity
+local GetGamePool, GetEntityModel, math_random = GetGamePool, GetEntityModel, math.random
+
+---@param p fx.Ped
+---@param timeoutMs? integer
+---@return fx.Promise<fx.Ped>
+local function pedReadyOrDelete(p, timeoutMs)
+  return p:readyAsync(timeoutMs):next(nil, function(err)
+    -- nobody holds the wrapper: a ped left behind could never be deleted
+    if DoesEntityExist(p.handle) then DeleteEntity(p.handle) end
+    rt.forget(p)
+    return fx.Promise.reject(err)
+  end)
+end
+
+-- CREATE_RANDOM_PED returns 0 in FiveM even among ambient peds: the model is picked from the peds around instead
+---@param position vector3|vector4
+---@param heading? number
+---@param options? fx.PedCreateOptions
+---@return fx.Promise<fx.Ped>
+statics.createRandomAsync = function(position, heading, options)
+  ---@type integer[]
+  local models = {}
+  ---@type table<integer, boolean>
+  local seen = {}
+  for _, h in ipairs(GetGamePool("CPed")) do
+    if not IsPedAPlayer(h) then
+      local model = GetEntityModel(h)
+      if not seen[model] then
+        seen[model] = true
+        models[#models + 1] = model
+      end
+    end
+  end
+  if #models == 0 then return rt.fail("Ped.createRandomAsync: no ambient ped around to take a model from") end
+  return statics.createAsync(models[math_random(#models)], position, heading, options)
+end
+
+---@param self fx.Ped
+---@param options? fx.PedCloneOptions
+---@return fx.Promise<fx.Ped>
+methods.cloneAsync = function(self, options)
+  local net = not (options and options.networked == false)
+  local p = T.wrap(ClonePed(self.handle, net, options and options.scriptHostPed or false,
+    not (options and options.copyHeadBlend == false)))
+  if not p then return rt.fail(tostring(self) .. ":cloneAsync: the clone failed") end
+  if net then rt.netIntent[p] = true end
+  return pedReadyOrDelete(p, options and options.timeout)
+end
+
+local TaskPlayAnim, IsEntityPlayingAnim, GetAnimDuration, RemoveAnimDict =
+  TaskPlayAnim, IsEntityPlayingAnim, GetAnimDuration, RemoveAnimDict
+local GetScriptTaskStatus = GetScriptTaskStatus
+
+---@param self fx.Ped
+---@param dict string
+---@param name string
+---@param options? fx.PlayAnimOptions
+---@return fx.Promise
+methods.playAnimAsync = function(self, dict, name, options)
+  if type(name) ~= "string" or name == "" then return rt.fail(tostring(self) .. ":playAnimAsync: name must be a non-empty string") end
+  local label = tostring(self) .. ":playAnimAsync"
+  local h = self.handle
+  local o = options or {}
+  local flag = o.flag or 0
+  local duration = o.duration or -1
+  return fx.Streaming.loadAnimDictAsync(dict, o.timeout):next(function()
+    TaskPlayAnim(h, dict, name, (o.blendIn or 8.0) + 0.0, (o.blendOut or -8.0) + 0.0, duration, flag,
+      (o.startPhase or 0.0) + 0.0, false, false, false)
+    -- flag 1 loops: nothing to wait for
+    if flag & 1 ~= 0 then RemoveAnimDict(dict); return self end
+    ---@return boolean
+    local function playing() local r = IsEntityPlayingAnim(h, dict, name, 3); return r == true or r == 1 end
+    local length = duration > 0 and duration or math.floor((GetAnimDuration(dict, name) or 0.0) * 1000)
+    return rt.waitUntil(label .. " (start)", playing, 1000):next(function()
+      return rt.waitUntil(label, function() return not playing() end, length + 2000)
+    end):next(function()
+      RemoveAnimDict(dict)
+      return self
+    end, function(err)
+      RemoveAnimDict(dict)
+      return fx.Promise.reject(err)
+    end)
+  end)
+end
+
+-- GET_SCRIPT_TASK_STATUS: 7 = the ped has no such task (finished, or never given)
+local TASK_DONE = 7
+
+---@param self fx.Ped
+---@param task string|integer
+---@param timeoutMs? integer
+---@return fx.Promise
+methods.waitForTaskAsync = function(self, task, timeoutMs)
+  local hash = type(task) == "string" and GetHashKey(task) or task
+  if math.type(hash) ~= "integer" then return rt.fail(tostring(self) .. ":waitForTaskAsync: task must be a name or a hash") end
+  local h = self.handle
+  return rt.waitUntil(tostring(self) .. ":waitForTaskAsync", function() return GetScriptTaskStatus(h, hash) == TASK_DONE end,
+    timeoutMs, self)
+end
+
 end
 
 return rt.finalize(T)

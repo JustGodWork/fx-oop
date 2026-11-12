@@ -601,6 +601,8 @@ local RpcLib = {}
 ---@field Cfx fx.Cfx
 ---@field Checkpoint fx.CheckpointStatic
 ---@field Clock fx.Clock
+---@field Command fx.Command
+---@field Convar fx.Convar
 ---@field Cutscene fx.Cutscene
 ---@field Datafile fx.Datafile
 ---@field Decorator fx.Decorator
@@ -618,7 +620,8 @@ local RpcLib = {}
 ---@field Interior fx.InteriorStatic
 ---@field Itemset fx.Itemset
 ---@field Keybind fx.Keybind
----@field Loadingscreen fx.Loadingscreen
+---@field Kvp fx.Kvp
+---@field LoadingScreen fx.LoadingScreen
 ---@field Localization fx.Localization
 ---@field Mobile fx.Mobile
 ---@field Model fx.ModelStatic

@@ -4,6 +4,9 @@
 
 ---@class fx.ServerVehicleCreateOptions : fx.ServerCreateOptions
 ---@field type? "automobile"|"bike"|"boat"|"heli"|"plane"|"submarine"|"trailer"|"train" Vehicle type (the server cannot infer it from the model). Default "automobile".
+
+---@class fx.ServerPedInsideOptions : fx.ServerCreateOptions
+---@field pedType? integer Default 4 (PED_TYPE_CIVMALE)
 ---@class fx.Vehicle : fx.Entity
 ---@field handle integer Raw entity handle.
 ---@field exists boolean (read-only) DOES_ENTITY_EXIST. Never raises, even on a deleted entity or in debug mode.
@@ -95,6 +98,14 @@
 ---@field wheelType fx.Enum.VehicleWheelType (read-only) [GET_VEHICLE_WHEEL_TYPE]
 ---@field windowTint fx.Enum.WindowTints (read-only) [GET_VEHICLE_WINDOW_TINT]
 local Vehicle = {}
+
+---Creates a ped in a seat of the vehicle (CREATE_PED_INSIDE_VEHICLE) then waits for `readyAsync()` (exists + network
+---owner). Never yields. Rejects if the creation fails or on timeout.
+---@param model fx.Model|integer|string
+---@param seat? integer -1 driver (default), 0 front passenger, 1 and up the back seats
+---@param options? fx.ServerPedInsideOptions
+---@return fx.Promise<fx.Ped>
+function Vehicle:createPedInsideAsync(model, seat, options) end
 
 ---Promise resolved with the entity once it exists and, unless `waitOwner == false`, has a network owner
 ---(owner stays -1 until a player is in scope). Rejects with a TimeoutError after `timeoutMs` (default 10000).

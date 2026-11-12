@@ -7,6 +7,8 @@
 ---@field serverId integer (read-only) Server id of the player (= handle).
 ---@field exists boolean (read-only) DOES_PLAYER_EXIST.
 ---@field ped fx.Ped? (read-only) Player ped (GET_PLAYER_PED), RECOMPUTED on every access. nil when the player has none.
+---@field identifiers table<string, string> (read-only) Identifiers by type, whole: `player.identifiers.license` is `"license:..."`; a type the player lacks is nil (`discord` without Discord)
+---@field tokens string[] (read-only) Hardware tokens of the player (GET_PLAYER_TOKEN)
 ---@field states fx.PlayerStates Player state bag (`player:<src>`), distinct from `ped.states`.
 ---@field state fx.PlayerStates Compatibility alias (`Player(src).state`).
 ---@field airDragMultiplierForPlayersVehicle number (read-only) [GET_AIR_DRAG_MULTIPLIER_FOR_PLAYERS_VEHICLE]
@@ -190,7 +192,6 @@ function Player:tempBan(reason) end
 
 ---@class fx.PlayerStatic
 ---@overload fun(source: integer|string): fx.Player? Player by server id (nil if not connected).
-
 local PlayerStatic = {}
 
 --- True when value is an fx.Player, or a subtype of it (a Ped is an Entity).

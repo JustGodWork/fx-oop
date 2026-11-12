@@ -607,6 +607,21 @@ local CamStatic = {}
 ---@return fx.Cam?
 function CamStatic.create(options) end
 
+---Fades the screen to black (DO_SCREEN_FADE_OUT) and resolves once it is black. Never yields.
+---```lua
+---fx.Cam.fadeOutAsync(500):await()
+---ped.position = destination
+---fx.Cam.fadeInAsync(500)
+---```
+---@param duration? integer Milliseconds, default 500
+---@return fx.Promise
+function CamStatic.fadeOutAsync(duration) end
+
+---Fades the screen back in (DO_SCREEN_FADE_IN) and resolves once it is fully visible. Never yields.
+---@param duration? integer Milliseconds, default 500
+---@return fx.Promise
+function CamStatic.fadeInAsync(duration) end
+
 --- True when value is an fx.Cam, or a subtype of it (a Ped is an Entity).
 ---@param value any
 ---@return boolean

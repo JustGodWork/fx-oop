@@ -559,6 +559,5 @@ function EventsGame.onMapDataUnloaded(fn) end
 ---@class fx.Events
 ---@field Cfx fx.Events.Cfx
 ---@field Game fx.Events.Game
-
 local EventsStatic = {}
 

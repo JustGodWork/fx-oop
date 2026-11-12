@@ -2832,6 +2832,38 @@ function rt.heading(position, heading)
   return 0.0
 end
 
+local FreezeEntityPosition, SetEntityCoordsNoOffset, SetEntityHeading =
+  FreezeEntityPosition, SetEntityCoordsNoOffset, SetEntityHeading
+
+---@param self fx.Entity
+---@param position vector3|vector4
+---@param options? fx.TeleportOptions
+---@return fx.Promise
+methods.teleportAsync = function(self, position, options)
+  local h = self.handle
+  local x, y, z = position.x + 0.0, position.y + 0.0, position.z + 0.0
+  local timeout = options and options.timeout
+  local heading = options and options.heading or (type(position) == "vector4" and position.w or nil)
+  -- frozen while the collision loads: the entity would fall through the map
+  FreezeEntityPosition(h, true)
+  SetEntityCoordsNoOffset(h, x, y, z, false, false, false)
+  ---@return fx.Promise?
+  local function toGround()
+    if not (options and options.ground) then return nil end
+    return fx.Game.getGroundZAsync(vector3(x, y, z), timeout):next(function(gz)
+      SetEntityCoordsNoOffset(h, x, y, gz, false, false, false)
+    end)
+  end
+  return methods.loadCollisionAsync(self, timeout):next(toGround):next(function()
+    if heading then SetEntityHeading(h, heading + 0.0) end
+    FreezeEntityPosition(h, false)
+    return self
+  end, function(err)
+    FreezeEntityPosition(h, false)
+    return P.reject(err)
+  end)
+end
+
 end
 
 return rt.finalize(T)

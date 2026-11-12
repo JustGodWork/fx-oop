@@ -139,6 +139,16 @@ function Object:loadCollisionAsync(timeoutMs) end
 ---@return any
 function Object:invoke(hash, ...) end
 
+---Moves the entity, holding it frozen until the collision around it is loaded, so it does not fall through the map.
+---Never yields. This client must control the entity (the local player ped, or after `takeControlAsync`).
+---```lua
+---Player.ped:teleportAsync(fx.Hud.waypoint, { ground = true }):await()
+---```
+---@param position vector3|vector4
+---@param options? fx.TeleportOptions
+---@return fx.Promise<fx.Object>
+function Object:teleportAsync(position, options) end
+
 --- **Native**: `ACTIVATE_PHYSICS` (`0x710311ADF0E20730`)
 ---@return fx.Object self
 function Object:activatePhysics() end

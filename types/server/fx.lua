@@ -595,9 +595,12 @@ local RpcLib = {}
 ---@field await fun(p: fx.Promise|table): ... Awaits an fx.Promise, a native promise or a thenable (inside a thread).
 ---@field Blip fx.BlipStatic
 ---@field Cfx fx.Cfx
+---@field Command fx.Command
+---@field Convar fx.Convar
 ---@field Entity fx.EntityStatic
 ---@field Events fx.Events
 ---@field Global fx.Global
+---@field Kvp fx.Kvp
 ---@field Model fx.ModelStatic
 ---@field Mumble fx.Mumble
 ---@field Object fx.ObjectStatic

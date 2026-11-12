@@ -813,6 +813,30 @@ statics.loadSceneAsync = function(position, radius, timeoutMs)
   end)
 end
 
+local RequestStreamedTextureDict, HasStreamedTextureDictLoaded = RequestStreamedTextureDict, HasStreamedTextureDictLoaded
+local RequestIpl, IsIplActive = RequestIpl, IsIplActive
+
+---@param dict string
+local function requestTextureDict(dict) RequestStreamedTextureDict(dict, false) end
+---@param v any
+---@return boolean
+local function isName(v) return type(v) == "string" and v ~= "" end
+
+---@param dict string
+---@param timeoutMs? integer
+---@return fx.Promise<string>
+statics.loadTextureDictAsync = function(dict, timeoutMs)
+  return rt.load("Streaming.loadTextureDictAsync", "texture dictionary", requestTextureDict, HasStreamedTextureDictLoaded,
+    isName, timeoutMs, dict)
+end
+
+---@param name string
+---@param timeoutMs? integer
+---@return fx.Promise<string>
+statics.loadIplAsync = function(name, timeoutMs)
+  return rt.load("Streaming.loadIplAsync", "IPL", RequestIpl, IsIplActive, isName, timeoutMs, name)
+end
+
 end
 
 return rt.finalizeModule(T)

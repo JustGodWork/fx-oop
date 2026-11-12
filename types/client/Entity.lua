@@ -2,6 +2,10 @@
 ---@diagnostic disable
 -- fx.Entity (client): LuaLS annotations. AUTO-GENERATED, DO NOT EDIT.
 
+---@class fx.TeleportOptions
+---@field ground? boolean Put the entity on the ground under the position (its z then only guides the search)
+---@field heading? number Default: the w of a vector4, else unchanged
+---@field timeout? integer Default 10000
 ---@class fx.Entity
 ---@field handle integer Raw entity handle.
 ---@field exists boolean (read-only) DOES_ENTITY_EXIST. Never raises, even on a deleted entity or in debug mode.
@@ -113,6 +117,16 @@ function Entity:loadCollisionAsync(timeoutMs) end
 ---@param ... any
 ---@return any
 function Entity:invoke(hash, ...) end
+
+---Moves the entity, holding it frozen until the collision around it is loaded, so it does not fall through the map.
+---Never yields. This client must control the entity (the local player ped, or after `takeControlAsync`).
+---```lua
+---Player.ped:teleportAsync(fx.Hud.waypoint, { ground = true }):await()
+---```
+---@param position vector3|vector4
+---@param options? fx.TeleportOptions
+---@return fx.Promise<fx.Entity>
+function Entity:teleportAsync(position, options) end
 
 --- **Native**: `ACTIVATE_PHYSICS` (`0x710311ADF0E20730`)
 ---@return fx.Entity self

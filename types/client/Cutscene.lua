@@ -17,6 +17,13 @@
 ---@field wasCutsceneSkipped boolean (read-only) [WAS_CUTSCENE_SKIPPED]
 local CutsceneStatic = {}
 
+---Loads a cutscene (REQUEST_CUTSCENE) and resolves with its name once loaded: then START_CUTSCENE plays it.
+---@param name string Cutscene name, such as "mp_intro_concat"
+---@param flags? integer Playback flags, default 8
+---@param timeoutMs? integer Default 10000
+---@return fx.Promise<string>
+function CutsceneStatic.loadAsync(name, flags, timeoutMs) end
+
 --- ```
 --- modelHash (p1) was always 0 in R* scripts
 --- ```

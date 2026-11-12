@@ -2,11 +2,25 @@
 ---@diagnostic disable
 -- fx.Ped (client): LuaLS annotations. AUTO-GENERATED, DO NOT EDIT.
 
+---@class fx.PlayAnimOptions
+---@field flag? integer Animation flags: 1 loop, 16 upper body only, 32 can move, 48 = 16 + 32 (default 0)
+---@field duration? integer Milliseconds, -1 for the length of the animation (default)
+---@field blendIn? number Default 8.0
+---@field blendOut? number Default -8.0
+---@field startPhase? number 0.0 to 1.0 (default 0.0)
+---@field timeout? integer Timeout of the dictionary load in ms (default 10000)
+
 ---@class fx.PedCreateOptions
 ---@field networked? boolean Default true
 ---@field scriptHostPed? boolean Default false
 ---@field pedType? integer Default 4 (PED_TYPE_CIVMALE)
 ---@field timeout? integer Default 10000
+
+---@class fx.PedCloneOptions
+---@field networked? boolean Default true
+---@field scriptHostPed? boolean Default false
+---@field copyHeadBlend? boolean Copy the head blend (parents, face mix) too, default true
+---@field timeout? integer readyAsync() timeout in ms, default 10000
 
 ---ped.clothes: one component at a time. `ped.clothes.top = 15` or `{ drawable = 15, texture = 2 }`.
 ---An invalid drawable or texture raises in debug mode.
@@ -535,6 +549,28 @@ function Ped:setAppearance(appearance) end
 ---@return fx.Promise<fx.Ped>
 function Ped:setAppearanceAsync(appearance, timeoutMs) end
 
+---Loads the dictionary, plays the animation (TASK_PLAY_ANIM) and resolves once it has ended, or at once for a looped
+---one (flag 1). The dictionary is released afterwards. Never yields.
+---```lua
+---ped:playAnimAsync("mp_common", "givetake1_a", { flag = 48 }):await()
+---```
+---@param dict string
+---@param name string
+---@param options? fx.PlayAnimOptions
+---@return fx.Promise<fx.Ped>
+function Ped:playAnimAsync(dict, name, options) end
+
+---Resolves once the ped no longer runs a script task (GET_SCRIPT_TASK_STATUS returns 7).
+---@param task string|integer Task name such as "SCRIPT_TASK_GO_STRAIGHT_TO_COORD", or its hash
+---@param timeoutMs? integer Default 10000
+---@return fx.Promise<fx.Ped>
+function Ped:waitForTaskAsync(task, timeoutMs) end
+
+---Clones the ped (CLONE_PED: model, clothes, appearance), then waits for `readyAsync()`. Never yields.
+---@param options? fx.PedCloneOptions
+---@return fx.Promise<fx.Ped>
+function Ped:cloneAsync(options) end
+
 ---Promise resolved with the entity once it really exists (and, if networked, once it has a network id).
 ---Rejects with a TimeoutError after `timeoutMs` (default 10000). Works on any wrapper.
 ---@param timeoutMs? integer
@@ -559,6 +595,16 @@ function Ped:loadCollisionAsync(timeoutMs) end
 ---@param ... any
 ---@return any
 function Ped:invoke(hash, ...) end
+
+---Moves the entity, holding it frozen until the collision around it is loaded, so it does not fall through the map.
+---Never yields. This client must control the entity (the local player ped, or after `takeControlAsync`).
+---```lua
+---Player.ped:teleportAsync(fx.Hud.waypoint, { ground = true }):await()
+---```
+---@param position vector3|vector4
+---@param options? fx.TeleportOptions
+---@return fx.Promise<fx.Ped>
+function Ped:teleportAsync(position, options) end
 
 --- **Native**: `ACTIVATE_PHYSICS` (`0x710311ADF0E20730`)
 ---@return fx.Ped self
@@ -8182,6 +8228,14 @@ function PedStatic.createRaw(model, position, heading, options) end
 ---Releases a headshot slot (UNREGISTER_PEDHEADSHOT).
 ---@param id integer
 function PedStatic.releaseHeadshot(id) end
+
+---Creates a ped of a model taken at random from the ambient peds around (players left out), like `createAsync`.
+---Never yields. Rejects when no ambient ped is around.
+---@param position vector3|vector4
+---@param heading? number
+---@param options? fx.PedCreateOptions
+---@return fx.Promise<fx.Ped>
+function PedStatic.createRandomAsync(position, heading, options) end
 
 --- True when value is an fx.Ped, or a subtype of it (a Ped is an Entity).
 ---@param value any

@@ -371,4 +371,30 @@ do
   end
 end
 
+-- handwritten: runtime/client/mixins/Cutscene.lua
+
+do
+
+local RequestCutscene, HasThisCutsceneLoaded = RequestCutscene, HasThisCutsceneLoaded
+
+---@param name any
+---@param flags any
+---@return boolean
+local function validCutscene(name, flags) return type(name) == "string" and name ~= "" and math.type(flags) == "integer" end
+
+-- HAS_THIS_CUTSCENE_LOADED takes the name only, rt.load passes every argument
+---@param name string
+---@return boolean
+local function cutsceneLoaded(name) return HasThisCutsceneLoaded(name) end
+
+---@param name string
+---@param flags? integer
+---@param timeoutMs? integer
+---@return fx.Promise<string>
+statics.loadAsync = function(name, flags, timeoutMs)
+  return rt.load("Cutscene.loadAsync", "cutscene", RequestCutscene, cutsceneLoaded, validCutscene, timeoutMs, name, flags or 8)
+end
+
+end
+
 return rt.finalizeModule(T)
