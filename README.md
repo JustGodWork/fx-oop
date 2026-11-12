@@ -159,7 +159,8 @@ release adds, removes or changes.
 
 ## Support
 
-Report bugs and ask questions in the [issues](../../issues).
+Report bugs and ask questions in the [issues](../../issues). [CONTRIBUTING.md](CONTRIBUTING.md) explains what to
+include and how fixes are taken in.
 
 ## License
 

@@ -16,7 +16,12 @@ do
 
 local GetResourceState, AddEventHandler, CreateThread = GetResourceState, AddEventHandler, Citizen.CreateThread
 local Wait, GetGameTimer = Citizen.Wait, GetGameTimer
-local type, tostring, error, pcall, setmetatable, remove = type, tostring, error, pcall, setmetatable, table.remove
+local GetNumResourceMetadata, GetResourceMetadata = GetNumResourceMetadata, GetResourceMetadata
+local LoadResourceFile, GetResourceCommands = LoadResourceFile, GetResourceCommands
+local GetNumResources, GetResourceByFindIndex = GetNumResources, GetResourceByFindIndex
+local GetCurrentResourceName, GetInvokingResource = GetCurrentResourceName, GetInvokingResource
+local type, tostring, tonumber, error, pcall, setmetatable, remove = type, tostring, tonumber, error, pcall, setmetatable, table.remove
+local json = json
 local log = fx.Logger("fx"):child("Resource")
 
 ---A resource handle with its listeners.
@@ -28,14 +33,94 @@ local Resource = {}
 ---@type table<string, fx.ResourceImpl> By resource name
 local byName = {}
 
+---The keys a manifest directive is stored under: FiveM drops the final "s" of a directive given a table
+---(`client_scripts { ... }` -> `client_script`, `dependencies { ... }` -> `dependencie`), so both forms are read.
+---@param key string
+---@return string[]
+local function metadataKeys(key)
+  if key:sub(-3) == "ies" then return { key, key:sub(1, -4) .. "y", key:sub(1, -2) } end
+  if key:sub(-1) == "s" then return { key, key:sub(1, -2) } end
+  if key:sub(-1) == "y" then return { key, key:sub(1, -2) .. "ies", key:sub(1, -2) .. "ie" } end
+  return { key, key .. "s" }
+end
+
+---@param name string
+---@param key string
+---@return string[]
+local function metadataList(name, key)
+  local out = {}
+  for _, k in ipairs(metadataKeys(key)) do
+    for i = 0, (GetNumResourceMetadata(name, k) or 0) - 1 do
+      local v = GetResourceMetadata(name, k, i)
+      if v ~= nil then out[#out + 1] = v end
+    end
+  end
+  return out
+end
+
+---@param self fx.ResourceImpl
+---@param what string
+---@param key any
+local function checkKey(self, what, key)
+  if type(key) ~= "string" or key == "" then error(tostring(self) .. ":" .. what .. ": key must be a non-empty string", 3) end
+end
+
+---Numeric parts of a version ("v1.2.3-beta+5" -> {1, 2, 3}); nil without any.
+---@param v string
+---@return integer[]?
+local function versionParts(v)
+  local core = v:gsub("^v", ""):match("^[^-+]*")
+  local parts = {}
+  for n in core:gmatch("%d+") do parts[#parts + 1] = tonumber(n) end
+  return #parts > 0 and parts or nil
+end
+
+---@type table<string, fun(self: fx.ResourceImpl): any>
+local refGetters = {
+  state = function(self) return GetResourceState(self.name) end,
+  started = function(self) return GetResourceState(self.name) == "started" end,
+  exists = function(self)
+    local s = GetResourceState(self.name)
+    return s ~= "missing" and s ~= "unknown"
+  end,
+  version = function(self) return metadataList(self.name, "version")[1] end,
+  author = function(self) return metadataList(self.name, "author")[1] end,
+  description = function(self) return metadataList(self.name, "description")[1] end,
+  fxVersion = function(self) return metadataList(self.name, "fx_version")[1] end,
+  dependencies = function(self)
+    local out, seen = {}, {}
+    for _, dep in ipairs(metadataList(self.name, "dependencies")) do
+      -- "/server:5848", "/onesync"...: requirements on the server, not resources
+      if dep:sub(1, 1) ~= "/" and not seen[dep] then
+        seen[dep] = true
+        out[#out + 1] = dep
+      end
+    end
+    return out
+  end,
+  commands = function(self)
+    local out = {}
+    for _, c in ipairs(GetResourceCommands(self.name) or {}) do
+      out[#out + 1] = { name = tostring(c.name), resource = tostring(c.resource), arity = tonumber(c.arity) or -1 }
+    end
+    return out
+  end,
+}
+
 local mt = {
   ---@param self fx.ResourceImpl
   ---@param k string
   ---@return any
   __index = function(self, k)
-    if k == "state" then return GetResourceState(self.name) end
-    if k == "started" then return GetResourceState(self.name) == "started" end
+    local g = refGetters[k]
+    if g then return g(self) end
     return Resource[k]
+  end,
+  ---@param self fx.ResourceImpl
+  ---@param k any
+  __newindex = function(self, k)
+    if refGetters[k] or Resource[k] then error(tostring(self) .. "." .. tostring(k) .. " is read-only", 2) end
+    error(tostring(self) .. " has no property '" .. tostring(k) .. "'", 2)
   end,
   __name = "fx.Resource",
   ---@param self fx.ResourceImpl
@@ -131,6 +216,113 @@ function Resource:onStop(fn)
   return add(self.stopHandlers, fn)
 end
 
+---@param key string
+---@return string?
+function Resource:getMetadata(key)
+  checkKey(self, "getMetadata", key)
+  return metadataList(self.name, key)[1]
+end
+
+---@param key string
+---@return string[]
+function Resource:getMetadataList(key)
+  checkKey(self, "getMetadataList", key)
+  return metadataList(self.name, key)
+end
+
+---@param path string
+---@return string?
+function Resource:loadFile(path)
+  if type(path) ~= "string" or path == "" then error(tostring(self) .. ":loadFile: path must be a non-empty string", 2) end
+  return LoadResourceFile(self.name, path)
+end
+
+---@param path string
+---@return any? value
+---@return string? err
+function Resource:loadJson(path)
+  if type(path) ~= "string" or path == "" then error(tostring(self) .. ":loadJson: path must be a non-empty string", 2) end
+  local text = LoadResourceFile(self.name, path)
+  if text == nil then return nil, ("%s: file not found: %s"):format(self.name, path) end
+  local ok, value = pcall(json.decode, text)
+  if not ok or value == nil then return nil, ("%s: invalid JSON in %s"):format(self.name, path) end
+  return value
+end
+
+---@param min string
+---@return boolean
+function Resource:isVersionAtLeast(min)
+  local want = type(min) == "string" and versionParts(min) or nil
+  if not want then error(tostring(self) .. ":isVersionAtLeast: min must be a version string like '1.2.0'", 2) end
+  local version = metadataList(self.name, "version")[1]
+  local have = version and versionParts(version)
+  if not have then return false end
+  for i = 1, math.max(#have, #want) do
+    local a, b = have[i] or 0, want[i] or 0
+    if a ~= b then return a > b end
+  end
+  return true
+end
+
+---@param timeoutMs? integer
+---@return fx.Promise
+function Resource:waitForStartAsync(timeoutMs)
+  local name = self.name
+  return rt.waitUntil(tostring(self) .. ":waitForStartAsync", function() return GetResourceState(name) == "started" end,
+    timeoutMs, self)
+end
+
+if rt.isServer then
+  local GetResourcePath, SaveResourceFile = GetResourcePath, SaveResourceFile
+  local StartResource, StopResource = StartResource, StopResource
+
+  ---A resource does not run its own lifecycle: stopping itself would kill the code doing it.
+  ---@param self fx.ResourceImpl
+  ---@param what string
+  local function notSelf(self, what)
+    if self.name == GetCurrentResourceName() then
+      error(tostring(self) .. ":" .. what .. ": a resource cannot " .. what .. " itself", 3)
+    end
+  end
+
+  ---BOOL natives return 1 or true.
+  ---@param v any
+  ---@return boolean
+  local function truthy(v) return v == true or v == 1 end
+
+  ---@param res fx.ResourceImpl
+  ---@return string?
+  refGetters.path = function(res) return GetResourcePath(res.name) end
+
+  ---@param path string
+  ---@param data string
+  ---@return boolean
+  function Resource:saveFile(path, data)
+    if type(path) ~= "string" or path == "" then error(tostring(self) .. ":saveFile: path must be a non-empty string", 2) end
+    if type(data) ~= "string" then error(tostring(self) .. ":saveFile: data must be a string", 2) end
+    return truthy(SaveResourceFile(self.name, path, data, #data))
+  end
+
+  ---@return boolean
+  function Resource:start()
+    notSelf(self, "start")
+    return truthy(StartResource(self.name))
+  end
+
+  ---@return boolean
+  function Resource:stop()
+    notSelf(self, "stop")
+    return truthy(StopResource(self.name))
+  end
+
+  ---@return boolean
+  function Resource:restart()
+    notSelf(self, "restart")
+    if GetResourceState(self.name) == "started" then StopResource(self.name) end
+    return truthy(StartResource(self.name))
+  end
+end
+
 ---@param name string
 ---@return fx.ResourceRef
 T.call = function(name)
@@ -141,6 +333,26 @@ T.call = function(name)
     byName[name] = self
   end
   return self
+end
+
+---@return fx.ResourceRef
+staticGetters.current = function() return T.call(GetCurrentResourceName()) end
+
+---@return fx.ResourceRef?
+staticGetters.invoking = function()
+  local name = GetInvokingResource()
+  if name == nil or name == "" then return nil end
+  return T.call(name)
+end
+
+---@return fx.ResourceRef[]
+statics.all = function()
+  local out = {}
+  for i = 0, (GetNumResources() or 0) - 1 do
+    local name = GetResourceByFindIndex(i)
+    if name ~= nil and name ~= "" then out[#out + 1] = T.call(name) end
+  end
+  return out
 end
 
 end
