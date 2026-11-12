@@ -1,0 +1,30 @@
+name: Release
+
+# The generator pushes each release as a commit and an annotated tag whose message holds the release notes.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Package the resource
+        run: |
+          mkdir -p pkg/fx
+          git archive "$GITHUB_REF_NAME" | tar -x -C pkg/fx
+          (cd pkg && zip -qr ../fx.zip fx)
+
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git tag -l --format='%(contents)' "$GITHUB_REF_NAME" > notes.md
+          gh release create "$GITHUB_REF_NAME" fx.zip --title "$GITHUB_REF_NAME" --notes-file notes.md
