@@ -1,0 +1,237 @@
+---@meta
+---@diagnostic disable
+-- fx data types (client and server). AUTO-GENERATED, DO NOT EDIT.
+
+---Key of a clothing component: see fx.Enum.PedClothes.
+---@alias fx.PedClothesKey "mask"|"arms"|"legs"|"bag"|"shoes"|"neck"|"undershirt"|"armor"|"decals"|"top"
+---Key of a prop anchor point: see fx.Enum.PedProps.
+---@alias fx.PedPropKey "hat"|"glasses"|"ears"|"watch"|"bracelet"
+---Key of a head overlay: see fx.Enum.PedOverlays.
+---@alias fx.PedOverlayKey "blemishes"|"beard"|"eyebrows"|"ageing"|"makeup"|"blush"|"complexion"|"sunDamage"|"lipstick"|"freckles"|"chestHair"|"bodyBlemishes"|"moreBodyBlemishes"
+---@alias fx.PedOutfitGroup "clothes"|"props"
+---@alias fx.PedAppearanceGroup "headBlend"|"face"|"head"|"hair"|"overlays"|"tattoos"
+
+---A drawable and its texture. A drawable from an addon or DLC pack is read as its collection name + its index in
+---the collection, which stay valid when the server adds or removes clothing packs. Without collection, `drawable`
+---is the global index (base game drawables, or game builds without the collection natives).
+---@class fx.PedVariation
+---@field drawable integer
+---@field texture? integer Default 0
+---@field palette? integer Default 0
+---@field collection? string
+
+---An entry of clothes:list / props:list: assignable as it is.
+---@class fx.PedVariationItem : fx.PedVariation
+---@field textures integer Number of textures of this drawable
+
+---Clothing components. A number is a drawable with texture 0.
+---@class fx.PedClothesData
+---@field mask? fx.PedVariation|integer Component 1
+---@field arms? fx.PedVariation|integer Component 3
+---@field legs? fx.PedVariation|integer Component 4
+---@field bag? fx.PedVariation|integer Component 5
+---@field shoes? fx.PedVariation|integer Component 6
+---@field neck? fx.PedVariation|integer Component 7
+---@field undershirt? fx.PedVariation|integer Component 8
+---@field armor? fx.PedVariation|integer Component 9
+---@field decals? fx.PedVariation|integer Component 10
+---@field top? fx.PedVariation|integer Component 11
+
+---Props. false: nothing on this anchor point.
+---@class fx.PedPropsData
+---@field hat? fx.PedVariation|integer|false Anchor point 0
+---@field glasses? fx.PedVariation|integer|false Anchor point 1
+---@field ears? fx.PedVariation|integer|false Anchor point 2
+---@field watch? fx.PedVariation|integer|false Anchor point 6
+---@field bracelet? fx.PedVariation|integer|false Anchor point 7
+
+---Outfit returned by getOutfit: plain values, ready for JSON, a database or an event.
+---@class fx.PedOutfit
+---@field model? integer Model hash: setOutfit raises in debug mode on another model
+---@field clothes? fx.PedClothesData
+---@field props? fx.PedPropsData
+
+---Head blend of the freemode models: the two parents (and a third) for the shape and the skin.
+---@class fx.PedHeadBlend
+---@field shapeFirst? integer
+---@field shapeSecond? integer
+---@field shapeThird? integer
+---@field skinFirst? integer
+---@field skinSecond? integer
+---@field skinThird? integer
+---@field shapeMix? number 0.0 (first) to 1.0 (second)
+---@field skinMix? number 0.0 (first) to 1.0 (second)
+---@field thirdMix? number
+
+---Face features (-1.0 to 1.0) and eye colour.
+---@class fx.PedFaceData
+---@field eyeColor? integer
+---@field noseWidth? number Feature 0
+---@field nosePeakHeight? number Feature 1
+---@field nosePeakLength? number Feature 2
+---@field noseBoneHeight? number Feature 3
+---@field nosePeakLowering? number Feature 4
+---@field noseBoneTwist? number Feature 5
+---@field eyebrowHeight? number Feature 6
+---@field eyebrowDepth? number Feature 7
+---@field cheekBoneHeight? number Feature 8
+---@field cheekBoneWidth? number Feature 9
+---@field cheekWidth? number Feature 10
+---@field eyeOpening? number Feature 11
+---@field lipThickness? number Feature 12
+---@field jawBoneWidth? number Feature 13
+---@field jawBoneLength? number Feature 14
+---@field chinBoneHeight? number Feature 15
+---@field chinBoneLength? number Feature 16
+---@field chinBoneWidth? number Feature 17
+---@field chinDimple? number Feature 18
+---@field neckThickness? number Feature 19
+
+---@class fx.PedHairData
+---@field style? integer Hair drawable (component 2); index in `collection` when there is one
+---@field texture? integer
+---@field collection? string
+---@field color? integer
+---@field highlight? integer
+---@field palette? integer Default 0
+
+---A head overlay. style -1: none. A number is a style.
+---@class fx.PedOverlay
+---@field style? integer Default: the current style (always set when read)
+---@field opacity? number 0.0 to 1.0
+---@field color? integer
+---@field secondColor? integer
+
+---@class fx.PedOverlaysData
+---@field blemishes? fx.PedOverlay|integer|false Overlay 0
+---@field beard? fx.PedOverlay|integer|false Overlay 1
+---@field eyebrows? fx.PedOverlay|integer|false Overlay 2
+---@field ageing? fx.PedOverlay|integer|false Overlay 3
+---@field makeup? fx.PedOverlay|integer|false Overlay 4
+---@field blush? fx.PedOverlay|integer|false Overlay 5
+---@field complexion? fx.PedOverlay|integer|false Overlay 6
+---@field sunDamage? fx.PedOverlay|integer|false Overlay 7
+---@field lipstick? fx.PedOverlay|integer|false Overlay 8
+---@field freckles? fx.PedOverlay|integer|false Overlay 9
+---@field chestHair? fx.PedOverlay|integer|false Overlay 10
+---@field bodyBlemishes? fx.PedOverlay|integer|false Overlay 11
+---@field moreBodyBlemishes? fx.PedOverlay|integer|false Overlay 12
+
+---A tattoo (decoration): collection and overlay hashes; names are accepted when applying.
+---@class fx.PedTattoo
+---@field collection integer|string
+---@field overlay integer|string
+
+---Appearance returned by getAppearance: plain values, ready for JSON, a database or an event.
+---@class fx.PedAppearance
+---@field model? integer
+---@field headBlend? fx.PedHeadBlend Freemode models; nil when the ped has no head blend
+---@field face? fx.PedFaceData
+---@field head? fx.PedVariation|integer Component 0: the head of the non-freemode models
+---@field hair? fx.PedHairData
+---@field overlays? fx.PedOverlaysData Beard, eyebrows, makeup...
+---@field tattoos? fx.PedTattoo[]
+
+---Key of a mod slot: see fx.Enum.VehicleMods.
+---@alias fx.VehicleModKey "spoiler"|"frontBumper"|"rearBumper"|"sideSkirt"|"exhaust"|"frame"|"grille"|"hood"|"leftFender"|"rightFender"|"roof"|"engine"|"brakes"|"transmission"|"horn"|"suspension"|"armor"|"turbo"|"tyreSmoke"|"xenon"|"frontWheels"|"rearWheels"|"plateHolder"|"vanityPlate"|"trimA"|"ornaments"|"dashboard"|"dial"|"doorSpeaker"|"seats"|"steeringWheel"|"shifter"|"plaque"|"speakers"|"trunk"|"hydraulics"|"engineBlock"|"airFilter"|"struts"|"archCover"|"aerials"|"trimB"|"tank"|"leftDoor"|"rightDoor"|"livery"|"lightbar"
+
+---Group of vehicle properties, for getProperties.
+---@alias fx.VehiclePropertyGroup "mods"|"colors"|"extras"|"damage"|"details"
+
+---Mods. -1 is the stock part. getProperties leaves out the slots this vehicle has no part for.
+---@class fx.VehicleModsData
+---@field wheelType? fx.Enum.VehicleWheelType|integer Applied before the wheel mods (it selects their list)
+---@field customTyres? boolean Custom tyres on the wheels
+---@field spoiler? integer Slot 0
+---@field frontBumper? integer Slot 1
+---@field rearBumper? integer Slot 2
+---@field sideSkirt? integer Slot 3
+---@field exhaust? integer Slot 4
+---@field frame? integer Slot 5
+---@field grille? integer Slot 6
+---@field hood? integer Slot 7
+---@field leftFender? integer Slot 8
+---@field rightFender? integer Slot 9
+---@field roof? integer Slot 10
+---@field engine? integer Slot 11
+---@field brakes? integer Slot 12
+---@field transmission? integer Slot 13
+---@field horn? integer Slot 14
+---@field suspension? integer Slot 15
+---@field armor? integer Slot 16
+---@field turbo? boolean Slot 18 (on / off)
+---@field tyreSmoke? boolean Slot 20 (on / off)
+---@field xenon? boolean Slot 22 (on / off)
+---@field frontWheels? integer Slot 23
+---@field rearWheels? integer Slot 24
+---@field plateHolder? integer Slot 25
+---@field vanityPlate? integer Slot 26
+---@field trimA? integer Slot 27
+---@field ornaments? integer Slot 28
+---@field dashboard? integer Slot 29
+---@field dial? integer Slot 30
+---@field doorSpeaker? integer Slot 31
+---@field seats? integer Slot 32
+---@field steeringWheel? integer Slot 33
+---@field shifter? integer Slot 34
+---@field plaque? integer Slot 35
+---@field speakers? integer Slot 36
+---@field trunk? integer Slot 37
+---@field hydraulics? integer Slot 38
+---@field engineBlock? integer Slot 39
+---@field airFilter? integer Slot 40
+---@field struts? integer Slot 41
+---@field archCover? integer Slot 42
+---@field aerials? integer Slot 43
+---@field trimB? integer Slot 44
+---@field tank? integer Slot 45
+---@field leftDoor? integer Slot 46
+---@field rightDoor? integer Slot 47
+---@field livery? integer Slot 48
+---@field lightbar? integer Slot 49
+
+---Colours and paint. Colour indexes are the game paint indexes; RGB colours are { r, g, b } (0-255).
+---@class fx.VehicleColorsData
+---@field primary? integer
+---@field secondary? integer
+---@field pearl? integer Pearlescent
+---@field wheels? integer Wheel colour
+---@field primaryRgb? integer[]|false Custom primary colour, false when none (assigning false clears it)
+---@field secondaryRgb? integer[]|false Custom secondary colour, false when none (assigning false clears it)
+---@field interior? integer
+---@field dashboard? integer
+---@field xenon? fx.Enum.HeadlightColors|integer Xenon colour (255 = default); needs the xenon mod
+---@field xenonRgb? integer[]|false Custom xenon colour, false when none (assigning false clears it)
+---@field neon? integer[] Neon colour
+---@field neonEnabled? { left?: boolean, right?: boolean, front?: boolean, back?: boolean }
+---@field tyreSmoke? integer[] Tyre smoke colour; needs the tyreSmoke mod
+---@field windowTint? fx.Enum.WindowTints|integer -1 = none
+---@field livery? integer -1 = none (SET_VEHICLE_LIVERY; some cars use the livery mod instead)
+---@field roofLivery? integer -1 = none
+
+---Damage. The lists hold part indexes and give the whole state of those parts: assigning a list repairs the parts
+---missing from it. Body deformation is not restored (no native reads it).
+---@class fx.VehicleDamageData
+---@field engine? number Engine health (-4000 to 1000)
+---@field body? number Body health (0 to 1000)
+---@field tank? number Petrol tank health (-1000 to 1000)
+---@field dirt? number 0.0 (clean) to 15.0
+---@field brokenDoors? integer[] Door indexes 0-5 (fx.Enum.DoorId)
+---@field brokenWindows? integer[] Window indexes 0-7 (fx.Enum.WindowId)
+---@field burstTyres? integer[] Tyre indexes: 0-5, 45 and 47 (6-wheel trailers)
+---@field rimTyres? integer[] Burst tyres that are down to the rim
+
+---@class fx.VehicleDetailsData
+---@field plate? string Plate text, trimmed (8 characters at most)
+---@field plateStyle? fx.Enum.VehiclePlateIndicies|integer
+---@field fuel? number Game fuel level (fuel scripts usually keep their own value)
+---@field oil? number
+
+---Properties returned by getProperties: plain values, ready for JSON, a database or an event.
+---@class fx.VehicleProperties
+---@field model? integer Model hash (ignored by setProperties)
+---@field mods? fx.VehicleModsData
+---@field colors? fx.VehicleColorsData
+---@field extras? table<integer|string, boolean> Extra id -> on; ids as strings (after a JSON round trip) are accepted
+---@field damage? fx.VehicleDamageData
+---@field details? fx.VehicleDetailsData
