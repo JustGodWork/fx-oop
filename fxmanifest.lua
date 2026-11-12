@@ -4,7 +4,7 @@ fx_version 'cerulean'
 game 'gta5'
 
 name 'fx'
-version '0.1.0'
+version '0.1.1'
 description 'Object-oriented layer over the FiveM natives (generated)'
 
 -- Consumer resources load '@fx/init.lua'; the other files are read on demand through

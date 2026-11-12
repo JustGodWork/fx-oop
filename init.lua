@@ -36,7 +36,7 @@ local lib = loadLibFile("shared/promise.lua", {
   CreateThreadNow = Citizen.CreateThreadNow, trace = Citizen.Trace, config = config,
 })
 
-local fxt = { __fx = true, version = "0.1.0", Promise = lib.Promise, async = lib.async, await = lib.await }
+local fxt = { __fx = true, version = "0.1.1", Promise = lib.Promise, async = lib.async, await = lib.await }
 ---@type fx.Rt
 local rt = loadLibFile("shared/core.lua", { fx = fxt, config = config, Promise = lib.Promise, isServer = isServer })
 rt.msgpack = loadLibFile("shared/msgpack.lua", { rt = rt })

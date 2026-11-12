@@ -47,7 +47,8 @@ local function trackDeferrals(raw)
     ---@param failureReason? string
     done = function(failureReason)
       finished = true
-      raw.done(failureReason)
+      -- FiveM refuses the connection on any argument, "Unknown error" when it is not a string (ClientDeferral.cpp)
+      if failureReason == nil then raw.done() else raw.done(failureReason) end
     end,
     ---@param data table<string, any>
     handover = function(data) raw.handover(data) end,
