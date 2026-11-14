@@ -1616,6 +1616,733 @@ EnumLib.Context = {
   IN_TURRET = 7,
 }
 
+---`Control` (data/controls.md (citizenfx/fivem-docs content/docs/game-references/controls.md))
+---@enum fx.Enum.Control
+EnumLib.Control = {
+  ---keyboard: V, pad: BACK
+  INPUT_NEXT_CAMERA = 0,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_LOOK_LR = 1,
+  ---keyboard: MOUSE DOWN, pad: RIGHT STICK
+  INPUT_LOOK_UD = 2,
+  ---keyboard: none, pad: RIGHT STICK
+  INPUT_LOOK_UP_ONLY = 3,
+  ---keyboard: MOUSE DOWN, pad: RIGHT STICK
+  INPUT_LOOK_DOWN_ONLY = 4,
+  ---keyboard: none, pad: RIGHT STICK
+  INPUT_LOOK_LEFT_ONLY = 5,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_LOOK_RIGHT_ONLY = 6,
+  ---keyboard: none, pad: R3
+  INPUT_CINEMATIC_SLOWMO = 7,
+  ---keyboard: S, pad: LEFT STICK
+  INPUT_SCRIPTED_FLY_UD = 8,
+  ---keyboard: D, pad: LEFT STICK
+  INPUT_SCRIPTED_FLY_LR = 9,
+  ---keyboard: PAGEUP, pad: LT
+  INPUT_SCRIPTED_FLY_ZUP = 10,
+  ---keyboard: PAGEDOWN, pad: RT
+  INPUT_SCRIPTED_FLY_ZDOWN = 11,
+  ---keyboard: MOUSE DOWN, pad: RIGHT STICK
+  INPUT_WEAPON_WHEEL_UD = 12,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_WEAPON_WHEEL_LR = 13,
+  ---keyboard: SCROLLWHEEL DOWN, pad: DPAD RIGHT
+  INPUT_WEAPON_WHEEL_NEXT = 14,
+  ---keyboard: SCROLLWHEEL UP, pad: DPAD LEFT
+  INPUT_WEAPON_WHEEL_PREV = 15,
+  ---keyboard: SCROLLWHEEL DOWN, pad: none
+  INPUT_SELECT_NEXT_WEAPON = 16,
+  ---keyboard: SCROLLWHEEL UP, pad: none
+  INPUT_SELECT_PREV_WEAPON = 17,
+  ---keyboard: ENTER / LEFT MOUSE BUTTON / SPACEBAR, pad: A
+  INPUT_SKIP_CUTSCENE = 18,
+  ---keyboard: LEFT ALT, pad: DPAD DOWN
+  INPUT_CHARACTER_WHEEL = 19,
+  ---keyboard: Z, pad: DPAD DOWN
+  INPUT_MULTIPLAYER_INFO = 20,
+  ---keyboard: LEFT SHIFT, pad: A
+  INPUT_SPRINT = 21,
+  ---keyboard: SPACEBAR, pad: X
+  INPUT_JUMP = 22,
+  ---keyboard: F, pad: Y
+  INPUT_ENTER = 23,
+  ---keyboard: LEFT MOUSE BUTTON, pad: RT
+  INPUT_ATTACK = 24,
+  ---keyboard: RIGHT MOUSE BUTTON, pad: LT
+  INPUT_AIM = 25,
+  ---keyboard: C, pad: R3
+  INPUT_LOOK_BEHIND = 26,
+  ---keyboard: ARROW UP / SCROLLWHEEL BUTTON (PRESS), pad: DPAD UP
+  INPUT_PHONE = 27,
+  ---keyboard: none, pad: L3
+  INPUT_SPECIAL_ABILITY = 28,
+  ---keyboard: B, pad: R3
+  INPUT_SPECIAL_ABILITY_SECONDARY = 29,
+  ---keyboard: D, pad: LEFT STICK
+  INPUT_MOVE_LR = 30,
+  ---keyboard: S, pad: LEFT STICK
+  INPUT_MOVE_UD = 31,
+  ---keyboard: W, pad: LEFT STICK
+  INPUT_MOVE_UP_ONLY = 32,
+  ---keyboard: S, pad: LEFT STICK
+  INPUT_MOVE_DOWN_ONLY = 33,
+  ---keyboard: A, pad: LEFT STICK
+  INPUT_MOVE_LEFT_ONLY = 34,
+  ---keyboard: D, pad: LEFT STICK
+  INPUT_MOVE_RIGHT_ONLY = 35,
+  ---keyboard: LEFT CTRL, pad: L3
+  INPUT_DUCK = 36,
+  ---keyboard: TAB, pad: LB
+  INPUT_SELECT_WEAPON = 37,
+  ---keyboard: E, pad: LB
+  INPUT_PICKUP = 38,
+  ---keyboard: \[, pad: LEFT STICK
+  INPUT_SNIPER_ZOOM = 39,
+  ---keyboard: \], pad: LEFT STICK
+  INPUT_SNIPER_ZOOM_IN_ONLY = 40,
+  ---keyboard: \[, pad: LEFT STICK
+  INPUT_SNIPER_ZOOM_OUT_ONLY = 41,
+  ---keyboard: \], pad: DPAD UP
+  INPUT_SNIPER_ZOOM_IN_SECONDARY = 42,
+  ---keyboard: \[, pad: DPAD DOWN
+  INPUT_SNIPER_ZOOM_OUT_SECONDARY = 43,
+  ---keyboard: Q, pad: RB
+  INPUT_COVER = 44,
+  ---keyboard: R, pad: B
+  INPUT_RELOAD = 45,
+  ---keyboard: E, pad: DPAD RIGHT
+  INPUT_TALK = 46,
+  ---keyboard: G, pad: DPAD LEFT
+  INPUT_DETONATE = 47,
+  ---keyboard: Z, pad: DPAD DOWN
+  INPUT_HUD_SPECIAL = 48,
+  ---keyboard: F, pad: Y
+  INPUT_ARREST = 49,
+  ---keyboard: SCROLLWHEEL DOWN, pad: R3
+  INPUT_ACCURATE_AIM = 50,
+  ---keyboard: E, pad: DPAD RIGHT
+  INPUT_CONTEXT = 51,
+  ---keyboard: Q, pad: DPAD LEFT
+  INPUT_CONTEXT_SECONDARY = 52,
+  ---keyboard: none, pad: Y
+  INPUT_WEAPON_SPECIAL = 53,
+  ---keyboard: E, pad: DPAD RIGHT
+  INPUT_WEAPON_SPECIAL_TWO = 54,
+  ---keyboard: SPACEBAR, pad: RB
+  INPUT_DIVE = 55,
+  ---keyboard: F9, pad: Y
+  INPUT_DROP_WEAPON = 56,
+  ---keyboard: F10, pad: B
+  INPUT_DROP_AMMO = 57,
+  ---keyboard: G, pad: DPAD LEFT
+  INPUT_THROW_GRENADE = 58,
+  ---keyboard: D, pad: LEFT STICK
+  INPUT_VEH_MOVE_LR = 59,
+  ---keyboard: LEFT CTRL, pad: LEFT STICK
+  INPUT_VEH_MOVE_UD = 60,
+  ---keyboard: LEFT SHIFT, pad: LEFT STICK
+  INPUT_VEH_MOVE_UP_ONLY = 61,
+  ---keyboard: LEFT CTRL, pad: LEFT STICK
+  INPUT_VEH_MOVE_DOWN_ONLY = 62,
+  ---keyboard: A, pad: LEFT STICK
+  INPUT_VEH_MOVE_LEFT_ONLY = 63,
+  ---keyboard: D, pad: LEFT STICK
+  INPUT_VEH_MOVE_RIGHT_ONLY = 64,
+  ---keyboard: none, pad: none
+  INPUT_VEH_SPECIAL = 65,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_VEH_GUN_LR = 66,
+  ---keyboard: MOUSE DOWN, pad: RIGHT STICK
+  INPUT_VEH_GUN_UD = 67,
+  ---keyboard: RIGHT MOUSE BUTTON, pad: LB
+  INPUT_VEH_AIM = 68,
+  ---keyboard: LEFT MOUSE BUTTON, pad: RB
+  INPUT_VEH_ATTACK = 69,
+  ---keyboard: RIGHT MOUSE BUTTON, pad: A
+  INPUT_VEH_ATTACK2 = 70,
+  ---keyboard: W, pad: RT
+  INPUT_VEH_ACCELERATE = 71,
+  ---keyboard: S, pad: LT
+  INPUT_VEH_BRAKE = 72,
+  ---keyboard: X, pad: A
+  INPUT_VEH_DUCK = 73,
+  ---keyboard: H, pad: DPAD RIGHT
+  INPUT_VEH_HEADLIGHT = 74,
+  ---keyboard: F, pad: Y
+  INPUT_VEH_EXIT = 75,
+  ---keyboard: SPACEBAR, pad: RB
+  INPUT_VEH_HANDBRAKE = 76,
+  ---keyboard: W, pad: LT
+  INPUT_VEH_HOTWIRE_LEFT = 77,
+  ---keyboard: S, pad: RT
+  INPUT_VEH_HOTWIRE_RIGHT = 78,
+  ---keyboard: C, pad: R3
+  INPUT_VEH_LOOK_BEHIND = 79,
+  ---keyboard: R, pad: B
+  INPUT_VEH_CIN_CAM = 80,
+  ---keyboard: ., pad: none
+  INPUT_VEH_NEXT_RADIO = 81,
+  ---keyboard: ,, pad: none
+  INPUT_VEH_PREV_RADIO = 82,
+  ---keyboard: =, pad: none
+  INPUT_VEH_NEXT_RADIO_TRACK = 83,
+  ---keyboard: -, pad: none
+  INPUT_VEH_PREV_RADIO_TRACK = 84,
+  ---keyboard: Q, pad: DPAD LEFT
+  INPUT_VEH_RADIO_WHEEL = 85,
+  ---keyboard: E, pad: L3
+  INPUT_VEH_HORN = 86,
+  ---keyboard: W, pad: RT
+  INPUT_VEH_FLY_THROTTLE_UP = 87,
+  ---keyboard: S, pad: LT
+  INPUT_VEH_FLY_THROTTLE_DOWN = 88,
+  ---keyboard: A, pad: LB
+  INPUT_VEH_FLY_YAW_LEFT = 89,
+  ---keyboard: D, pad: RB
+  INPUT_VEH_FLY_YAW_RIGHT = 90,
+  ---keyboard: RIGHT MOUSE BUTTON, pad: LT
+  INPUT_VEH_PASSENGER_AIM = 91,
+  ---keyboard: LEFT MOUSE BUTTON, pad: RT
+  INPUT_VEH_PASSENGER_ATTACK = 92,
+  ---keyboard: none, pad: R3
+  INPUT_VEH_SPECIAL_ABILITY_FRANKLIN = 93,
+  ---keyboard: none, pad: none
+  INPUT_VEH_STUNT_UD = 94,
+  ---keyboard: MOUSE DOWN, pad: RIGHT STICK
+  INPUT_VEH_CINEMATIC_UD = 95,
+  ---keyboard: NUMPAD- / SCROLLWHEEL UP, pad: none
+  INPUT_VEH_CINEMATIC_UP_ONLY = 96,
+  ---keyboard: NUMPAD+ / SCROLLWHEEL DOWN, pad: none
+  INPUT_VEH_CINEMATIC_DOWN_ONLY = 97,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_VEH_CINEMATIC_LR = 98,
+  ---keyboard: SCROLLWHEEL UP, pad: X
+  INPUT_VEH_SELECT_NEXT_WEAPON = 99,
+  ---keyboard: \[, pad: none
+  INPUT_VEH_SELECT_PREV_WEAPON = 100,
+  ---keyboard: H, pad: DPAD RIGHT
+  INPUT_VEH_ROOF = 101,
+  ---keyboard: SPACEBAR, pad: RB
+  INPUT_VEH_JUMP = 102,
+  ---keyboard: E, pad: DPAD RIGHT
+  INPUT_VEH_GRAPPLING_HOOK = 103,
+  ---keyboard: H, pad: DPAD RIGHT
+  INPUT_VEH_SHUFFLE = 104,
+  ---keyboard: X, pad: A
+  INPUT_VEH_DROP_PROJECTILE = 105,
+  ---keyboard: LEFT MOUSE BUTTON, pad: none
+  INPUT_VEH_MOUSE_CONTROL_OVERRIDE = 106,
+  ---keyboard: NUMPAD 6, pad: LEFT STICK
+  INPUT_VEH_FLY_ROLL_LR = 107,
+  ---keyboard: NUMPAD 4, pad: LEFT STICK
+  INPUT_VEH_FLY_ROLL_LEFT_ONLY = 108,
+  ---keyboard: NUMPAD 6, pad: LEFT STICK
+  INPUT_VEH_FLY_ROLL_RIGHT_ONLY = 109,
+  ---keyboard: NUMPAD 5, pad: LEFT STICK
+  INPUT_VEH_FLY_PITCH_UD = 110,
+  ---keyboard: NUMPAD 8, pad: LEFT STICK
+  INPUT_VEH_FLY_PITCH_UP_ONLY = 111,
+  ---keyboard: NUMPAD 5, pad: LEFT STICK
+  INPUT_VEH_FLY_PITCH_DOWN_ONLY = 112,
+  ---keyboard: G, pad: L3
+  INPUT_VEH_FLY_UNDERCARRIAGE = 113,
+  ---keyboard: RIGHT MOUSE BUTTON, pad: A
+  INPUT_VEH_FLY_ATTACK = 114,
+  ---keyboard: SCROLLWHEEL UP, pad: DPAD LEFT
+  INPUT_VEH_FLY_SELECT_NEXT_WEAPON = 115,
+  ---keyboard: \[, pad: none
+  INPUT_VEH_FLY_SELECT_PREV_WEAPON = 116,
+  ---keyboard: NUMPAD 7, pad: LB
+  INPUT_VEH_FLY_SELECT_TARGET_LEFT = 117,
+  ---keyboard: NUMPAD 9, pad: RB
+  INPUT_VEH_FLY_SELECT_TARGET_RIGHT = 118,
+  ---keyboard: E, pad: DPAD RIGHT
+  INPUT_VEH_FLY_VERTICAL_FLIGHT_MODE = 119,
+  ---keyboard: X, pad: A
+  INPUT_VEH_FLY_DUCK = 120,
+  ---keyboard: INSERT, pad: R3
+  INPUT_VEH_FLY_ATTACK_CAMERA = 121,
+  ---keyboard: LEFT MOUSE BUTTON, pad: none
+  INPUT_VEH_FLY_MOUSE_CONTROL_OVERRIDE = 122,
+  ---keyboard: NUMPAD 6, pad: LEFT STICK
+  INPUT_VEH_SUB_TURN_LR = 123,
+  ---keyboard: NUMPAD 4, pad: LEFT STICK
+  INPUT_VEH_SUB_TURN_LEFT_ONLY = 124,
+  ---keyboard: NUMPAD 6, pad: LEFT STICK
+  INPUT_VEH_SUB_TURN_RIGHT_ONLY = 125,
+  ---keyboard: NUMPAD 5, pad: LEFT STICK
+  INPUT_VEH_SUB_PITCH_UD = 126,
+  ---keyboard: NUMPAD 8, pad: LEFT STICK
+  INPUT_VEH_SUB_PITCH_UP_ONLY = 127,
+  ---keyboard: NUMPAD 5, pad: LEFT STICK
+  INPUT_VEH_SUB_PITCH_DOWN_ONLY = 128,
+  ---keyboard: W, pad: RT
+  INPUT_VEH_SUB_THROTTLE_UP = 129,
+  ---keyboard: S, pad: LT
+  INPUT_VEH_SUB_THROTTLE_DOWN = 130,
+  ---keyboard: LEFT SHIFT, pad: X
+  INPUT_VEH_SUB_ASCEND = 131,
+  ---keyboard: LEFT CTRL, pad: A
+  INPUT_VEH_SUB_DESCEND = 132,
+  ---keyboard: A, pad: LB
+  INPUT_VEH_SUB_TURN_HARD_LEFT = 133,
+  ---keyboard: D, pad: RB
+  INPUT_VEH_SUB_TURN_HARD_RIGHT = 134,
+  ---keyboard: LEFT MOUSE BUTTON, pad: none
+  INPUT_VEH_SUB_MOUSE_CONTROL_OVERRIDE = 135,
+  ---keyboard: W, pad: A
+  INPUT_VEH_PUSHBIKE_PEDAL = 136,
+  ---keyboard: CAPSLOCK, pad: A
+  INPUT_VEH_PUSHBIKE_SPRINT = 137,
+  ---keyboard: Q, pad: LT
+  INPUT_VEH_PUSHBIKE_FRONT_BRAKE = 138,
+  ---keyboard: S, pad: RT
+  INPUT_VEH_PUSHBIKE_REAR_BRAKE = 139,
+  ---keyboard: R, pad: B
+  INPUT_MELEE_ATTACK_LIGHT = 140,
+  ---keyboard: Q, pad: A
+  INPUT_MELEE_ATTACK_HEAVY = 141,
+  ---keyboard: LEFT MOUSE BUTTON, pad: RT
+  INPUT_MELEE_ATTACK_ALTERNATE = 142,
+  ---keyboard: SPACEBAR, pad: X
+  INPUT_MELEE_BLOCK = 143,
+  ---keyboard: F / LEFT MOUSE BUTTON, pad: Y
+  INPUT_PARACHUTE_DEPLOY = 144,
+  ---keyboard: F, pad: Y
+  INPUT_PARACHUTE_DETACH = 145,
+  ---keyboard: D, pad: LEFT STICK
+  INPUT_PARACHUTE_TURN_LR = 146,
+  ---keyboard: A, pad: LEFT STICK
+  INPUT_PARACHUTE_TURN_LEFT_ONLY = 147,
+  ---keyboard: D, pad: LEFT STICK
+  INPUT_PARACHUTE_TURN_RIGHT_ONLY = 148,
+  ---keyboard: S, pad: LEFT STICK
+  INPUT_PARACHUTE_PITCH_UD = 149,
+  ---keyboard: W, pad: LEFT STICK
+  INPUT_PARACHUTE_PITCH_UP_ONLY = 150,
+  ---keyboard: S, pad: LEFT STICK
+  INPUT_PARACHUTE_PITCH_DOWN_ONLY = 151,
+  ---keyboard: Q, pad: LB
+  INPUT_PARACHUTE_BRAKE_LEFT = 152,
+  ---keyboard: E, pad: RB
+  INPUT_PARACHUTE_BRAKE_RIGHT = 153,
+  ---keyboard: X, pad: A
+  INPUT_PARACHUTE_SMOKE = 154,
+  ---keyboard: LEFT SHIFT, pad: none
+  INPUT_PARACHUTE_PRECISION_LANDING = 155,
+  ---keyboard: none, pad: none
+  INPUT_MAP = 156,
+  ---keyboard: 1, pad: none
+  INPUT_SELECT_WEAPON_UNARMED = 157,
+  ---keyboard: 2, pad: none
+  INPUT_SELECT_WEAPON_MELEE = 158,
+  ---keyboard: 6, pad: none
+  INPUT_SELECT_WEAPON_HANDGUN = 159,
+  ---keyboard: 3, pad: none
+  INPUT_SELECT_WEAPON_SHOTGUN = 160,
+  ---keyboard: 7, pad: none
+  INPUT_SELECT_WEAPON_SMG = 161,
+  ---keyboard: 8, pad: none
+  INPUT_SELECT_WEAPON_AUTO_RIFLE = 162,
+  ---keyboard: 9, pad: none
+  INPUT_SELECT_WEAPON_SNIPER = 163,
+  ---keyboard: 4, pad: none
+  INPUT_SELECT_WEAPON_HEAVY = 164,
+  ---keyboard: 5, pad: none
+  INPUT_SELECT_WEAPON_SPECIAL = 165,
+  ---keyboard: F5, pad: none
+  INPUT_SELECT_CHARACTER_MICHAEL = 166,
+  ---keyboard: F6, pad: none
+  INPUT_SELECT_CHARACTER_FRANKLIN = 167,
+  ---keyboard: F7, pad: none
+  INPUT_SELECT_CHARACTER_TREVOR = 168,
+  ---keyboard: F8 (CONSOLE), pad: none
+  INPUT_SELECT_CHARACTER_MULTIPLAYER = 169,
+  ---keyboard: F3, pad: B
+  INPUT_SAVE_REPLAY_CLIP = 170,
+  ---keyboard: CAPSLOCK, pad: none
+  INPUT_SPECIAL_ABILITY_PC = 171,
+  ---keyboard: ARROW UP, pad: DPAD UP
+  INPUT_CELLPHONE_UP = 172,
+  ---keyboard: ARROW DOWN, pad: DPAD DOWN
+  INPUT_CELLPHONE_DOWN = 173,
+  ---keyboard: ARROW LEFT, pad: DPAD LEFT
+  INPUT_CELLPHONE_LEFT = 174,
+  ---keyboard: ARROW RIGHT, pad: DPAD RIGHT
+  INPUT_CELLPHONE_RIGHT = 175,
+  ---keyboard: ENTER / LEFT MOUSE BUTTON, pad: A
+  INPUT_CELLPHONE_SELECT = 176,
+  ---keyboard: BACKSPACE / ESC / RIGHT MOUSE BUTTON, pad: B
+  INPUT_CELLPHONE_CANCEL = 177,
+  ---keyboard: DELETE, pad: Y
+  INPUT_CELLPHONE_OPTION = 178,
+  ---keyboard: SPACEBAR, pad: X
+  INPUT_CELLPHONE_EXTRA_OPTION = 179,
+  ---keyboard: SCROLLWHEEL DOWN, pad: none
+  INPUT_CELLPHONE_SCROLL_FORWARD = 180,
+  ---keyboard: SCROLLWHEEL UP, pad: none
+  INPUT_CELLPHONE_SCROLL_BACKWARD = 181,
+  ---keyboard: L, pad: RT
+  INPUT_CELLPHONE_CAMERA_FOCUS_LOCK = 182,
+  ---keyboard: G, pad: RB
+  INPUT_CELLPHONE_CAMERA_GRID = 183,
+  ---keyboard: E, pad: R3
+  INPUT_CELLPHONE_CAMERA_SELFIE = 184,
+  ---keyboard: F, pad: LB
+  INPUT_CELLPHONE_CAMERA_DOF = 185,
+  ---keyboard: X, pad: L3
+  INPUT_CELLPHONE_CAMERA_EXPRESSION = 186,
+  ---keyboard: ARROW DOWN, pad: DPAD DOWN
+  INPUT_FRONTEND_DOWN = 187,
+  ---keyboard: ARROW UP, pad: DPAD UP
+  INPUT_FRONTEND_UP = 188,
+  ---keyboard: ARROW LEFT, pad: DPAD LEFT
+  INPUT_FRONTEND_LEFT = 189,
+  ---keyboard: ARROW RIGHT, pad: DPAD RIGHT
+  INPUT_FRONTEND_RIGHT = 190,
+  ---keyboard: ENTER, pad: A
+  INPUT_FRONTEND_RDOWN = 191,
+  ---keyboard: TAB, pad: Y
+  INPUT_FRONTEND_RUP = 192,
+  ---keyboard: none, pad: X
+  INPUT_FRONTEND_RLEFT = 193,
+  ---keyboard: BACKSPACE, pad: B
+  INPUT_FRONTEND_RRIGHT = 194,
+  ---keyboard: D, pad: LEFT STICK
+  INPUT_FRONTEND_AXIS_X = 195,
+  ---keyboard: S, pad: LEFT STICK
+  INPUT_FRONTEND_AXIS_Y = 196,
+  ---keyboard: \], pad: RIGHT STICK
+  INPUT_FRONTEND_RIGHT_AXIS_X = 197,
+  ---keyboard: SCROLLWHEEL DOWN, pad: RIGHT STICK
+  INPUT_FRONTEND_RIGHT_AXIS_Y = 198,
+  ---keyboard: P, pad: START
+  INPUT_FRONTEND_PAUSE = 199,
+  ---keyboard: ESC, pad: none
+  INPUT_FRONTEND_PAUSE_ALTERNATE = 200,
+  ---keyboard: ENTER / NUMPAD ENTER, pad: A
+  INPUT_FRONTEND_ACCEPT = 201,
+  ---keyboard: BACKSPACE / ESC, pad: B
+  INPUT_FRONTEND_CANCEL = 202,
+  ---keyboard: SPACEBAR, pad: X
+  INPUT_FRONTEND_X = 203,
+  ---keyboard: TAB, pad: Y
+  INPUT_FRONTEND_Y = 204,
+  ---keyboard: Q, pad: LB
+  INPUT_FRONTEND_LB = 205,
+  ---keyboard: E, pad: RB
+  INPUT_FRONTEND_RB = 206,
+  ---keyboard: PAGE DOWN, pad: LT
+  INPUT_FRONTEND_LT = 207,
+  ---keyboard: PAGE UP, pad: RT
+  INPUT_FRONTEND_RT = 208,
+  ---keyboard: LEFT SHIFT, pad: L3
+  INPUT_FRONTEND_LS = 209,
+  ---keyboard: LEFT CONTROL, pad: R3
+  INPUT_FRONTEND_RS = 210,
+  ---keyboard: TAB, pad: RB
+  INPUT_FRONTEND_LEADERBOARD = 211,
+  ---keyboard: HOME, pad: BACK
+  INPUT_FRONTEND_SOCIAL_CLUB = 212,
+  ---keyboard: HOME, pad: RB
+  INPUT_FRONTEND_SOCIAL_CLUB_SECONDARY = 213,
+  ---keyboard: DELETE, pad: X
+  INPUT_FRONTEND_DELETE = 214,
+  ---keyboard: ENTER, pad: A
+  INPUT_FRONTEND_ENDSCREEN_ACCEPT = 215,
+  ---keyboard: SPACEBAR, pad: X
+  INPUT_FRONTEND_ENDSCREEN_EXPAND = 216,
+  ---keyboard: CAPSLOCK, pad: BACK
+  INPUT_FRONTEND_SELECT = 217,
+  ---keyboard: D, pad: LEFT STICK
+  INPUT_SCRIPT_LEFT_AXIS_X = 218,
+  ---keyboard: S, pad: LEFT STICK
+  INPUT_SCRIPT_LEFT_AXIS_Y = 219,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_SCRIPT_RIGHT_AXIS_X = 220,
+  ---keyboard: MOUSE DOWN, pad: RIGHT STICK
+  INPUT_SCRIPT_RIGHT_AXIS_Y = 221,
+  ---keyboard: RIGHT MOUSE BUTTON, pad: Y
+  INPUT_SCRIPT_RUP = 222,
+  ---keyboard: LEFT MOUSE BUTTON, pad: A
+  INPUT_SCRIPT_RDOWN = 223,
+  ---keyboard: LEFT CTRL, pad: X
+  INPUT_SCRIPT_RLEFT = 224,
+  ---keyboard: RIGHT MOUSE BUTTON, pad: B
+  INPUT_SCRIPT_RRIGHT = 225,
+  ---keyboard: none, pad: LB
+  INPUT_SCRIPT_LB = 226,
+  ---keyboard: none, pad: RB
+  INPUT_SCRIPT_RB = 227,
+  ---keyboard: none, pad: LT
+  INPUT_SCRIPT_LT = 228,
+  ---keyboard: LEFT MOUSE BUTTON, pad: RT
+  INPUT_SCRIPT_RT = 229,
+  ---keyboard: none, pad: L3
+  INPUT_SCRIPT_LS = 230,
+  ---keyboard: none, pad: R3
+  INPUT_SCRIPT_RS = 231,
+  ---keyboard: W, pad: DPAD UP
+  INPUT_SCRIPT_PAD_UP = 232,
+  ---keyboard: S, pad: DPAD DOWN
+  INPUT_SCRIPT_PAD_DOWN = 233,
+  ---keyboard: A, pad: DPAD LEFT
+  INPUT_SCRIPT_PAD_LEFT = 234,
+  ---keyboard: D, pad: DPAD RIGHT
+  INPUT_SCRIPT_PAD_RIGHT = 235,
+  ---keyboard: V, pad: BACK
+  INPUT_SCRIPT_SELECT = 236,
+  ---keyboard: LEFT MOUSE BUTTON, pad: none
+  INPUT_CURSOR_ACCEPT = 237,
+  ---keyboard: RIGHT MOUSE BUTTON, pad: none
+  INPUT_CURSOR_CANCEL = 238,
+  ---keyboard: none, pad: none
+  INPUT_CURSOR_X = 239,
+  ---keyboard: none, pad: none
+  INPUT_CURSOR_Y = 240,
+  ---keyboard: SCROLLWHEEL UP, pad: none
+  INPUT_CURSOR_SCROLL_UP = 241,
+  ---keyboard: SCROLLWHEEL DOWN, pad: none
+  INPUT_CURSOR_SCROLL_DOWN = 242,
+  ---keyboard: ~ / \`, pad: none
+  INPUT_ENTER_CHEAT_CODE = 243,
+  ---keyboard: M, pad: BACK
+  INPUT_INTERACTION_MENU = 244,
+  ---keyboard: T, pad: none
+  INPUT_MP_TEXT_CHAT_ALL = 245,
+  ---keyboard: Y, pad: none
+  INPUT_MP_TEXT_CHAT_TEAM = 246,
+  ---keyboard: none, pad: none
+  INPUT_MP_TEXT_CHAT_FRIENDS = 247,
+  ---keyboard: none, pad: none
+  INPUT_MP_TEXT_CHAT_CREW = 248,
+  ---keyboard: N, pad: none
+  INPUT_PUSH_TO_TALK = 249,
+  ---keyboard: R, pad: L3
+  INPUT_CREATOR_LS = 250,
+  ---keyboard: F, pad: R3
+  INPUT_CREATOR_RS = 251,
+  ---keyboard: X, pad: LT
+  INPUT_CREATOR_LT = 252,
+  ---keyboard: C, pad: RT
+  INPUT_CREATOR_RT = 253,
+  ---keyboard: LEFT SHIFT, pad: none
+  INPUT_CREATOR_MENU_TOGGLE = 254,
+  ---keyboard: SPACEBAR, pad: A
+  INPUT_CREATOR_ACCEPT = 255,
+  ---keyboard: DELETE, pad: X
+  INPUT_CREATOR_DELETE = 256,
+  ---keyboard: LEFT MOUSE BUTTON, pad: RT
+  INPUT_ATTACK2 = 257,
+  ---keyboard: none, pad: A
+  INPUT_RAPPEL_JUMP = 258,
+  ---keyboard: none, pad: X
+  INPUT_RAPPEL_LONG_JUMP = 259,
+  ---keyboard: none, pad: RT
+  INPUT_RAPPEL_SMASH_WINDOW = 260,
+  ---keyboard: SCROLLWHEEL UP, pad: DPAD LEFT
+  INPUT_PREV_WEAPON = 261,
+  ---keyboard: SCROLLWHEEL DOWN, pad: DPAD RIGHT
+  INPUT_NEXT_WEAPON = 262,
+  ---keyboard: R, pad: B
+  INPUT_MELEE_ATTACK1 = 263,
+  ---keyboard: Q, pad: A
+  INPUT_MELEE_ATTACK2 = 264,
+  ---keyboard: none, pad: none
+  INPUT_WHISTLE = 265,
+  ---keyboard: D, pad: LEFT STICK
+  INPUT_MOVE_LEFT = 266,
+  ---keyboard: D, pad: LEFT STICK
+  INPUT_MOVE_RIGHT = 267,
+  ---keyboard: S, pad: LEFT STICK
+  INPUT_MOVE_UP = 268,
+  ---keyboard: S, pad: LEFT STICK
+  INPUT_MOVE_DOWN = 269,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_LOOK_LEFT = 270,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_LOOK_RIGHT = 271,
+  ---keyboard: MOUSE DOWN, pad: RIGHT STICK
+  INPUT_LOOK_UP = 272,
+  ---keyboard: MOUSE DOWN, pad: RIGHT STICK
+  INPUT_LOOK_DOWN = 273,
+  ---keyboard: \[, pad: RIGHT STICK
+  INPUT_SNIPER_ZOOM_IN = 274,
+  ---keyboard: \[, pad: RIGHT STICK
+  INPUT_SNIPER_ZOOM_OUT = 275,
+  ---keyboard: \[, pad: LEFT STICK
+  INPUT_SNIPER_ZOOM_IN_ALTERNATE = 276,
+  ---keyboard: \[, pad: LEFT STICK
+  INPUT_SNIPER_ZOOM_OUT_ALTERNATE = 277,
+  ---keyboard: D, pad: LEFT STICK
+  INPUT_VEH_MOVE_LEFT = 278,
+  ---keyboard: D, pad: LEFT STICK
+  INPUT_VEH_MOVE_RIGHT = 279,
+  ---keyboard: LEFT CTRL, pad: LEFT STICK
+  INPUT_VEH_MOVE_UP = 280,
+  ---keyboard: LEFT CTRL, pad: LEFT STICK
+  INPUT_VEH_MOVE_DOWN = 281,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_VEH_GUN_LEFT = 282,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_VEH_GUN_RIGHT = 283,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_VEH_GUN_UP = 284,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_VEH_GUN_DOWN = 285,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_VEH_LOOK_LEFT = 286,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_VEH_LOOK_RIGHT = 287,
+  ---keyboard: F1, pad: A
+  INPUT_REPLAY_START_STOP_RECORDING = 288,
+  ---keyboard: F2, pad: X
+  INPUT_REPLAY_START_STOP_RECORDING_SECONDARY = 289,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_SCALED_LOOK_LR = 290,
+  ---keyboard: MOUSE DOWN, pad: RIGHT STICK
+  INPUT_SCALED_LOOK_UD = 291,
+  ---keyboard: none, pad: RIGHT STICK
+  INPUT_SCALED_LOOK_UP_ONLY = 292,
+  ---keyboard: none, pad: RIGHT STICK
+  INPUT_SCALED_LOOK_DOWN_ONLY = 293,
+  ---keyboard: none, pad: RIGHT STICK
+  INPUT_SCALED_LOOK_LEFT_ONLY = 294,
+  ---keyboard: none, pad: RIGHT STICK
+  INPUT_SCALED_LOOK_RIGHT_ONLY = 295,
+  ---keyboard: DELETE, pad: X
+  INPUT_REPLAY_MARKER_DELETE = 296,
+  ---keyboard: DELETE, pad: Y
+  INPUT_REPLAY_CLIP_DELETE = 297,
+  ---keyboard: SPACEBAR, pad: A
+  INPUT_REPLAY_PAUSE = 298,
+  ---keyboard: ARROW DOWN, pad: LB
+  INPUT_REPLAY_REWIND = 299,
+  ---keyboard: ARROW UP, pad: RB
+  INPUT_REPLAY_FFWD = 300,
+  ---keyboard: M, pad: A
+  INPUT_REPLAY_NEWMARKER = 301,
+  ---keyboard: S, pad: none
+  INPUT_REPLAY_RECORD = 302,
+  ---keyboard: U, pad: DPAD UP
+  INPUT_REPLAY_SCREENSHOT = 303,
+  ---keyboard: H, pad: R3
+  INPUT_REPLAY_HIDEHUD = 304,
+  ---keyboard: B, pad: none
+  INPUT_REPLAY_STARTPOINT = 305,
+  ---keyboard: N, pad: none
+  INPUT_REPLAY_ENDPOINT = 306,
+  ---keyboard: ARROW RIGHT, pad: DPAD RIGHT
+  INPUT_REPLAY_ADVANCE = 307,
+  ---keyboard: ARROW LEFT, pad: DPAD LEFT
+  INPUT_REPLAY_BACK = 308,
+  ---keyboard: T, pad: DPAD DOWN
+  INPUT_REPLAY_TOOLS = 309,
+  ---keyboard: R, pad: BACK
+  INPUT_REPLAY_RESTART = 310,
+  ---keyboard: K, pad: DPAD DOWN
+  INPUT_REPLAY_SHOWHOTKEY = 311,
+  ---keyboard: \[, pad: DPAD LEFT
+  INPUT_REPLAY_CYCLEMARKERLEFT = 312,
+  ---keyboard: \], pad: DPAD RIGHT
+  INPUT_REPLAY_CYCLEMARKERRIGHT = 313,
+  ---keyboard: NUMPAD +, pad: RB
+  INPUT_REPLAY_FOVINCREASE = 314,
+  ---keyboard: NUMPAD -, pad: LB
+  INPUT_REPLAY_FOVDECREASE = 315,
+  ---keyboard: PAGE UP, pad: none
+  INPUT_REPLAY_CAMERAUP = 316,
+  ---keyboard: PAGE DOWN, pad: none
+  INPUT_REPLAY_CAMERADOWN = 317,
+  ---keyboard: F5, pad: START
+  INPUT_REPLAY_SAVE = 318,
+  ---keyboard: C, pad: none
+  INPUT_REPLAY_TOGGLETIME = 319,
+  ---keyboard: V, pad: none
+  INPUT_REPLAY_TOGGLETIPS = 320,
+  ---keyboard: SPACEBAR, pad: none
+  INPUT_REPLAY_PREVIEW = 321,
+  ---keyboard: ESC, pad: none
+  INPUT_REPLAY_TOGGLE_TIMELINE = 322,
+  ---keyboard: X, pad: none
+  INPUT_REPLAY_TIMELINE_PICKUP_CLIP = 323,
+  ---keyboard: C, pad: none
+  INPUT_REPLAY_TIMELINE_DUPLICATE_CLIP = 324,
+  ---keyboard: V, pad: none
+  INPUT_REPLAY_TIMELINE_PLACE_CLIP = 325,
+  ---keyboard: LEFT CTRL, pad: none
+  INPUT_REPLAY_CTRL = 326,
+  ---keyboard: F5, pad: none
+  INPUT_REPLAY_TIMELINE_SAVE = 327,
+  ---keyboard: SPACEBAR, pad: RT
+  INPUT_REPLAY_PREVIEW_AUDIO = 328,
+  ---keyboard: LEFT MOUSE BUTTON, pad: none
+  INPUT_VEH_DRIVE_LOOK = 329,
+  ---keyboard: RIGHT MOUSE BUTTON, pad: none
+  INPUT_VEH_DRIVE_LOOK2 = 330,
+  ---keyboard: RIGHT MOUSE BUTTON, pad: none
+  INPUT_VEH_FLY_ATTACK2 = 331,
+  ---keyboard: MOUSE DOWN, pad: RIGHT STICK
+  INPUT_RADIO_WHEEL_UD = 332,
+  ---keyboard: MOUSE RIGHT, pad: RIGHT STICK
+  INPUT_RADIO_WHEEL_LR = 333,
+  ---keyboard: SCROLLWHEEL DOWN, pad: LEFT STICK
+  INPUT_VEH_SLOWMO_UD = 334,
+  ---keyboard: SCROLLWHEEL UP, pad: LEFT STICK
+  INPUT_VEH_SLOWMO_UP_ONLY = 335,
+  ---keyboard: SCROLLWHEEL DOWN, pad: LEFT STICK
+  INPUT_VEH_SLOWMO_DOWN_ONLY = 336,
+  ---keyboard: X, pad: A
+  INPUT_VEH_HYDRAULICS_CONTROL_TOGGLE = 337,
+  ---keyboard: A, pad: LEFT STICK
+  INPUT_VEH_HYDRAULICS_CONTROL_LEFT = 338,
+  ---keyboard: D, pad: LEFT STICK
+  INPUT_VEH_HYDRAULICS_CONTROL_RIGHT = 339,
+  ---keyboard: LEFT SHIFT, pad: LEFT STICK
+  INPUT_VEH_HYDRAULICS_CONTROL_UP = 340,
+  ---keyboard: LEFT CTRL, pad: LEFT STICK
+  INPUT_VEH_HYDRAULICS_CONTROL_DOWN = 341,
+  ---keyboard: D, pad: LEFT STICK
+  INPUT_VEH_HYDRAULICS_CONTROL_UD = 342,
+  ---keyboard: LEFT CTRL, pad: LEFT STICK
+  INPUT_VEH_HYDRAULICS_CONTROL_LR = 343,
+  ---keyboard: F11, pad: DPAD RIGHT
+  INPUT_SWITCH_VISOR = 344,
+  ---keyboard: X, pad: A
+  INPUT_VEH_MELEE_HOLD = 345,
+  ---keyboard: LEFT MOUSE BUTTON, pad: LB
+  INPUT_VEH_MELEE_LEFT = 346,
+  ---keyboard: RIGHT MOUSE BUTTON, pad: RB
+  INPUT_VEH_MELEE_RIGHT = 347,
+  ---keyboard: SCROLLWHEEL BUTTON (PRESS), pad: Y
+  INPUT_MAP_POI = 348,
+  ---keyboard: TAB, pad: X
+  INPUT_REPLAY_SNAPMATIC_PHOTO = 349,
+  ---keyboard: E, pad: L3
+  INPUT_VEH_CAR_JUMP = 350,
+  ---keyboard: E, pad: L3
+  INPUT_VEH_ROCKET_BOOST = 351,
+  ---keyboard: LEFT SHIFT, pad: L3
+  INPUT_VEH_FLY_BOOST = 352,
+  ---keyboard: SPACEBAR, pad: A
+  INPUT_VEH_PARACHUTE = 353,
+  ---keyboard: X, pad: A
+  INPUT_VEH_BIKE_WINGS = 354,
+  ---keyboard: E, pad: DPAD RIGHT
+  INPUT_VEH_FLY_BOMB_BAY = 355,
+  ---keyboard: E, pad: DPAD RIGHT
+  INPUT_VEH_FLY_COUNTER = 356,
+  ---keyboard: X, pad: A
+  INPUT_VEH_TRANSFORM = 357,
+  ---keyboard: none, pad: RB
+  INPUT_QUAD_LOCO_REVERSE = 358,
+  ---keyboard: none, pad: none
+  INPUT_RESPAWN_FASTER = 359,
+  ---keyboard: none, pad: none
+  INPUT_HUDMARKER_SELECT = 360,
+}
+
 ---`DecalTypes` (natives.json: ADD_DECAL)
 ---@enum fx.Enum.DecalTypes
 EnumLib.DecalTypes = {

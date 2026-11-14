@@ -15,6 +15,16 @@
 ---@field textureDict? string
 ---@field textureName? string
 ---@field drawOnEntities? boolean
+
+---@class fx.LightOptions
+---@field position vector3
+---@field color? integer[]|{r: integer, g: integer, b: integer} Default white
+---@field range? number How far the light reaches, default 10.0
+---@field intensity? number Default 1.0
+---@field direction? vector3 Makes it a spot light pointing that way
+---@field radius? number Spot light: size of the cone, default 13.0
+---@field falloff? number Spot light: how the light fades to the edge of the cone, default 1.0
+---@field hardness? number Spot light: sharpness of the cone edge, default 0.0
 ---@class fx.Graphics
 ---@field currentNumberOfCloudPhotos integer (read-only) [GET_CURRENT_NUMBER_OF_CLOUD_PHOTOS]
 ---@field extraTimecycleModifierIndex integer (read-only) [GET_EXTRA_TIMECYCLE_MODIFIER_INDEX] See [`GET_TIMECYCLE_MODIFIER_INDEX`](#\_0xFDF3D97C674AFB66) for use, works the same just for the secondary timecycle modifier.
@@ -41,6 +51,14 @@ local GraphicsStatic = {}
 ---DRAW_MARKER with defaults (all 24 arguments). Call EVERY FRAME.
 ---@param options fx.MarkerOptions
 function GraphicsStatic.marker(options) end
+
+---A point light, or a spot light when `direction` is set. Call EVERY FRAME.
+---```lua
+---fx.Graphics.light({ position = pos, color = { 255, 120, 0 }, range = 6.0, intensity = 4.0 })
+---fx.Graphics.light({ position = lamp, direction = vec3(0.0, 0.0, -1.0), range = 20.0, intensity = 10.0 })
+---```
+---@param options fx.LightOptions
+function GraphicsStatic.light(options) end
 
 --- Places a decal into the world
 ---

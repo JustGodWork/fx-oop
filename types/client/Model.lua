@@ -126,6 +126,15 @@ function Model:setAsNoLongerNeeded() end
 ---@return fx.Model self
 function Model:setGameplayCamVehicleCameraName() end
 
+--- **This native is deprecated and does nothing!**
+--- **Native**: `SET_MODEL_HEADLIGHT_CONFIGURATION` (`0x7F6B8D75`)
+---@deprecated
+---@param ratePerSecond number
+---@param headlightRotation number
+---@param invertRotation boolean
+---@return fx.Model self
+function Model:setHeadlightConfiguration(ratePerSecond, headlightRotation, invertRotation) end
+
 --- ```
 --- Maximum amount of pickup models that can be disallowed is 30.
 --- SET_LOCAL_PLAYER_*

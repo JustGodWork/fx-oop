@@ -308,6 +308,16 @@ do
 end
 
 do
+  local SetEntityDistanceCullingRadius = SetEntityDistanceCullingRadius
+  -- SET_ENTITY_DISTANCE_CULLING_RADIUS (0xD3A183A3)
+  methods.setDistanceCullingRadius = function(self, radius)
+    radius = (radius or 0) + 0.0
+    SetEntityDistanceCullingRadius(self.handle, radius)
+    return self
+  end
+end
+
+do
   local SetEntityIgnoreRequestControlFilter = SetEntityIgnoreRequestControlFilter
   -- SET_ENTITY_IGNORE_REQUEST_CONTROL_FILTER (0x9F7F8D36)
   methods.setIgnoreRequestControlFilter = function(self, ignore)

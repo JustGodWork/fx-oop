@@ -13,11 +13,13 @@
 ---@field state fx.PlayerStates Compatibility alias (`Player(src).state`).
 ---@field airDragMultiplierForPlayersVehicle number (read-only) [GET_AIR_DRAG_MULTIPLIER_FOR_PLAYERS_VEHICLE]
 ---@field cameraRotation vector3 (read-only) [GET_PLAYER_CAMERA_ROTATION] Gets the current camera rotation for a specified player. This native is used server side when using OneSync.
+---@field canStartCommerceSession boolean (read-only) [CAN_PLAYER_START_COMMERCE_SESSION] > This native is deprecated and may be removed in a future version. Use the [Tebex API](https://docs.tebex.io/) instead. Returns whether or not the specified p…
 ---@field endpoint string (read-only) [GET_PLAYER_ENDPOINT]
 ---@field fakeWantedLevel integer (read-only) [GET_PLAYER_FAKE_WANTED_LEVEL] Gets the current fake wanted level for a specified player. This native is used server side when using OneSync.
 ---@field focusPos vector3 (read-only) [GET_PLAYER_FOCUS_POS] Gets the focus position (i.e. the position of the active camera in the game world) of a player.
 ---@field guid string (read-only) [GET_PLAYER_GUID]
 ---@field invincible boolean [GET_PLAYER_INVINCIBLE / SET_PLAYER_INVINCIBLE]
+---@field isCommerceInfoLoaded boolean (read-only) [IS_PLAYER_COMMERCE_INFO_LOADED] > This native is deprecated and may be removed in a future version. Use [`IS_PLAYER_COMMERCE_INFO_LOADED_EXT`](#\_0x1D14F4FE) instead. Requests whether or not …
 ---@field isCommerceInfoLoadedExt boolean (read-only) [IS_PLAYER_COMMERCE_INFO_LOADED_EXT] Requests whether or not the commerce data for the specified player has loaded from Tebex.
 ---@field isEvadingWantedLevel boolean (read-only) [IS_PLAYER_EVADING_WANTED_LEVEL]
 ---@field isInFreeCamMode boolean (read-only) [IS_PLAYER_IN_FREE_CAM_MODE]
@@ -50,6 +52,15 @@ local Player = {}
 --- **Native**: `CLEAR_PLAYER_WANTED_LEVEL` (`0x54EA5BCC`)
 ---@return fx.Player self
 function Player:clearWantedLevel() end
+
+--- > This native is deprecated and may be removed in a future version. Use [`DOES_PLAYER_OWN_SKU_EXT`](#\_0xDEF0480B) instead.
+---
+--- Requests whether or not the player owns the specified SKU.
+--- **Native**: `DOES_PLAYER_OWN_SKU` (`0x167ABA27`)
+---@deprecated
+---@param skuId integer The ID of the SKU.
+---@return boolean result A boolean.
+function Player:doesOwnSku(skuId) end
 
 --- Requests whether or not the player owns the specified package.
 --- **Native**: `DOES_PLAYER_OWN_SKU_EXT` (`0xDEF0480B`)
@@ -132,6 +143,14 @@ function Player:getToken(index) end
 ---@return boolean result
 function Player:isAceAllowed(object) end
 
+--- > This native is deprecated and may be removed in a future version. Use [`LOAD_PLAYER_COMMERCE_DATA_EXT`](#\_0x7995539E) instead.
+---
+--- Requests the commerce data for the specified player, including the owned SKUs. Use `IS_PLAYER_COMMERCE_INFO_LOADED` to check if it has loaded.
+--- **Native**: `LOAD_PLAYER_COMMERCE_DATA` (`0xA8F63EAB`)
+---@deprecated
+---@return fx.Player self
+function Player:loadCommerceData() end
+
 --- Requests the commerce data from Tebex for the specified player, including the owned SKUs.
 ---
 --- Use [`IS_PLAYER_COMMERCE_INFO_LOADED_EXT`](#\_0x1D14F4FE) to check if it has loaded.
@@ -142,6 +161,16 @@ function Player:isAceAllowed(object) end
 --- **Native**: `LOAD_PLAYER_COMMERCE_DATA_EXT` (`0x7995539E`)
 ---@return fx.Player self
 function Player:loadCommerceDataExt() end
+
+--- > This native is deprecated and may be removed in a future version. Use the [Tebex API](https://docs.tebex.io/) instead.
+---
+--- Requests the specified player to buy the passed SKU. This'll pop up a prompt on the client, which upon acceptance
+--- will open the browser prompting further purchase details.
+--- **Native**: `REQUEST_PLAYER_COMMERCE_SESSION` (`0x96F93CCE`)
+---@deprecated
+---@param skuId integer The ID of the SKU.
+---@return fx.Player self
+function Player:requestCommerceSession(skuId) end
 
 --- ```
 --- Flags:
@@ -166,6 +195,15 @@ function Player:loadCommerceDataExt() end
 ---@param flags integer
 ---@return fx.Player self
 function Player:setControl(bHasControl, flags) end
+
+--- Sets the culling radius for the specified player.
+--- Set to `0.0` to reset.
+---
+--- **WARNING**: Culling natives are deprecated and have known, [unfixable issues](https://forum.cfx.re/t/issue-with-culling-radius-and-server-side-entities/4900677/4)
+--- **Native**: `SET_PLAYER_CULLING_RADIUS` (`0x8A2FBAD4`)
+---@param radius number The radius.
+---@return fx.Player self
+function Player:setCullingRadius(radius) end
 
 --- Set the model for a specific Player. Note that this will destroy the current Ped for the Player and create a new one, any reference to the old ped will be invalid after calling this.
 --- As per usual, make sure to request the model first and wait until it has loaded.
@@ -194,6 +232,9 @@ function Player:tempBan(reason) end
 ---@overload fun(source: integer|string): fx.Player? Player by server id (nil if not connected).
 local PlayerStatic = {}
 
+---Every connected player.
+---@return fx.Player[]
+function PlayerStatic.all() end
 --- True when value is an fx.Player, or a subtype of it (a Ped is an Entity).
 ---@param value any
 ---@return boolean

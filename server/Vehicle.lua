@@ -369,6 +369,14 @@ do
 end
 
 do
+  local GetHeliTailRotorHealth = GetHeliTailRotorHealth
+  -- GET_HELI_TAIL_ROTOR_HEALTH (0xA41BC13D)
+  getters.heliTailRotorHealth = function(self)
+    return GetHeliTailRotorHealth(self.handle)
+  end
+end
+
+do
   local GetHeliThrottleControl = GetHeliThrottleControl
   -- GET_HELI_THROTTLE_CONTROL (0x8E86238D)
   getters.heliThrottleControl = function(self)

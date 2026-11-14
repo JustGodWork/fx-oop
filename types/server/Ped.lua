@@ -402,6 +402,15 @@ function Ped:setCurrentWeapon(weaponHash, bForceInHand) end
 ---@return fx.Ped self
 function Ped:setDefaultComponentVariation() end
 
+--- It overrides the default distance culling radius of an entity. Set to `0.0` to reset.
+--- If you want to interact with an entity outside of your players' scopes set the radius to a huge number.
+---
+--- **WARNING**: Culling natives are deprecated and have known, [unfixable issues](https://forum.cfx.re/t/issue-with-culling-radius-and-server-side-entities/4900677/4)
+--- **Native**: `SET_ENTITY_DISTANCE_CULLING_RADIUS` (`0xD3A183A3`)
+---@param radius number The new distance culling radius.
+---@return fx.Ped self
+function Ped:setDistanceCullingRadius(radius) end
+
 --- Used for freemode (online) characters.
 --- Indices:
 ---

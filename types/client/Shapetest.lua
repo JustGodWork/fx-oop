@@ -2,8 +2,59 @@
 ---@diagnostic disable
 -- fx.Shapetest (client): LuaLS annotations. AUTO-GENERATED, DO NOT EDIT.
 
+---What a shape test collides with.
+---@alias fx.ShapetestFlag
+---| "world" Map collision
+---| "vehicles"
+---| "peds" Ped capsules
+---| "ragdolls" Ped body parts
+---| "objects"
+---| "water"
+---| "glass"
+---| "river"
+---| "foliage"
+---| "everything"
+
+---@class fx.ShapetestOptions
+---@field flags? fx.ShapetestFlag[]|integer What the test collides with, default { "everything" }
+---@field ignore? fx.Entity|integer An entity the test goes through
+---@field radius? number Tests a sphere moved along the line instead of a thin ray
+---@field timeoutMs? integer Default 10000
+
+---@class fx.ShapetestHit
+---@field position vector3 Where the test hit
+---@field normal vector3 Normal of the surface hit
+---@field entity fx.Entity? The entity hit, nil for the map
+---@field material integer Hash of the material hit
 ---@class fx.Shapetest
 local ShapetestStatic = {}
+
+---Tests the line from `from` to `to` and resolves with the first hit, nil when nothing is in the way.
+---```lua
+---local hit <const> = fx.Shapetest.castAsync(from, to, { flags = { "world", "vehicles" }, ignore = fx.Player.ped }):await()
+---if hit and hit.entity then print("vehicle in the way", hit.entity) end
+---```
+---@param from vector3
+---@param to vector3
+---@param options? fx.ShapetestOptions
+---@return fx.Promise<fx.ShapetestHit?>
+function ShapetestStatic.castAsync(from, to, options) end
+
+---Tests the line the camera looks along, up to `distance`. Goes through the player's ped unless `options.ignore` is
+---set.
+---@param distance? number Default 100.0
+---@param options? fx.ShapetestOptions
+---@return fx.Promise<fx.ShapetestHit?>
+function ShapetestStatic.fromCameraAsync(distance, options) end
+
+---Tests the line under a point of the screen (0..1, the NUI cursor for instance), up to `distance`. Goes through the
+---player's ped unless `options.ignore` is set.
+---@param x number
+---@param y number
+---@param distance? number Default 100.0
+---@param options? fx.ShapetestOptions
+---@return fx.Promise<fx.ShapetestHit?>
+function ShapetestStatic.fromScreenAsync(x, y, distance, options) end
 
 --- Returns the result of a shape test.
 ---

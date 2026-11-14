@@ -241,4 +241,121 @@ do
   end
 end
 
+-- handwritten: runtime/client/mixins/Shapetest.lua
+
+do
+
+local StartShapeTestLosProbe, StartShapeTestSweptSphere = StartShapeTestLosProbe, StartShapeTestSweptSphere
+local GetShapeTestResultIncludingMaterial = GetShapeTestResultIncludingMaterial
+local GetFinalRenderedCamCoord, GetFinalRenderedCamRot = GetFinalRenderedCamCoord, GetFinalRenderedCamRot
+local GetWorldCoordFromScreenCoord, PlayerPedId = GetWorldCoordFromScreenCoord, PlayerPedId
+local type, error, tostring, ipairs, math_type, math_rad, math_sin, math_cos =
+  type, error, tostring, ipairs, math.type, math.rad, math.sin, math.cos
+local wrapEntity = rt.lazyWrap("Entity")
+
+---@type table<fx.ShapetestFlag, integer>
+local FLAGS = {
+  world = 1, vehicles = 2, peds = 4, ragdolls = 8, objects = 16, water = 32, glass = 64, river = 128, foliage = 256,
+  everything = -1,
+}
+-- SCRIPT_SHAPETEST_OPTION_IGNORE_GLASS | _SEE_THROUGH | _NO_COLLISION, the game's default
+local EXCLUDE_OPTIONS = 7
+
+---@param label string
+---@param flags fx.ShapetestFlag[]|integer|nil
+---@return integer
+local function traceFlags(label, flags)
+  if flags == nil then return -1 end
+  if math_type(flags) == "integer" then return flags --[[@as integer]] end
+  if type(flags) ~= "table" then error(label .. ": options.flags must be a list of flag names or an integer", 4) end
+  local bits = 0
+  for _, name in ipairs(flags --[[@as fx.ShapetestFlag[] ]]) do
+    local bit = FLAGS[name]
+    if not bit then error(("%s: unknown flag '%s'"):format(label, tostring(name)), 4) end
+    if bit == -1 then return -1 end
+    bits = bits | bit
+  end
+  return bits
+end
+
+---@param label string
+---@param from any
+---@param to vector3
+---@param options? fx.ShapetestOptions
+---@param defaultIgnore? integer
+---@return fx.Promise
+local function cast(label, from, to, options, defaultIgnore)
+  if type(from) ~= "vector3" or type(to) ~= "vector3" then error(label .. ": from and to must be vector3", 3) end
+  if options ~= nil and type(options) ~= "table" then error(label .. ": options must be a table", 3) end
+  local o = options or {}
+  local flags = traceFlags(label, o.flags)
+  local ignore = o.ignore
+  ---@type integer
+  local ignoreHandle
+  if ignore == nil then ignoreHandle = defaultIgnore or 0
+  elseif type(ignore) == "table" then ignoreHandle = ignore.handle
+  else ignoreHandle = ignore --[[@as integer]] end
+  local radius = o.radius
+  if radius ~= nil and (type(radius) ~= "number" or radius <= 0) then
+    error(label .. ": options.radius must be a positive number", 3)
+  end
+  local handle
+  if radius then
+    handle = StartShapeTestSweptSphere(from.x, from.y, from.z, to.x, to.y, to.z, radius + 0.0, flags, ignoreHandle, EXCLUDE_OPTIONS)
+  else
+    handle = StartShapeTestLosProbe(from.x, from.y, from.z, to.x, to.y, to.z, flags, ignoreHandle, EXCLUDE_OPTIONS)
+  end
+  if handle == 0 then return rt.fail(label .. ": the request failed (too many shape tests in flight)") end
+  return rt.pollStatus(label, function()
+    local status, hit, position, normal, material, entity = GetShapeTestResultIncludingMaterial(handle)
+    if status ~= 2 then return status end
+    if hit == false or hit == 0 or hit == nil then return 2, nil end
+    ---@type fx.ShapetestHit
+    local result = { position = position, normal = normal, material = material, entity = wrapEntity(entity) }
+    return 2, result
+  end, o.timeoutMs)
+end
+
+---@param label string
+---@param distance any
+---@return number
+local function checkDistance(label, distance)
+  if distance == nil then return 100.0 end
+  if type(distance) ~= "number" or distance <= 0 then error(label .. ": distance must be a positive number", 3) end
+  return distance + 0.0
+end
+
+---@param from vector3
+---@param to vector3
+---@param options? fx.ShapetestOptions
+---@return fx.Promise
+statics.castAsync = function(from, to, options)
+  return cast("Shapetest.castAsync", from, to, options)
+end
+
+---@param distance? number
+---@param options? fx.ShapetestOptions
+---@return fx.Promise
+statics.fromCameraAsync = function(distance, options)
+  local d = checkDistance("Shapetest.fromCameraAsync", distance)
+  local origin, rot = GetFinalRenderedCamCoord(), GetFinalRenderedCamRot(2)
+  local pitch, yaw = math_rad(rot.x), math_rad(rot.z)
+  local dir = vector3(-math_sin(yaw) * math_cos(pitch), math_cos(yaw) * math_cos(pitch), math_sin(pitch))
+  return cast("Shapetest.fromCameraAsync", origin, origin + dir * d, options, PlayerPedId())
+end
+
+---@param x number
+---@param y number
+---@param distance? number
+---@param options? fx.ShapetestOptions
+---@return fx.Promise
+statics.fromScreenAsync = function(x, y, distance, options)
+  if type(x) ~= "number" or type(y) ~= "number" then error("Shapetest.fromScreenAsync: x and y must be numbers", 2) end
+  local d = checkDistance("Shapetest.fromScreenAsync", distance)
+  local origin, dir = GetWorldCoordFromScreenCoord(x + 0.0, y + 0.0)
+  return cast("Shapetest.fromScreenAsync", origin, origin + dir * d, options, PlayerPedId())
+end
+
+end
+
 return rt.finalizeModule(T)

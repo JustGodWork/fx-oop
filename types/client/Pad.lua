@@ -20,7 +20,7 @@ function PadStatic.disableAllControlActions(padIndex) end
 --- Control group 1 and 0 gives the same results as 2. Same results for all players.
 --- **Native**: `DISABLE_CONTROL_ACTION` (`0xFE99B66D079CF6BC`)
 ---@param padIndex integer
----@param control integer
+---@param control fx.Enum.Control|integer
 ---@param disable boolean
 function PadStatic.disableControlAction(padIndex, control, disable) end
 
@@ -82,7 +82,7 @@ function PadStatic.enableAllControlActions(padIndex) end
 --- [...]
 --- **Native**: `ENABLE_CONTROL_ACTION` (`0x351220255D64C155`)
 ---@param padIndex integer
----@param control integer
+---@param control fx.Enum.Control|integer
 ---@param enable boolean
 function PadStatic.enableControlAction(padIndex, control, enable) end
 
@@ -106,14 +106,14 @@ function PadStatic.getControlGroupInstructionalButton(padIndex, controlGroup, p2
 --- ```
 --- **Native**: `GET_CONTROL_INSTRUCTIONAL_BUTTON` (`0x0499D7B09FC9B407`)
 ---@param padIndex integer
----@param control integer
+---@param control fx.Enum.Control|integer
 ---@param p2 boolean
 ---@return string result
 function PadStatic.getControlInstructionalButton(padIndex, control, p2) end
 
 --- **Native**: `GET_CONTROL_NORMAL` (`0xEC3C9B8D5327B563`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 ---@return number result Returns the value of [`GET_CONTROL_VALUE`](#\_0xD95E79E8686D2C27) normalized, i.e. a real number value between -1.0 and 1.0
 function PadStatic.getControlNormal(padIndex, control) end
 
@@ -122,25 +122,25 @@ function PadStatic.getControlNormal(padIndex, control) end
 --- ```
 --- **Native**: `GET_CONTROL_UNBOUND_NORMAL` (`0x5B84D09CEC5209C5`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 ---@return number result
 function PadStatic.getControlUnboundNormal(padIndex, control) end
 
 --- **Native**: `GET_CONTROL_VALUE` (`0xD95E79E8686D2C27`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 ---@return integer result
 function PadStatic.getControlValue(padIndex, control) end
 
 --- **Native**: `GET_DISABLED_CONTROL_NORMAL` (`0x11E65974A982637C`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 ---@return number result
 function PadStatic.getDisabledControlNormal(padIndex, control) end
 
 --- **Native**: `GET_DISABLED_CONTROL_UNBOUND_NORMAL` (`0x4F8A26A890FD62FB`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 ---@return number result
 function PadStatic.getDisabledControlUnboundNormal(padIndex, control) end
 
@@ -154,59 +154,59 @@ function PadStatic.getTimeSinceLastInput(padIndex) end
 
 --- **Native**: `IS_CONTROL_ENABLED` (`0x1CEA6BFDF248E5D9`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 ---@return boolean result
 function PadStatic.isControlEnabled(padIndex, control) end
 
 --- Returns whether a control was newly pressed since the last check.
 --- **Native**: `IS_CONTROL_JUST_PRESSED` (`0x580417101DDB492F`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 ---@return boolean result True if the control was pressed.
 function PadStatic.isControlJustPressed(padIndex, control) end
 
 --- Returns whether a control was newly released since the last check.
 --- **Native**: `IS_CONTROL_JUST_RELEASED` (`0x50F940259D3841E6`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 ---@return boolean result True if the control was recently released.
 function PadStatic.isControlJustReleased(padIndex, control) end
 
 --- Returns whether a control is currently pressed.
 --- **Native**: `IS_CONTROL_PRESSED` (`0xF3A21BCD95725A4A`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 ---@return boolean result True if the control was pressed.
 function PadStatic.isControlPressed(padIndex, control) end
 
 --- Returns whether a control is currently *not* pressed.
 --- **Native**: `IS_CONTROL_RELEASED` (`0x648EE3E7F38877DD`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 ---@return boolean result True if the control is not pressed.
 function PadStatic.isControlReleased(padIndex, control) end
 
 --- **Native**: `IS_DISABLED_CONTROL_JUST_PRESSED` (`0x91AEF906BCA88877`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 ---@return boolean result
 function PadStatic.isDisabledControlJustPressed(padIndex, control) end
 
 --- **Native**: `IS_DISABLED_CONTROL_JUST_RELEASED` (`0x305C8DCD79DA8B0F`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 ---@return boolean result
 function PadStatic.isDisabledControlJustReleased(padIndex, control) end
 
 --- **Native**: `IS_DISABLED_CONTROL_PRESSED` (`0xE2587F8CBBD87B1D`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 ---@return boolean result
 function PadStatic.isDisabledControlPressed(padIndex, control) end
 
 --- **Native**: `IS_DISABLED_CONTROL_RELEASED` (`0xFB6C4072E9A32E92`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 ---@return boolean result
 function PadStatic.isDisabledControlReleased(padIndex, control) end
 
@@ -236,7 +236,7 @@ function PadStatic.setControlLightEffectColor(padIndex, red, green, blue) end
 --- This is for simulating player input.
 --- **Native**: `SET_CONTROL_NORMAL` (`0xE8A25867FBA3B05E`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 ---@param amount number An unbounded normal value.
 ---@return boolean result
 function PadStatic.setControlNormal(padIndex, control, amount) end
@@ -249,7 +249,7 @@ function PadStatic.setCursorLocation(x, y) end
 
 --- **Native**: `SET_INPUT_EXCLUSIVE` (`0xEDE476E5EE29EDB1`)
 ---@param padIndex integer The control system instance to use. See [`ENABLE_ALL_CONTROL_ACTIONS`](#\_0xA5FFE9B05F199DE7).
----@param control integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
+---@param control fx.Enum.Control|integer The [control ID](https://docs.fivem.net/docs/game-references/controls/#controls) to check.
 function PadStatic.setInputExclusive(padIndex, control) end
 
 --- ```

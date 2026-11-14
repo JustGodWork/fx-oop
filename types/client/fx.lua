@@ -2,6 +2,10 @@
 ---@diagnostic disable
 -- fx (client): LuaLS annotations. AUTO-GENERATED, DO NOT EDIT.
 
+---@class vector2
+---@field x number
+---@field y number
+
 ---@class vector3
 ---@field x number
 ---@field y number
@@ -602,10 +606,12 @@ local RpcLib = {}
 ---@field Checkpoint fx.CheckpointStatic
 ---@field Clock fx.Clock
 ---@field Command fx.Command
+---@field Control fx.Control
 ---@field Convar fx.Convar
 ---@field Cutscene fx.Cutscene
 ---@field Datafile fx.Datafile
 ---@field Decorator fx.Decorator
+---@field Discord fx.Discord
 ---@field Dlc fx.Dlc
 ---@field Dui fx.DuiStatic
 ---@field Entity fx.EntityStatic
@@ -614,6 +620,7 @@ local RpcLib = {}
 ---@field Files fx.Files
 ---@field Fire fx.Fire
 ---@field Game fx.Game
+---@field GamerTag fx.GamerTag
 ---@field Global fx.Global
 ---@field Graphics fx.Graphics
 ---@field Hud fx.Hud
@@ -623,6 +630,7 @@ local RpcLib = {}
 ---@field Kvp fx.Kvp
 ---@field LoadingScreen fx.LoadingScreen
 ---@field Localization fx.Localization
+---@field Location fx.Location
 ---@field Mobile fx.Mobile
 ---@field Model fx.ModelStatic
 ---@field Money fx.Money
@@ -639,22 +647,28 @@ local RpcLib = {}
 ---@field Physics fx.Physics
 ---@field Pickup fx.PickupStatic
 ---@field Player fx.PlayerStatic
+---@field Population fx.Population
 ---@field Recording fx.Recording
+---@field RelationshipGroup fx.RelationshipGroup
 ---@field Replay fx.Replay
 ---@field Resource fx.Resource
 ---@field Rope fx.RopeStatic
 ---@field Scaleform fx.ScaleformStatic
+---@field Screen fx.Screen
 ---@field Script fx.Script
 ---@field Shapetest fx.Shapetest
 ---@field Socialclub fx.Socialclub
 ---@field Sound fx.SoundStatic
 ---@field Stats fx.Stats
 ---@field Streaming fx.Streaming
+---@field Submix fx.Submix
 ---@field System fx.System
 ---@field Task fx.Task
+---@field Timecycle fx.Timecycle
 ---@field Vehicle fx.VehicleStatic
 ---@field Water fx.Water
 ---@field Weapon fx.Weapon
+---@field Weather fx.Weather
 ---@field Zone fx.Zone
 fx = {}
 

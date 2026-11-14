@@ -266,6 +266,25 @@ do
 end
 
 do
+  local HintAmbientAudioBank = HintAmbientAudioBank
+  -- HINT_AMBIENT_AUDIO_BANK (0x8F8C0E370AE62F5C)
+  statics.hintAmbientAudioBank = function(bankName, bOverNetwork)
+    local r0 = HintAmbientAudioBank(bankName, bOverNetwork)
+    return (r0 ~= false and r0 ~= 0 and r0 ~= nil)
+  end
+end
+
+do
+  local HintMissionAudioBank = HintMissionAudioBank
+  -- HINT_MISSION_AUDIO_BANK (0x40763EA7B9B783E7)
+  statics.hintMissionAudioBank = function(bankName, bOverNetwork, playerBits)
+    if math_type(playerBits) == "float" then playerBits = math_tointeger((math_modf(playerBits))) or 0 end
+    local r0 = HintMissionAudioBank(bankName, bOverNetwork, playerBits)
+    return (r0 ~= false and r0 ~= 0 and r0 ~= nil)
+  end
+end
+
+do
   local HintScriptAudioBank = HintScriptAudioBank
   -- HINT_SCRIPT_AUDIO_BANK (0xFB380A29641EC31A)
   statics.hintScriptAudioBank = function(bankName, bOverNetwork)
@@ -773,6 +792,22 @@ do
 end
 
 do
+  local ReleaseAmbientAudioBank = ReleaseAmbientAudioBank
+  -- RELEASE_AMBIENT_AUDIO_BANK (0x65475A218FFAA93D)
+  statics.releaseAmbientAudioBank = function()
+    return ReleaseAmbientAudioBank()
+  end
+end
+
+do
+  local ReleaseMissionAudioBank = ReleaseMissionAudioBank
+  -- RELEASE_MISSION_AUDIO_BANK (0x0EC92A1BF0857187)
+  statics.releaseMissionAudioBank = function()
+    return ReleaseMissionAudioBank()
+  end
+end
+
+do
   local ReleaseNamedScriptAudioBank = ReleaseNamedScriptAudioBank
   -- RELEASE_NAMED_SCRIPT_AUDIO_BANK (0x77ED170667F50170)
   statics.releaseNamedScriptAudioBank = function(audioBank)
@@ -801,6 +836,24 @@ do
   -- REMOVE_PORTAL_SETTINGS_OVERRIDE (0xB4BBFD9CD8B3922B)
   statics.removePortalSettingsOverride = function(portalSettingsName)
     return RemovePortalSettingsOverride(portalSettingsName)
+  end
+end
+
+do
+  local RequestAmbientAudioBank = RequestAmbientAudioBank
+  -- REQUEST_AMBIENT_AUDIO_BANK (0xFE02FFBED8CA9D99)
+  statics.requestAmbientAudioBank = function(bankName, bOverNetwork)
+    local r0 = RequestAmbientAudioBank(bankName, bOverNetwork)
+    return (r0 ~= false and r0 ~= 0 and r0 ~= nil)
+  end
+end
+
+do
+  local RequestMissionAudioBank = RequestMissionAudioBank
+  -- REQUEST_MISSION_AUDIO_BANK (0x7345BDD95E62E0F2)
+  statics.requestMissionAudioBank = function(bankName, bOverNetwork)
+    local r0 = RequestMissionAudioBank(bankName, bOverNetwork)
+    return (r0 ~= false and r0 ~= 0 and r0 ~= nil)
   end
 end
 

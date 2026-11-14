@@ -2526,6 +2526,14 @@ do
 end
 
 do
+  local SetPauseMenuActive = SetPauseMenuActive
+  -- SET_PAUSE_MENU_ACTIVE (0xDF47FC56C71569CF)
+  statics.setPauseMenuActive = function(toggle)
+    return SetPauseMenuActive(toggle)
+  end
+end
+
+do
   local SetPauseMenuPedLighting = SetPauseMenuPedLighting
   -- SET_PAUSE_MENU_PED_LIGHTING (0x3CA6050692BC61B0)
   statics.setPauseMenuPedLighting = function(state)
@@ -3441,6 +3449,47 @@ staticSetters.waypoint = function(v)
   local t = type(v)
   if t ~= "vector3" and t ~= "vector2" then error("Hud.waypoint: expected a vector2, a vector3 or nil, got " .. t, 3) end
   SetNewWaypoint(v.x + 0.0, v.y + 0.0)
+end
+
+local DisplayRadar, DisplayHud, SetBigmapActive, SetRadarZoom = DisplayRadar, DisplayHud, SetBigmapActive, SetRadarZoom
+local IsRadarHidden, IsHudHidden = rt.bool(IsRadarHidden), rt.bool(IsHudHidden)
+local IsBigmapActive, IsBigmapFull = rt.bool(IsBigmapActive), rt.bool(IsBigmapFull)
+
+staticGetters.radar = function() return not IsRadarHidden() end
+---@param on boolean
+staticSetters.radar = function(on)
+  if type(on) ~= "boolean" then error("Hud.radar: expected a boolean, got " .. tostring(on), 3) end
+  DisplayRadar(on)
+end
+
+staticGetters.visible = function() return not IsHudHidden() end
+---@param on boolean
+staticSetters.visible = function(on)
+  if type(on) ~= "boolean" then error("Hud.visible: expected a boolean, got " .. tostring(on), 3) end
+  DisplayHud(on)
+end
+
+---@return "normal"|"expanded"|"full"
+staticGetters.bigmap = function()
+  if not IsBigmapActive() then return "normal" end
+  return IsBigmapFull() and "full" or "expanded"
+end
+---@param mode "normal"|"expanded"|"full"
+staticSetters.bigmap = function(mode)
+  if mode ~= "normal" and mode ~= "expanded" and mode ~= "full" then
+    error("Hud.bigmap: expected \"normal\", \"expanded\" or \"full\", got " .. tostring(mode), 3)
+  end
+  SetBigmapActive(mode ~= "normal", mode == "full")
+end
+
+---@type integer?
+local radarZoom
+staticGetters.radarZoom = function() return radarZoom end
+---@param zoom integer
+staticSetters.radarZoom = function(zoom)
+  if math.type(zoom) ~= "integer" or zoom < 0 or zoom > 200 then error("Hud.radarZoom: expected an integer from 0 to 200", 3) end
+  radarZoom = zoom
+  SetRadarZoom(zoom)
 end
 
 end

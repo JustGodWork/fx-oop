@@ -2678,6 +2678,14 @@ do
 end
 
 do
+  local SetManualShutdownLoadingScreenNui = SetManualShutdownLoadingScreenNui
+  -- SET_MANUAL_SHUTDOWN_LOADING_SCREEN_NUI (0x1722C938)
+  statics.setManualShutdownLoadingScreenNui = function(manualShutdown)
+    return SetManualShutdownLoadingScreenNui(manualShutdown)
+  end
+end
+
+do
   local SetMapZoomDataLevel = SetMapZoomDataLevel
   -- SET_MAP_ZOOM_DATA_LEVEL (0x447C718E)
   statics.setMapZoomDataLevel = function(index, zoomScale, zoomSpeed, scrollSpeed, tilesX, tilesY)

@@ -381,6 +381,17 @@ do
 end
 
 do
+  local SetModelHeadlightConfiguration = SetModelHeadlightConfiguration
+  -- SET_MODEL_HEADLIGHT_CONFIGURATION (0x7F6B8D75)
+  methods.setHeadlightConfiguration = function(self, ratePerSecond, headlightRotation, invertRotation)
+    ratePerSecond = (ratePerSecond or 0) + 0.0
+    headlightRotation = (headlightRotation or 0) + 0.0
+    SetModelHeadlightConfiguration(self.handle, ratePerSecond, headlightRotation, invertRotation)
+    return self
+  end
+end
+
+do
   local SetLocalPlayerCanUsePickupsWithThisModel = SetLocalPlayerCanUsePickupsWithThisModel
   -- SET_LOCAL_PLAYER_CAN_USE_PICKUPS_WITH_THIS_MODEL (0x88EAEC617CD26926)
   methods.setLocalPlayerCanUsePickupsWithThis = function(self, toggle)

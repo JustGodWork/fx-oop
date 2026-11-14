@@ -2462,7 +2462,8 @@ end
 
 do
 
-local DrawMarker = DrawMarker
+local DrawMarker, DrawLightWithRange, DrawSpotLight = DrawMarker, DrawLightWithRange, DrawSpotLight
+local type, error = type, error
 
 ---@param x? vector3
 ---@param dx number Default x
@@ -2482,6 +2483,22 @@ statics.marker = function(o)
   DrawMarker(o.type or 0, px, py, pz, dx, dy, dz, rx, ry, rz, sx, sy, sz,
     c and (c[1] or c.r) or 255, c and (c[2] or c.g) or 100, c and (c[3] or c.b) or 0, c and (c[4] or c.a) or 100,
     o.bob or false, o.faceCamera or false, 2, o.rotate or false, o.textureDict, o.textureName, o.drawOnEntities or false)
+end
+
+---@param o fx.LightOptions
+statics.light = function(o)
+  if type(o) ~= "table" or type(o.position) ~= "vector3" then error("Graphics.light: options.position must be a vector3", 2) end
+  local p, c = o.position, o.color
+  local r, g, b = c and (c[1] or c.r) or 255, c and (c[2] or c.g) or 255, c and (c[3] or c.b) or 255
+  local range, intensity = (o.range or 10.0) + 0.0, (o.intensity or 1.0) + 0.0
+  local d = o.direction
+  if d == nil then
+    DrawLightWithRange(p.x + 0.0, p.y + 0.0, p.z + 0.0, r, g, b, range, intensity)
+    return
+  end
+  if type(d) ~= "vector3" then error("Graphics.light: options.direction must be a vector3", 2) end
+  DrawSpotLight(p.x + 0.0, p.y + 0.0, p.z + 0.0, d.x + 0.0, d.y + 0.0, d.z + 0.0, r, g, b, range, intensity,
+    (o.hardness or 0.0) + 0.0, (o.radius or 13.0) + 0.0, (o.falloff or 1.0) + 0.0)
 end
 
 end

@@ -1,5 +1,100 @@
 # Changelog
 
+## v0.4.0 (2026-11-14)
+
+API change: minor.
+
+### Features
+
+- **report**: publish the natives wrapped by hand
+- **weather**: add fx.Weather and fx.Timecycle
+- add async shapetests and fx.Http requests
+- **control**: add fx.Control, fx.Population and fx.Enum.Control
+- add routing buckets, Player.all, fx.Screen and fx.Location
+- add gamer tags, relationship groups, Discord and submixes
+- add ped.weapons, Graphics.light and the minimap properties
+
+### Fixes
+
+- **generator**: wrap deprecated natives and mark them @deprecated
+- **release**: treat widened parameters as a minor API change
+
+### Added (255)
+
+- `client:AudioStatic.hintAmbientAudioBank`
+- `client:AudioStatic.hintMissionAudioBank`
+- `client:AudioStatic.releaseAmbientAudioBank`
+- `client:AudioStatic.releaseMissionAudioBank`
+- `client:AudioStatic.requestAmbientAudioBank`
+- `client:AudioStatic.requestMissionAudioBank`
+- `client:CfxStatic.setManualShutdownLoadingScreenNui`
+- `client:ControlStatic.disable`
+- `client:ControlStatic.instructional`
+- `client:ControlStatic.justPressed`
+- `client:ControlStatic.justReleased`
+- `client:ControlStatic.onPress`
+- `client:ControlStatic.pressed`
+- `client:ControlStatic.value`
+- `client:GamerTagRef:hide`
+- `client:GamerTagRef:remove`
+- `client:GamerTagRef:setAlpha`
+- `client:GamerTagRef:setColor`
+- `client:GamerTagRef:show`
+- `client:GamerTagStatic.create`
+- `client:GraphicsStatic.light`
+- `client:HudStatic.setPauseMenuActive`
+- `client:LocationStatic.at`
+- `client:Model:setHeadlightConfiguration`
+- `client:Ped:setCombatAttributes`
+- `client:Ped:taskPlaneMission`
+- `client:PedWeaponsProxy:ammo`
+- `client:PedWeaponsProxy:give`
+- `client:PedWeaponsProxy:has`
+- `client:PedWeaponsProxy:remove`
+- `client:PedWeaponsProxy:removeAll`
+- `client:PedWeaponsProxy:setAmmo`
+- `client:PlayerStatic.all`
+- `client:PopulationStatic.reset`
+- `client:RelationshipGroupRef:add`
+- `client:RelationshipGroupRef:get`
+- `client:RelationshipGroupRef:remove`
+- `client:RelationshipGroupRef:set`
+- `client:RelationshipGroupStatic.create`
+- `client:RelationshipGroupStatic.of`
+- `client:ScreenStatic.fromWorld`
+- `client:ScreenStatic.toWorld`
+- `client:ShapetestStatic.castAsync`
+- `client:ShapetestStatic.fromCameraAsync`
+- `client:ShapetestStatic.fromScreenAsync`
+- `client:SubmixRef:assign`
+- `client:SubmixRef:setParam`
+- `client:SubmixStatic.create`
+- `client:SubmixStatic.reset`
+- `client:TimecycleModifierRef:clone`
+- ... and 205 more
+
+### Widened (19)
+
+- `client:PadStatic.disableControlAction: (padIndex: integer, control: integer, disable: boolean): nil -> (padIndex: integer, control: fx.Enum.Control|integer, disable: boolean): nil`
+- `client:PadStatic.enableControlAction: (padIndex: integer, control: integer, enable: boolean): nil -> (padIndex: integer, control: fx.Enum.Control|integer, enable: boolean): nil`
+- `client:PadStatic.getControlInstructionalButton: (padIndex: integer, control: integer, p2: boolean): string -> (padIndex: integer, control: fx.Enum.Control|integer, p2: boolean): string`
+- `client:PadStatic.getControlNormal: (padIndex: integer, control: integer): number -> (padIndex: integer, control: fx.Enum.Control|integer): number`
+- `client:PadStatic.getControlUnboundNormal: (padIndex: integer, control: integer): number -> (padIndex: integer, control: fx.Enum.Control|integer): number`
+- `client:PadStatic.getControlValue: (padIndex: integer, control: integer): integer -> (padIndex: integer, control: fx.Enum.Control|integer): integer`
+- `client:PadStatic.getDisabledControlNormal: (padIndex: integer, control: integer): number -> (padIndex: integer, control: fx.Enum.Control|integer): number`
+- `client:PadStatic.getDisabledControlUnboundNormal: (padIndex: integer, control: integer): number -> (padIndex: integer, control: fx.Enum.Control|integer): number`
+- `client:PadStatic.isControlEnabled: (padIndex: integer, control: integer): boolean -> (padIndex: integer, control: fx.Enum.Control|integer): boolean`
+- `client:PadStatic.isControlJustPressed: (padIndex: integer, control: integer): boolean -> (padIndex: integer, control: fx.Enum.Control|integer): boolean`
+- `client:PadStatic.isControlJustReleased: (padIndex: integer, control: integer): boolean -> (padIndex: integer, control: fx.Enum.Control|integer): boolean`
+- `client:PadStatic.isControlPressed: (padIndex: integer, control: integer): boolean -> (padIndex: integer, control: fx.Enum.Control|integer): boolean`
+- `client:PadStatic.isControlReleased: (padIndex: integer, control: integer): boolean -> (padIndex: integer, control: fx.Enum.Control|integer): boolean`
+- `client:PadStatic.isDisabledControlJustPressed: (padIndex: integer, control: integer): boolean -> (padIndex: integer, control: fx.Enum.Control|integer): boolean`
+- `client:PadStatic.isDisabledControlJustReleased: (padIndex: integer, control: integer): boolean -> (padIndex: integer, control: fx.Enum.Control|integer): boolean`
+- `client:PadStatic.isDisabledControlPressed: (padIndex: integer, control: integer): boolean -> (padIndex: integer, control: fx.Enum.Control|integer): boolean`
+- `client:PadStatic.isDisabledControlReleased: (padIndex: integer, control: integer): boolean -> (padIndex: integer, control: fx.Enum.Control|integer): boolean`
+- `client:PadStatic.setControlNormal: (padIndex: integer, control: integer, amount: number): boolean -> (padIndex: integer, control: fx.Enum.Control|integer, amount: number): boolean`
+- `client:PadStatic.setInputExclusive: (padIndex: integer, control: integer): nil -> (padIndex: integer, control: fx.Enum.Control|integer): nil`
+
 ## v0.3.0 (2026-11-12)
 
 API change: major.

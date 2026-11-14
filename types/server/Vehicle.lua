@@ -41,6 +41,7 @@
 ---@field heliRearRotorHealth number (read-only) [GET_HELI_REAR_ROTOR_HEALTH] This native is a getter for [SET_HELI_TAIL_ROTOR_HEALTH](#\_0xFE205F38AAA58E5B)
 ---@field heliRollControl number (read-only) [GET_HELI_ROLL_CONTROL]
 ---@field heliTailRotorDamageScale number (read-only) [GET_HELI_TAIL_ROTOR_DAMAGE_SCALE]
+---@field heliTailRotorHealth number (read-only) [GET_HELI_TAIL_ROTOR_HEALTH] **Note**: This native is deprecated, please use [`GET_HELI_REAR_ROTOR_HEALTH`](#\_0x33EE6E2B) instead.
 ---@field heliThrottleControl number (read-only) [GET_HELI_THROTTLE_CONTROL]
 ---@field heliYawControl number (read-only) [GET_HELI_YAW_CONTROL]
 ---@field homingLockonState integer (read-only) [GET_VEHICLE_HOMING_LOCKON_STATE] Gets the lock on state for the specified vehicle. See the client-side [GET_VEHICLE_HOMING_LOCKON_STATE](#\_0xE6B0E8CFC3633BF0) native for a description of lock…
@@ -356,6 +357,15 @@ function Vehicle:setCustomPrimaryColour(r, g, b) end
 ---@param b integer
 ---@return fx.Vehicle self
 function Vehicle:setCustomSecondaryColour(r, g, b) end
+
+--- It overrides the default distance culling radius of an entity. Set to `0.0` to reset.
+--- If you want to interact with an entity outside of your players' scopes set the radius to a huge number.
+---
+--- **WARNING**: Culling natives are deprecated and have known, [unfixable issues](https://forum.cfx.re/t/issue-with-culling-radius-and-server-side-entities/4900677/4)
+--- **Native**: `SET_ENTITY_DISTANCE_CULLING_RADIUS` (`0xD3A183A3`)
+---@param radius number The new distance culling radius.
+---@return fx.Vehicle self
+function Vehicle:setDistanceCullingRadius(radius) end
 
 --- See eDoorId declared in [`SET_VEHICLE_DOOR_SHUT`](#\_0x93D9BD300D7789E5)
 ---

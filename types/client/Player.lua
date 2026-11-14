@@ -1304,6 +1304,10 @@ local PlayerStatic = {}
 ---@return fx.Player?
 function PlayerStatic.fromIndex(index) end
 
+---Every player this client knows of (in scope), the local one included.
+---@return fx.Player[]
+function PlayerStatic.all() end
+
 ---Promise resolved with the local player once it can play: the network session has started, the player is active
 ---(`NetworkIsPlayerActive`) and it has a ped. Resolved immediately when already the case
 ---(resource restart). The ped is not necessarily final: it changes if the spawn sets another model.

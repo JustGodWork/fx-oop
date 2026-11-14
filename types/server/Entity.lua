@@ -124,6 +124,15 @@ function Entity:freeze(toggle) end
 ---@return fx.Entity self
 function Entity:setCoords(pos, alive, deadFlag, ragdollFlag, clearArea) end
 
+--- It overrides the default distance culling radius of an entity. Set to `0.0` to reset.
+--- If you want to interact with an entity outside of your players' scopes set the radius to a huge number.
+---
+--- **WARNING**: Culling natives are deprecated and have known, [unfixable issues](https://forum.cfx.re/t/issue-with-culling-radius-and-server-side-entities/4900677/4)
+--- **Native**: `SET_ENTITY_DISTANCE_CULLING_RADIUS` (`0xD3A183A3`)
+---@param radius number The new distance culling radius.
+---@return fx.Entity self
+function Entity:setDistanceCullingRadius(radius) end
+
 --- It allows to flag an entity to ignore the request control filter policy.
 --- **Native**: `SET_ENTITY_IGNORE_REQUEST_CONTROL_FILTER` (`0x9F7F8D36`)
 ---@param ignore boolean Define if the entity ignores the request control filter policy.

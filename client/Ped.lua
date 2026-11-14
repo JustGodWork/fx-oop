@@ -5218,6 +5218,16 @@ do
 end
 
 do
+  local SetPedCombatAttributes = SetPedCombatAttributes
+  -- SET_PED_COMBAT_ATTRIBUTES (0x9F7794730795E019)
+  methods.setCombatAttributes = function(self, attributeIndex, enabled)
+    if math_type(attributeIndex) == "float" then attributeIndex = math_tointeger((math_modf(attributeIndex))) or 0 end
+    SetPedCombatAttributes(self.handle, attributeIndex, enabled)
+    return self
+  end
+end
+
+do
   local SetCombatFloat = SetCombatFloat
   -- SET_COMBAT_FLOAT (0xFF41B4B141ED981C)
   methods.setCombatFloat = function(self, combatType, p2)
@@ -8036,6 +8046,24 @@ do
 end
 
 do
+  local TaskPlaneMission = TaskPlaneMission
+  -- TASK_PLANE_MISSION (0x23703CD154E83B88)
+  methods.taskPlaneMission = function(self, aircraft, targetVehicle, targetPed, destination, missionFlag, angularDrag, unk, targetHeading, maxZ, minZ)
+    if type(aircraft) == "table" then aircraft = aircraft.handle end
+    if type(targetVehicle) == "table" then targetVehicle = targetVehicle.handle end
+    if type(targetPed) == "table" then targetPed = targetPed.handle end
+    if math_type(missionFlag) == "float" then missionFlag = math_tointeger((math_modf(missionFlag))) or 0 end
+    angularDrag = (angularDrag or 0) + 0.0
+    unk = (unk or 0) + 0.0
+    targetHeading = (targetHeading or 0) + 0.0
+    maxZ = (maxZ or 0) + 0.0
+    minZ = (minZ or 0) + 0.0
+    TaskPlaneMission(self.handle, aircraft, targetVehicle, targetPed, destination.x, destination.y, destination.z, missionFlag, angularDrag, unk, targetHeading, maxZ, minZ)
+    return self
+  end
+end
+
+do
   local TaskPlaneTaxi = TaskPlaneTaxi
   -- TASK_PLANE_TAXI (0x92C360B5F15D2302)
   methods.taskPlaneTaxi = function(self, aircraft, pos, fCruiseSpeed, fTargetReachedDist)
@@ -9997,6 +10025,84 @@ methods.waitForTaskAsync = function(self, task, timeoutMs)
   return rt.waitUntil(tostring(self) .. ":waitForTaskAsync", function() return GetScriptTaskStatus(h, hash) == TASK_DONE end,
     timeoutMs, self)
 end
+
+local GiveWeaponToPed, GiveWeaponComponentToPed, SetPedWeaponTintIndex =
+  GiveWeaponToPed, GiveWeaponComponentToPed, SetPedWeaponTintIndex
+local RemoveWeaponFromPed, RemoveAllPedWeapons, GetAmmoInPedWeapon, SetPedAmmo =
+  RemoveWeaponFromPed, RemoveAllPedWeapons, GetAmmoInPedWeapon, SetPedAmmo
+local GetSelectedPedWeapon, SetCurrentPedWeapon = GetSelectedPedWeapon, SetCurrentPedWeapon
+local HasPedGotWeapon, IsWeaponValid = rt.bool(HasPedGotWeapon), rt.bool(IsWeaponValid)
+local UNARMED = GetHashKey("WEAPON_UNARMED")
+
+---@param label string
+---@param weapon any
+---@return integer
+local function weaponHash(label, weapon)
+  local t = type(weapon)
+  local h = t == "string" and GetHashKey(weapon) or (math.type(weapon) == "integer" and weapon or nil)
+  if h == nil or not IsWeaponValid(h) then error(("%s: unknown weapon '%s'"):format(label, tostring(weapon)), 0) end
+  return h --[[@as integer]]
+end
+
+---@param label string
+---@param n any
+---@return integer
+local function ammoCount(label, n)
+  if math.type(n) ~= "integer" or n < 0 then error(label .. ": ammo must be a positive integer", 0) end
+  return n --[[@as integer]]
+end
+
+getters.weapons = proxy("weapons", {
+  ---@param p fx.PedWeaponsProxy
+  ---@param weapon string|integer
+  ---@param options? fx.PedWeaponGiveOptions
+  ---@return fx.PedWeaponsProxy
+  give = function(p, weapon, options)
+    local h, w = handleOf(p), weaponHash("ped.weapons:give", weapon)
+    if options ~= nil and type(options) ~= "table" then error("ped.weapons:give: options must be a table", 0) end
+    local o = options or {}
+    GiveWeaponToPed(h, w, o.ammo == nil and 0 or ammoCount("ped.weapons:give", o.ammo), false, o.equip == true)
+    for _, c in ipairs(o.components or {}) do
+      local ch = type(c) == "string" and GetHashKey(c) or c
+      if math.type(ch) ~= "integer" then error("ped.weapons:give: a component must be a name or a hash", 0) end
+      GiveWeaponComponentToPed(h, w, ch)
+    end
+    if o.tint ~= nil then
+      if math.type(o.tint) ~= "integer" then error("ped.weapons:give: tint must be an integer", 0) end
+      SetPedWeaponTintIndex(h, w, o.tint)
+    end
+    return p
+  end,
+  ---@param p fx.PedWeaponsProxy
+  ---@param weapon string|integer
+  ---@return fx.PedWeaponsProxy
+  remove = function(p, weapon) RemoveWeaponFromPed(handleOf(p), weaponHash("ped.weapons:remove", weapon)); return p end,
+  ---@param p fx.PedWeaponsProxy
+  ---@return fx.PedWeaponsProxy
+  removeAll = function(p) RemoveAllPedWeapons(handleOf(p), true); return p end,
+  ---@param p fx.PedWeaponsProxy
+  ---@param weapon string|integer
+  ---@return boolean
+  has = function(p, weapon) return HasPedGotWeapon(handleOf(p), weaponHash("ped.weapons:has", weapon), false) end,
+  ---@param p fx.PedWeaponsProxy
+  ---@param weapon string|integer
+  ---@return integer
+  ammo = function(p, weapon) return GetAmmoInPedWeapon(handleOf(p), weaponHash("ped.weapons:ammo", weapon)) end,
+  ---@param p fx.PedWeaponsProxy
+  ---@param weapon string|integer
+  ---@param n integer
+  ---@return fx.PedWeaponsProxy
+  setAmmo = function(p, weapon, n)
+    SetPedAmmo(handleOf(p), weaponHash("ped.weapons:setAmmo", weapon), ammoCount("ped.weapons:setAmmo", n))
+    return p
+  end,
+}, function(h, k)
+  if k == "current" then return GetSelectedPedWeapon(h) end
+  error("ped.weapons: no field '" .. tostring(k) .. "'", 0)
+end, function(h, k, v)
+  if k ~= "current" then error("ped.weapons: no field '" .. tostring(k) .. "'", 0) end
+  SetCurrentPedWeapon(h, v == nil and UNARMED or weaponHash("ped.weapons.current", v), true)
+end)
 
 end
 

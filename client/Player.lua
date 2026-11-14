@@ -2799,6 +2799,18 @@ statics.fromIndex = function(idx)
   return T.wrap(idx)
 end
 
+local GetActivePlayers = GetActivePlayers
+---@return fx.Player[]
+statics.all = function()
+  ---@type fx.Player[]
+  local out = {}
+  for _, idx in ipairs(GetActivePlayers()) do
+    local p = statics.fromIndex(idx)
+    if p then out[#out + 1] = p end
+  end
+  return out
+end
+
 ---@param fmt string
 ---@param ... any
 local function errorf(fmt, ...) error(fmt:format(...), 3) end

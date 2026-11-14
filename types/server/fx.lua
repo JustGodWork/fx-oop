@@ -2,6 +2,10 @@
 ---@diagnostic disable
 -- fx (server): LuaLS annotations. AUTO-GENERATED, DO NOT EDIT.
 
+---@class vector2
+---@field x number
+---@field y number
+
 ---@class vector3
 ---@field x number
 ---@field y number
@@ -600,6 +604,7 @@ local RpcLib = {}
 ---@field Entity fx.EntityStatic
 ---@field Events fx.Events
 ---@field Global fx.Global
+---@field Http fx.Http
 ---@field Kvp fx.Kvp
 ---@field Model fx.ModelStatic
 ---@field Mumble fx.Mumble
@@ -607,6 +612,7 @@ local RpcLib = {}
 ---@field Ped fx.PedStatic
 ---@field Player fx.PlayerStatic
 ---@field Resource fx.Resource
+---@field RoutingBucket fx.RoutingBucket
 ---@field Vehicle fx.VehicleStatic
 fx = {}
 

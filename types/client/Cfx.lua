@@ -1930,6 +1930,12 @@ function CfxStatic.setLightVolumeDetails(volIntensity, volSizeScale, r, g, b, i,
 ---@param volumetricFadeDistance integer The maximum distance
 function CfxStatic.setLightVolumetricFadeDistance(volumetricFadeDistance) end
 
+--- **Note**: This native is deprecated and doesn't work anymore. Use [loadscreen_manual_shutdown](https://docs.fivem.net/docs/scripting-reference/resource-manifest/#loadscreen_manual_shutdown) in the fxmanifest.lua instead.
+--- **Native**: `SET_MANUAL_SHUTDOWN_LOADING_SCREEN_NUI` (`0x1722C938`)
+---@deprecated
+---@param manualShutdown boolean TRUE to manually shut down the loading screen NUI.
+function CfxStatic.setManualShutdownLoadingScreenNui(manualShutdown) end
+
 --- Sets values to the zoom level data by index.
 --- **Native**: `SET_MAP_ZOOM_DATA_LEVEL` (`0x447C718E`)
 ---@param index integer Zoom level index.

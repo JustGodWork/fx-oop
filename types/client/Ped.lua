@@ -16,6 +16,47 @@
 ---@field pedType? integer Default 4 (PED_TYPE_CIVMALE)
 ---@field timeout? integer Default 10000
 
+---@class fx.PedWeaponGiveOptions
+---@field ammo? integer Default 0
+---@field components? (string|integer)[] Names or hashes ("COMPONENT_AT_PI_FLSH")
+---@field tint? integer Tint index
+---@field equip? boolean Put it in hand, default false
+
+---ped.weapons: the weapons of the ped, by name ("WEAPON_PISTOL") or hash. An unknown weapon raises.
+---```lua
+---ped.weapons:give("WEAPON_PISTOL", { ammo = 60, components = { "COMPONENT_AT_PI_FLSH" }, equip = true })
+---print(ped.weapons:ammo("WEAPON_PISTOL"), ped.weapons.current)
+---```
+---@class fx.PedWeaponsProxy
+---@field current integer|string? Hash of the weapon in hand. Assign a name or a hash to put it in hand, nil for bare hands.
+local PedWeaponsProxy = {}
+
+---@param weapon string|integer
+---@param options? fx.PedWeaponGiveOptions
+---@return fx.PedWeaponsProxy
+function PedWeaponsProxy:give(weapon, options) end
+
+---@param weapon string|integer
+---@return fx.PedWeaponsProxy
+function PedWeaponsProxy:remove(weapon) end
+
+---@return fx.PedWeaponsProxy
+function PedWeaponsProxy:removeAll() end
+
+---@param weapon string|integer
+---@return boolean
+function PedWeaponsProxy:has(weapon) end
+
+---Ammo of the weapon's type (weapons of a type share it).
+---@param weapon string|integer
+---@return integer
+function PedWeaponsProxy:ammo(weapon) end
+
+---@param weapon string|integer
+---@param ammo integer
+---@return fx.PedWeaponsProxy
+function PedWeaponsProxy:setAmmo(weapon, ammo) end
+
 ---@class fx.PedCloneOptions
 ---@field networked? boolean Default true
 ---@field scriptHostPed? boolean Default false
@@ -252,6 +293,7 @@ function PedTattoosProxy:set(tattoos) end
 ---@field hair fx.PedHairProxy Hair style and colours: `ped.hair.style = 12`, `ped.hair.color = 3`
 ---@field overlays fx.PedOverlaysProxy Beard, eyebrows, makeup...: `ped.overlays.beard = { style = 3, color = 2 }`
 ---@field headBlend fx.PedHeadBlendProxy Parents of a freemode ped: `ped.headBlend.shapeMix = 0.5`
+---@field weapons fx.PedWeaponsProxy Weapons: `ped.weapons:give('WEAPON_PISTOL', { ammo = 60 })`, `ped.weapons.current`
 ---@field tattoos fx.PedTattoosProxy Tattoos: `ped.tattoos:add('mpbeach_overlays', 'MP_Bea_M_Head_000')`
 ---@field handle integer Raw entity handle.
 ---@field exists boolean (read-only) DOES_ENTITY_EXIST. Never raises, even on a deleted entity or in debug mode.
@@ -4200,6 +4242,53 @@ function Ped:setCollision(toggle, keepPhysics) end
 ---@return fx.Ped self
 function Ped:setCombatAbility(p1) end
 
+--- These combat attributes seem to be the same as the BehaviourFlags from combatbehaviour.meta.
+---
+--- So far, these are the equivalents found:
+---
+--- ```cpp
+--- enum eCombatAttribute
+--- {
+---   CA_INVALID = -1,
+---   // AI will only use cover if this is set
+---   CA_USE_COVER = 0,
+---   // AI will only use vehicles if this is set
+---   CA_USE_VEHICLE = 1,
+---   // AI will only driveby from a vehicle if this is set
+---   CA_DO_DRIVEBYS = 2,
+---   // Will be forced to stay in a ny vehicel if this isn't set
+---   CA_LEAVE_VEHICLES = 3,
+---   // This ped can make decisions on whether to strafe or not based on distance to destination, recent bullet events, etc.
+---   CA_CAN_USE_DYNAMIC_STRAFE_DECISIONS	= 4,
+---   // Ped will always fight upon getting threat response task
+---   CA_ALWAYS_FIGHT = 5,
+---   // If in combat and in a vehicle, the ped will flee rather than attacking
+---   CA_FLEE_WHILST_IN_VEHICLE = 6,
+---   // If in combat and chasing in a vehicle, the ped will keep a distance behind rather than ramming
+---   CA_JUST_FOLLOW_VEHICLE = 7,
+---   // Deprecated
+---   CA_PLAY_REACTION_ANIMS = 8,
+---   // Peds will scan for and react to dead peds found
+---   CA_WILL_SCAN_FOR_DEAD_PEDS = 9,
+---   // Deprecated
+---   CA_IS_A_GUARD = 10,
+---   // The ped will seek cover only
+---   CA_JUST_SEEK_COVER = 11,
+---   // Ped will only blind fire when in cover
+---   CA_BLIND_FIRE_IN_COVER = 12,
+---   // Ped may advance
+---   CA_AGGRESSIVE = 13,
+---   // Ped can investigate events such as distant gunfire, footsteps, explosions etc
+---   CA_CAN_INVESTIGATE = 14,
+---   // Ped can use a radio to call for backup (happens after a reaction)
+---   CA_CAN_USE_RADIO = 15,
+--- [...]
+--- **Native**: `SET_PED_COMBAT_ATTRIBUTES` (`0x9F7794730795E019`)
+---@param attributeIndex fx.Enum.CombatAttribute|integer The attribute index to set. See `eCombatAttribute` enum.
+---@param enabled boolean A boolean to enable/disable the attribute (true/false).
+---@return fx.Ped self
+function Ped:setCombatAttributes(attributeIndex, enabled) end
+
 --- **Native**: `SET_COMBAT_FLOAT` (`0xFF41B4B141ED981C`)
 ---@param combatType integer A value between 0-14, See [`GET_COMBAT_FLOAT`](#\_0x52DFF8A10508090A) for a list of possible parameters.
 ---@param p2 number
@@ -7184,6 +7273,61 @@ function Ped:taskPlaneGotoPreciseVtol(vehicle, p2, p3, p4, p5, p6, p7, p8, p9) e
 ---@param runwayEnd vector3
 ---@return fx.Ped self
 function Ped:taskPlaneLand(plane, runwayStart, runwayEnd) end
+
+--- ```
+--- EDITED (7/13/2017)
+--- NOTE: If you want air combat, AI::TASK_COMBAT_PED (while your pilot is in an aircraft) also does the same thing as this native.
+--- DESCRIPTION:
+--- Ever wish your buddy could shoot down one of your enemies for you? Ever wanted an auto-pilot? Well look no further! This is the native for you! (Ped intelligence may vary)
+--- USAGE:
+--- -- REQUIRED --
+--- • pilot = The ped flying the aircraft.
+--- • aircraft = The aircraft the pilot is flying
+--- -- OPTIONAL -- [atleast 1 must be assigned]
+--- • targetVehicle = The vehicle the pilot will target.
+--- • targetPed = The ped the pilot will target.
+--- • destinationX, destinationY, destinationZ = The location the pilot will target.
+--- -- LOGIC --
+--- • missionFlag = The type of mission. pastebin.com/R8x73dbv
+--- • angularDrag = The higher the value, the slower the plane will rotate. Value ranges from 0 - Infinity.
+--- • unk = Set to 0, and you'll be fine.
+--- • targetHeading = The target angle (from world space north) that the pilot will try to acheive before executing an attack/landing.
+--- • maxZ = Maximum Z coordinate height for flying.
+--- • minZ = Minimum Z coordinate height for flying.
+--- Z: 2,700 is the default max height a pilot will be able to fly. Anything greater and he will fly downward until reaching 2,700 again.
+--- Mission Types (incase you don't like links..):
+--- 0 = None
+--- 1 = Unk
+--- 2 = CTaskVehicleRam
+--- 3 = CTaskVehicleBlock
+--- 4 = CTaskVehicleGoToPlane
+--- 5 = CTaskVehicleStop
+--- 6 = CTaskVehicleAttack
+--- 7 = CTaskVehicleFollow
+--- 8 = CTaskVehicleFleeAirborne
+--- 9 = CTaskVehicleCircle
+--- 10 = CTaskVehicleEscort
+--- 15 = CTaskVehicleFollowRecording
+--- 16 = CTaskVehiclePoliceBehaviour
+--- 17 = CTaskVehicleCrash
+--- Example C#:
+--- Function.Call(Hash.TASK_PLANE_MISSION, pilot, vehicle, 0, Game.Player.Character, 0, 0, 0, 6, 0f, 0f, 0f, 2500.0f, -1500f);
+--- Example C++
+--- AI::TASK_PLANE_MISSION(pilot, vehicle, 0, PLAYER::GET_PLAYER_PED(PLAYER::GET_PLAYER_INDEX()), 0, 0, 0, 6, 0.0, 0.0, 0.0, 2500.0, -1500.0);
+--- [...]
+--- **Native**: `TASK_PLANE_MISSION` (`0x23703CD154E83B88`)
+---@param aircraft fx.Vehicle|integer
+---@param targetVehicle fx.Vehicle|integer
+---@param targetPed fx.Ped|integer
+---@param destination vector3
+---@param missionFlag integer
+---@param angularDrag number
+---@param unk number
+---@param targetHeading number
+---@param maxZ number
+---@param minZ number
+---@return fx.Ped self
+function Ped:taskPlaneMission(aircraft, targetVehicle, targetPed, destination, missionFlag, angularDrag, unk, targetHeading, maxZ, minZ) end
 
 --- The given ped will try to drive the plane to the given coordinates and will then drive around the given coords (the plane will form 8s on the ground)
 --- **Native**: `TASK_PLANE_TAXI` (`0x92C360B5F15D2302`)

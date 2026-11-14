@@ -216,6 +216,23 @@ function AudioStatic.getRadioStationName(stationIndex) end
 ---@return integer result Returns the variation chosen for a given script speech line, or `0` if it hasn't been chosen yet.Returns `-1` if there is no conversation active or if the active conversation doesn't contain this lin…
 function AudioStatic.getVariationChosenForScriptedLine(textLabel) end
 
+--- This native is marked as a deprecated native internally, use [HINT_SCRIPT_AUDIO_BANK](#\_0xFB380A29641EC31A) instead
+--- **Native**: `HINT_AMBIENT_AUDIO_BANK` (`0x8F8C0E370AE62F5C`)
+---@deprecated
+---@param bankName string
+---@param bOverNetwork boolean
+---@return boolean result
+function AudioStatic.hintAmbientAudioBank(bankName, bOverNetwork) end
+
+--- This is marked as a deprecated function internally, please use [HINT_SCRIPT_AUDIO_BANK](#\_0xFB380A29641EC31A) instead.
+--- **Native**: `HINT_MISSION_AUDIO_BANK` (`0x40763EA7B9B783E7`)
+---@deprecated
+---@param bankName string
+---@param bOverNetwork boolean
+---@param playerBits integer
+---@return boolean result
+function AudioStatic.hintMissionAudioBank(bankName, bOverNetwork, playerBits) end
+
 --- Hints that this bank would be good to load if there are free slots.
 --- Does not guarentee loading of the bank, [REQUEST_SCRIPT_AUDIO_BANK](#\_0xFE02FFBED8CA9D99) MUST be used as normal before triggering sounds"
 ---
@@ -454,6 +471,16 @@ function AudioStatic.refreshClosestOceanShoreline() end
 ---@param inChargeOfAudio boolean
 function AudioStatic.registerScriptWithAudio(inChargeOfAudio) end
 
+--- This native has been marked as deprecated internally, please use [RELEASE_SCRIPT_AUDIO_BANK](#\_0x7A2D8AD0A9EB9C3F) instead.
+--- **Native**: `RELEASE_AMBIENT_AUDIO_BANK` (`0x65475A218FFAA93D`)
+---@deprecated
+function AudioStatic.releaseAmbientAudioBank() end
+
+--- This native has been marked as deprecated internally, please use [RELEASE_SCRIPT_AUDIO_BANK](#\_0x7A2D8AD0A9EB9C3F) instead.
+--- **Native**: `RELEASE_MISSION_AUDIO_BANK` (`0x0EC92A1BF0857187`)
+---@deprecated
+function AudioStatic.releaseMissionAudioBank() end
+
 --- Unloads the specified audioBank
 --- **Native**: `RELEASE_NAMED_SCRIPT_AUDIO_BANK` (`0x77ED170667F50170`)
 ---@param audioBank string
@@ -482,6 +509,30 @@ function AudioStatic.releaseWeaponAudio() end
 --- **Native**: `REMOVE_PORTAL_SETTINGS_OVERRIDE` (`0xB4BBFD9CD8B3922B`)
 ---@param portalSettingsName string
 function AudioStatic.removePortalSettingsOverride(portalSettingsName) end
+
+--- This native is marked as deprecated internally, please use [REQUEST_SCRIPT_AUDIO_BANK](#\_0x2F844A8B08D76685)
+---
+--- This native has a new argument on newer game builds:
+---
+--- *   **playerBits**:
+--- **Native**: `REQUEST_AMBIENT_AUDIO_BANK` (`0xFE02FFBED8CA9D99`)
+---@deprecated
+---@param bankName string
+---@param bOverNetwork boolean
+---@return boolean result
+function AudioStatic.requestAmbientAudioBank(bankName, bOverNetwork) end
+
+--- This native is marked as deprecated internally, please use [REQUEST_SCRIPT_AUDIO_BANK](#\_0x2F844A8B08D76685)
+---
+--- This native has a new argument on newer game builds:
+---
+--- *   **playerBits**:
+--- **Native**: `REQUEST_MISSION_AUDIO_BANK` (`0x7345BDD95E62E0F2`)
+---@deprecated
+---@param bankName string
+---@param bOverNetwork boolean
+---@return boolean result
+function AudioStatic.requestMissionAudioBank(bankName, bOverNetwork) end
 
 --- This native has a new argument on newer game builds:
 ---

@@ -23,6 +23,10 @@
 ---@field picture? fx.NotifyPicture
 ---@class fx.Hud
 ---@field waypoint vector3? The map waypoint, nil when none. Its z is not the ground: see `fx.Game.getGroundZAsync`. Assign a vector2 / vector3 to set it, nil to remove it.
+---@field radar boolean The minimap
+---@field visible boolean The whole HUD
+---@field bigmap "normal"|"expanded"|"full" Size of the minimap: normal, expanded like in GTA Online, or expanded on the whole map
+---@field radarZoom integer? Zoom of the minimap, 0 to 200. Reads what was set through this API, nil before.
 ---@field currentFrontendMenuVersion integer (read-only) [GET_CURRENT_FRONTEND_MENU_VERSION]
 ---@field currentWebpageId integer (read-only) [GET_CURRENT_WEBPAGE_ID]
 ---@field currentWebsiteId integer (read-only) [GET_CURRENT_WEBSITE_ID]
@@ -2183,6 +2187,18 @@ function HudStatic.setMultiplayerWalletCash() end
 ---@param x number
 ---@param y number
 function HudStatic.setNewWaypoint(x, y) end
+
+--- This native is deprecated.
+---
+--- If you're looking to:
+---
+--- *   Toggle the pause menu on, use [`ACTIVATE_FRONTEND_MENU`](#\_0xEF01D36B9C9D0C7B)
+--- *   Toggle the pause menu off, use [`SET_FRONTEND_ACTIVE`](#\_0x745711A75AB09277)
+--- *   Disable toggling the pause menu, use [`DISABLE_FRONTEND_THIS_FRAME`](#\_0x6D3465A73092F0E6)
+--- **Native**: `SET_PAUSE_MENU_ACTIVE` (`0xDF47FC56C71569CF`)
+---@deprecated
+---@param toggle boolean
+function HudStatic.setPauseMenuActive(toggle) end
 
 --- Toggles the light state for the pause menu ped in frontend menus.
 ---

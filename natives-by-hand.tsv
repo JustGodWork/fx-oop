@@ -1,0 +1,19 @@
+# native	side	fx call (natives wrapped by hand)
+DOES_ENTITY_EXIST	client	Entity.exists
+NETWORK_GET_PLAYER_INDEX_FROM_PED	client	Ped.player
+CREATE_OBJECT	client	Object.createRaw / Object.createAsync
+CREATE_OBJECT_NO_OFFSET	client	Object.createRaw (options.noOffset)
+CREATE_PED	client	Ped.createRaw / Ped.createAsync
+GET_PLAYER_PED	client	Player(serverId).ped
+PLAYER_ID	client	Player.id / Player.handle
+PLAYER_PED_ID	client	Player.ped
+CREATE_VEHICLE	client	Vehicle.createRaw / Vehicle.createAsync
+CREATE_WEAPON_OBJECT	client	Object.createWeaponRaw / Object.createWeaponAsync
+GET_PLAYER_FROM_SERVER_ID	client	Player(serverId)
+GET_PLAYER_SERVER_ID	client	Player.serverId
+DOES_PLAYER_EXIST	server	Player(src) / Player.exists (server)
+CREATE_PED	server	Ped.createRaw / Ped.createAsync (server)
+DOES_ENTITY_EXIST	server	Entity.exists
+CREATE_OBJECT_NO_OFFSET	server	Object.createRaw / Object.createAsync (server)
+CREATE_VEHICLE_SERVER_SETTER	server	Vehicle.createRaw / Vehicle.createAsync (server)
+GET_PLAYER_PED	server	Player(src).ped (server)

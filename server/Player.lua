@@ -27,11 +27,30 @@ do
 end
 
 do
+  local CanPlayerStartCommerceSession = CanPlayerStartCommerceSession
+  -- CAN_PLAYER_START_COMMERCE_SESSION (0x429461C3)
+  getters.canStartCommerceSession = function(self)
+    local r0 = CanPlayerStartCommerceSession(self.handle)
+    return (r0 ~= false and r0 ~= 0 and r0 ~= nil)
+  end
+end
+
+do
   local ClearPlayerWantedLevel = ClearPlayerWantedLevel
   -- CLEAR_PLAYER_WANTED_LEVEL (0x54EA5BCC)
   methods.clearWantedLevel = function(self)
     ClearPlayerWantedLevel(self.handle)
     return self
+  end
+end
+
+do
+  local DoesPlayerOwnSku = DoesPlayerOwnSku
+  -- DOES_PLAYER_OWN_SKU (0x167ABA27)
+  methods.doesOwnSku = function(self, skuId)
+    if math_type(skuId) == "float" then skuId = math_tointeger((math_modf(skuId))) or 0 end
+    local r0 = DoesPlayerOwnSku(self.handle, skuId)
+    return (r0 ~= false and r0 ~= 0 and r0 ~= nil)
   end
 end
 
@@ -156,6 +175,15 @@ do
 end
 
 do
+  local IsPlayerCommerceInfoLoaded = IsPlayerCommerceInfoLoaded
+  -- IS_PLAYER_COMMERCE_INFO_LOADED (0xBEFE93F4)
+  getters.isCommerceInfoLoaded = function(self)
+    local r0 = IsPlayerCommerceInfoLoaded(self.handle)
+    return (r0 ~= false and r0 ~= 0 and r0 ~= nil)
+  end
+end
+
+do
   local IsPlayerCommerceInfoLoadedExt = IsPlayerCommerceInfoLoadedExt
   -- IS_PLAYER_COMMERCE_INFO_LOADED_EXT (0x1D14F4FE)
   getters.isCommerceInfoLoadedExt = function(self)
@@ -196,6 +224,15 @@ do
   -- GET_PLAYER_LAST_MSG (0x427E8E6A)
   getters.lastMsg = function(self)
     return GetPlayerLastMsg(self.handle)
+  end
+end
+
+do
+  local LoadPlayerCommerceData = LoadPlayerCommerceData
+  -- LOAD_PLAYER_COMMERCE_DATA (0xA8F63EAB)
+  methods.loadCommerceData = function(self)
+    LoadPlayerCommerceData(self.handle)
+    return self
   end
 end
 
@@ -265,6 +302,16 @@ do
 end
 
 do
+  local RequestPlayerCommerceSession = RequestPlayerCommerceSession
+  -- REQUEST_PLAYER_COMMERCE_SESSION (0x96F93CCE)
+  methods.requestCommerceSession = function(self, skuId)
+    if math_type(skuId) == "float" then skuId = math_tointeger((math_modf(skuId))) or 0 end
+    RequestPlayerCommerceSession(self.handle, skuId)
+    return self
+  end
+end
+
+do
   local GetPlayerRoutingBucket = GetPlayerRoutingBucket
   -- GET_PLAYER_ROUTING_BUCKET (0x52441C34)
   getters.routingBucket = function(self)
@@ -287,6 +334,16 @@ do
   methods.setControl = function(self, bHasControl, flags)
     if math_type(flags) == "float" then flags = math_tointeger((math_modf(flags))) or 0 end
     SetPlayerControl(self.handle, bHasControl, flags)
+    return self
+  end
+end
+
+do
+  local SetPlayerCullingRadius = SetPlayerCullingRadius
+  -- SET_PLAYER_CULLING_RADIUS (0x8A2FBAD4)
+  methods.setCullingRadius = function(self, radius)
+    radius = (radius or 0) + 0.0
+    SetPlayerCullingRadius(self.handle, radius)
     return self
   end
 end
@@ -420,6 +477,18 @@ T.decode = function(src)
   o = setmetatable({ handle = src }, mt)
   cache[src] = o
   return o
+end
+
+local GetNumPlayerIndices, GetPlayerFromIndex = GetNumPlayerIndices, GetPlayerFromIndex
+---@return fx.Player[]
+statics.all = function()
+  ---@type fx.Player[]
+  local out = {}
+  for i = 0, GetNumPlayerIndices() - 1 do
+    local p = T.wrap(GetPlayerFromIndex(i))
+    if p then out[#out + 1] = p end
+  end
+  return out
 end
 
 ---@param self fx.Player
