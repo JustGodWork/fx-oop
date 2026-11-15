@@ -564,6 +564,7 @@ end
 
 do
 
+local tostring = tostring
 local PinInteriorInMemory, IsInteriorReady, IsValidInterior = PinInteriorInMemory, IsInteriorReady, IsValidInterior
 
 ---@param self fx.Interior

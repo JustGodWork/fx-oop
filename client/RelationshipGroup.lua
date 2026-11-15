@@ -14,6 +14,7 @@ local statics, staticGetters, staticSetters = T.statics, T.staticGetters, T.stat
 
 do
 
+local rawget, rawset = rawget, rawset
 local AddRelationshipGroup, RemoveRelationshipGroup = AddRelationshipGroup, RemoveRelationshipGroup
 local DoesRelationshipGroupExist = rt.bool(DoesRelationshipGroupExist)
 local SetRelationshipBetweenGroups, GetRelationshipBetweenGroups =

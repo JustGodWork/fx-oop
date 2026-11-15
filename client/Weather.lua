@@ -134,9 +134,10 @@ statics.mix = function(from, to, progress)
   SetWeatherTypeTransition(GetHashKey(from), GetHashKey(to), p)
 end
 
--- GET_RAIN_LEVEL / GET_SNOW_LEVEL give the weather's own level, not the one set: the set one is kept here
----@type number?, number?
-local rainSet, snowSet
+-- GET_RAIN_LEVEL, GET_SNOW_LEVEL and GET_WIND_SPEED give what the weather does now (its own level, gusts), not the
+-- value set: the set one is kept here
+---@type number?, number?, number?, number?
+local rainSet, snowSet, windSpeedSet, windDirectionSet
 
 staticGetters.rain = function() return rainSet or GetRainLevel() end
 ---@param v number
@@ -162,12 +163,16 @@ staticSetters.snowOnGround = function(on)
   SetForcePedFootstepsTracks(on)
 end
 
-staticGetters.windSpeed = function() return GetWindSpeed() end
+staticGetters.windSpeed = function() return windSpeedSet or GetWindSpeed() end
 ---@param v number
-staticSetters.windSpeed = function(v) SetWindSpeed(level("windSpeed", v, 0.0, 12.0)) end
+staticSetters.windSpeed = function(v)
+  windSpeedSet = level("windSpeed", v, 0.0, 12.0)
+  SetWindSpeed(windSpeedSet)
+end
 
 -- GET_WIND_DIRECTION is the vector the wind blows to; SET_WIND_DIRECTION takes the heading it blows from, in radians
 staticGetters.windDirection = function()
+  if windDirectionSet then return windDirectionSet end
   local d = GetWindDirection()
   if d.x == 0.0 and d.y == 0.0 then return 0.0 end
   return (math_deg(math_atan(d.x, -d.y)) + 360.0) % 360.0
@@ -175,7 +180,8 @@ end
 ---@param deg number
 staticSetters.windDirection = function(deg)
   if type(deg) ~= "number" then error("Weather.windDirection: expected a number, got " .. tostring(deg), 2) end
-  SetWindDirection(math_rad(deg % 360.0))
+  windDirectionSet = deg % 360.0
+  SetWindDirection(math_rad(windDirectionSet))
 end
 
 ---@param name fx.CloudHat
@@ -209,6 +215,7 @@ local RESET = {
     SetSnowLevel(-1.0)
   end,
   wind = function()
+    windSpeedSet, windDirectionSet = nil, nil
     SetWind(-1.0)
     SetWindSpeed(-1.0)
     SetWindDirection(-1.0)

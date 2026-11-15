@@ -818,6 +818,7 @@ end
 
 do
 
+local tostring = tostring
 local CreateVehicleServerSetter = CreateVehicleServerSetter
 
 -- the server cannot infer the vehicle type from the model

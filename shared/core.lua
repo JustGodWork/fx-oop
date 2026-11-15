@@ -4,9 +4,10 @@ local deps = ...
 local fx, config, P = deps.fx, deps.config, deps.Promise
 local isServer = deps.isServer
 
-local type, error, tostring, rawget, rawset, setmetatable, getmetatable, pairs, select =
-  type, error, tostring, rawget, rawset, setmetatable, getmetatable, pairs, select
+local type, error, tostring, rawget, rawset, setmetatable, getmetatable, pairs, ipairs, select, pcall =
+  type, error, tostring, rawget, rawset, setmetatable, getmetatable, pairs, ipairs, select, pcall
 local table_pack, table_unpack, table_remove = table.pack, table.unpack, table.remove
+local math_type, math_tointeger, math_modf = math.type, math.tointeger, math.modf
 local Pi = P._internal
 local newPending, resolve, reject, newError = Pi.newPending, Pi.resolve, Pi.reject, Pi.newError
 
@@ -15,6 +16,7 @@ local GetEntityType = GetEntityType
 local GetGameTimer = GetGameTimer
 local Wait = Citizen.Wait
 local CreateThread = Citizen.CreateThread
+local Trace = Citizen.Trace
 
 ---Runtime helpers shared by the generated files and the mixins.
 ---@class fx.Rt
@@ -337,7 +339,7 @@ local function pollLoop()
     while i <= ntasks do
       local ok, done = pcall(tasks[i])
       if not ok or done then
-        if not ok then Citizen.Trace("^1[fx] poll task error: " .. tostring(done) .. "^7\n") end
+        if not ok then Trace("^1[fx] poll task error: " .. tostring(done) .. "^7\n") end
         table_remove(tasks, i)
         ntasks = ntasks - 1
       else
@@ -463,7 +465,7 @@ end
 ---@param x T
 ---@return T|integer
 function rt.int(x)
-  if math.type(x) == "float" then return math.tointeger((math.modf(x))) or 0 end
+  if math_type(x) == "float" then return math_tointeger((math_modf(x))) or 0 end
   return x
 end
 

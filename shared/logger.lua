@@ -13,8 +13,8 @@ local config, isServer = deps.config, deps.isServer
 
 local type, tostring, select, pcall, error, rawget, rawset, next, setmetatable, getmetatable =
   type, tostring, select, pcall, error, rawget, rawset, next, setmetatable, getmetatable
-local math_type, string_format, string_rep, table_concat, table_sort, table_pack, table_unpack, print =
-  math.type, string.format, string.rep, table.concat, table.sort, table.pack, table.unpack, print
+local math_type, string_format, string_rep, table_concat, table_sort, table_pack, table_unpack, table_remove, print =
+  math.type, string.format, string.rep, table.concat, table.sort, table.pack, table.unpack, table.remove, print
 local GetGameTimer, GetCurrentResourceName = GetGameTimer, GetCurrentResourceName
 local os_date = isServer and os and os.date or nil -- not reliable on the client
 
@@ -348,7 +348,7 @@ function Logger.onLog(fn)
   hooks[#hooks + 1] = fn
   nHooks = #hooks
   return function()
-    for i = #hooks, 1, -1 do if hooks[i] == fn then table.remove(hooks, i) end end
+    for i = #hooks, 1, -1 do if hooks[i] == fn then table_remove(hooks, i) end end
     nHooks = #hooks
   end
 end

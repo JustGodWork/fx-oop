@@ -14,6 +14,7 @@ local statics, staticGetters, staticSetters = T.statics, T.staticGetters, T.stat
 
 do
 
+local table_remove, ipairs, table_unpack = table.remove, ipairs, table.unpack
 local RegisterKeyMapping, RegisterCommand, GetHashKey = RegisterKeyMapping, RegisterCommand, GetHashKey
 local GetControlInstructionalButton, GetGameTimer, TriggerEvent = GetControlInstructionalButton, GetGameTimer, TriggerEvent
 local SetTimeout = Citizen.SetTimeout
@@ -72,7 +73,7 @@ local function add(list, fn)
   list[#list + 1] = fn
   return function()
     for i = #list, 1, -1 do
-      if list[i] == fn then table.remove(list, i); return end
+      if list[i] == fn then table_remove(list, i); return end
     end
   end
 end
@@ -85,8 +86,8 @@ local function press(self)
   self.delivered = true
   self.press = self.press + 1
   local id = self.press
-  for _, fn in ipairs({ table.unpack(self.pressHandlers) }) do call(self, fn) end
-  for _, h in ipairs({ table.unpack(self.holdHandlers) }) do
+  for _, fn in ipairs({ table_unpack(self.pressHandlers) }) do call(self, fn) end
+  for _, h in ipairs({ table_unpack(self.holdHandlers) }) do
     SetTimeout(h.ms, function()
       -- the timer outlives a release or a new press
       if self.press == id and self.isDown and self.enabled then call(self, h.fn) end
@@ -101,7 +102,7 @@ local function release(self)
   if not self.delivered then return end
   self.delivered = false
   local held = GetGameTimer() - self.pressedAt
-  for _, fn in ipairs({ table.unpack(self.releaseHandlers) }) do call(self, fn, held) end
+  for _, fn in ipairs({ table_unpack(self.releaseHandlers) }) do call(self, fn, held) end
 end
 
 ---@param fn fun()
@@ -122,7 +123,7 @@ function Binding:onHold(ms, fn)
   list[#list + 1] = h
   return function()
     for i = #list, 1, -1 do
-      if list[i] == h then table.remove(list, i); return end
+      if list[i] == h then table_remove(list, i); return end
     end
   end
 end

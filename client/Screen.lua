@@ -14,6 +14,7 @@ local statics, staticGetters, staticSetters = T.statics, T.staticGetters, T.stat
 
 do
 
+local vector2 = vector2
 local GetScreenCoordFromWorldCoord = GetScreenCoordFromWorldCoord
 local GetWorldCoordFromScreenCoord, GetActualScreenResolution = GetWorldCoordFromScreenCoord, GetActualScreenResolution
 local GetAspectRatio, GetSafeZoneSize, GetNuiCursorPosition = GetAspectRatio, GetSafeZoneSize, GetNuiCursorPosition

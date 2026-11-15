@@ -14,6 +14,7 @@ local statics, staticGetters, staticSetters = T.statics, T.staticGetters, T.stat
 
 do
 
+local rawget, rawset = rawget, rawset
 local CreateFakeMpGamerTag, RemoveMpGamerTag = CreateFakeMpGamerTag, RemoveMpGamerTag
 local IsMpGamerTagActive = rt.bool(IsMpGamerTagActive)
 local SetMpGamerTagVisibility, SetMpGamerTagColour, SetMpGamerTagAlpha =

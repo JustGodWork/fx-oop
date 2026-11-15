@@ -403,6 +403,7 @@ end
 
 do
 
+local DeleteEntity = DeleteEntity
 local DoesEntityExist, GetEntityType, NetworkGetEntityOwner = DoesEntityExist, GetEntityType, NetworkGetEntityOwner
 local SetEntityOrphanMode, SetEntityRoutingBucket = SetEntityOrphanMode, SetEntityRoutingBucket
 local InvokeNative = Citizen.InvokeNative

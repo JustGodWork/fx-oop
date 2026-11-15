@@ -227,6 +227,7 @@ function EventsCfx.onResourceListRefresh(fn) end
 
 ---`weaponDamageEvent`.
 ---@class fx.GameEvent.WeaponDamage : fx.GameEvent
+---@field attacker? fx.Entity The entity the damage comes from (`parentGlobalId`), usually the sender's ped; nil when it is not networked
 ---@field victim? fx.Entity
 ---@field victims fx.Entity[] Every entity hit (the target players' peds when there is no victim)
 ---@field weapon integer Weapon hash

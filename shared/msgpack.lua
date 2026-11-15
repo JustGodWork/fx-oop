@@ -7,7 +7,8 @@ local deps = ...
 local rt = deps.rt
 local isServer = rt.isServer
 
-local msgpack = msgpack
+local msgpack, _G = msgpack, _G
+local table_sort, table_unpack = table.sort, table.unpack
 local mp_pack, mp_extend, mp_extend_get = msgpack.pack, msgpack.extend, msgpack.extend_get
 local type, tostring, tonumber, error, rawget, setmetatable, math_type = type, tostring, tonumber, error, rawget, setmetatable, math.type
 local NetworkGetNetworkIdFromEntity, NetworkGetEntityFromNetworkId = NetworkGetNetworkIdFromEntity, NetworkGetEntityFromNetworkId
@@ -144,7 +145,7 @@ end
 
 local TYPE_KEYS = { new = true, from = true, get = true, is = true, __id = true, __sub = true, __name = true, __fields = true, __key = true }
 local mp_unpack = msgpack.unpack
-local table_pack, table_unpack, pairs, next = table.pack, table.unpack, pairs, next
+local table_pack, pairs, next = table.pack, pairs, next
 local concat, getmetatable, select = table.concat, getmetatable, select
 
 -- During the decoding of a net event, _G.source is still the raw "net:<id>" string (scheduler.lua l.125-134).
@@ -200,7 +201,7 @@ local function build(fn, def)
         for i = 1, nf do parts[i] = fields[i] .. "=" .. tostring(rawget(self, fields[i])) end
       else
         for k, v in next, self do parts[#parts + 1] = tostring(k) .. "=" .. tostring(v) end
-        table.sort(parts)
+        table_sort(parts)
       end
       return name .. "(" .. concat(parts, ", ") .. ")"
     end
@@ -387,7 +388,7 @@ function M.roundTrip(...)
 
   local unpack = msgpack.unpack
   local t = unpack(msgpack.pack_args(...))
-  return table.unpack(t, 1, select("#", ...))
+  return table_unpack(t, 1, select("#", ...))
 end
 
 return M

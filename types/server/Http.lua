@@ -8,7 +8,7 @@
 ---@field method? fx.HttpMethod Default "GET"
 ---@field headers? table<string, string>
 ---@field query? table<string, string|number|boolean> Added to the URL, encoded
----@field body? string Raw body
+---@field body? string Raw body, without NUL bytes: FiveM sends the body only up to the first one (encode binary data, base64 for instance)
 ---@field json? any Body encoded to JSON, with `Content-Type: application/json` unless a header sets it
 ---@field followRedirects? boolean Default true
 ---@field timeoutMs? integer Rejects after it; the request itself is not canceled

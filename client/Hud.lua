@@ -3293,6 +3293,7 @@ end
 
 do
 
+local Trace, math_type, error = Citizen.Trace, math.type, error
 local BeginTextCommandThefeedPost, EndTextCommandThefeedPostTicker = BeginTextCommandThefeedPost, EndTextCommandThefeedPostTicker
 local ThefeedSetNextPostBackgroundColor = ThefeedSetNextPostBackgroundColor
 local EndTextCommandThefeedPostMessagetext = EndTextCommandThefeedPostMessagetext
@@ -3325,7 +3326,7 @@ local function addText(text)
     n = n + 1
     if n > MAX_CHUNKS then
       if fx.debug then
-        Citizen.Trace(("^3[fx] text truncated: %d bytes, only %d chunks of %d bytes are rendered^7\n"):format(len, MAX_CHUNKS, MAX_CHUNK))
+        Trace(("^3[fx] text truncated: %d bytes, only %d chunks of %d bytes are rendered^7\n"):format(len, MAX_CHUNKS, MAX_CHUNK))
       end
       return
     end
@@ -3418,7 +3419,7 @@ local RequestAdditionalText, HasThisAdditionalTextLoaded = RequestAdditionalText
 ---@param gxt any
 ---@param slot any
 ---@return boolean
-local function validText(gxt, slot) return type(gxt) == "string" and gxt ~= "" and math.type(slot) == "integer" end
+local function validText(gxt, slot) return type(gxt) == "string" and gxt ~= "" and math_type(slot) == "integer" end
 
 ---@param gxt string
 ---@param slot integer
@@ -3487,7 +3488,7 @@ local radarZoom
 staticGetters.radarZoom = function() return radarZoom end
 ---@param zoom integer
 staticSetters.radarZoom = function(zoom)
-  if math.type(zoom) ~= "integer" or zoom < 0 or zoom > 200 then error("Hud.radarZoom: expected an integer from 0 to 200", 3) end
+  if math_type(zoom) ~= "integer" or zoom < 0 or zoom > 200 then error("Hud.radarZoom: expected an integer from 0 to 200", 3) end
   radarZoom = zoom
   SetRadarZoom(zoom)
 end

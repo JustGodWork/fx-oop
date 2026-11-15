@@ -284,6 +284,7 @@ end
 
 do
 
+local error = error
 local RopeLoadTextures, RopeAreTexturesLoaded, RopeUnloadTextures = RopeLoadTextures, RopeAreTexturesLoaded, RopeUnloadTextures
 local AddRope, DeleteRope, DoesRopeExist, GetAllRopes, ActivatePhysics = AddRope, DeleteRope, DoesRopeExist, GetAllRopes, ActivatePhysics
 local P = fx.Promise

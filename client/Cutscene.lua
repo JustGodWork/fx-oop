@@ -375,12 +375,13 @@ end
 
 do
 
+local math_type = math.type
 local RequestCutscene, HasThisCutsceneLoaded = RequestCutscene, HasThisCutsceneLoaded
 
 ---@param name any
 ---@param flags any
 ---@return boolean
-local function validCutscene(name, flags) return type(name) == "string" and name ~= "" and math.type(flags) == "integer" end
+local function validCutscene(name, flags) return type(name) == "string" and name ~= "" and math_type(flags) == "integer" end
 
 -- HAS_THIS_CUTSCENE_LOADED takes the name only, rt.load passes every argument
 ---@param name string

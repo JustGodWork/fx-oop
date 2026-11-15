@@ -2685,6 +2685,7 @@ end
 
 do
 
+local ipairs, math_huge = ipairs, math.huge
 local PlayerId, PlayerPedId, GetPlayerPed = PlayerId, PlayerPedId, GetPlayerPed
 local NetworkIsPlayerActive, DoesEntityExist = NetworkIsPlayerActive, DoesEntityExist
 local GetPlayerServerId, GetPlayerFromServerId = GetPlayerServerId, GetPlayerFromServerId
@@ -2862,7 +2863,7 @@ local readyPromise
 statics.readyAsync = function(_, timeoutMs)
   if timeoutMs == nil then
     if not readyPromise then
-      readyPromise = rt.waitUntil("Player:readyAsync", isReady, math.huge, Local)
+      readyPromise = rt.waitUntil("Player:readyAsync", isReady, math_huge, Local)
     end
     return readyPromise
   end

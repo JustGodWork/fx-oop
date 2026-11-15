@@ -7289,6 +7289,7 @@ end
 
 do
 
+local pcall, math_type = pcall, math.type
 local CreateVehicle, IsModelInCdimage, IsModelAVehicle = CreateVehicle, IsModelInCdimage, IsModelAVehicle
 local SetVehicleOnGroundProperly = SetVehicleOnGroundProperly
 
@@ -8045,7 +8046,7 @@ local TRAIN_MODELS = { "freight", "freightcar", "freightcar2", "freightgrain", "
 ---@param timeoutMs? integer
 ---@return fx.Promise<fx.Vehicle>
 statics.createMissionTrainAsync = function(variation, position, direction, timeoutMs)
-  if math.type(variation) ~= "integer" then return rt.fail("Vehicle.createMissionTrainAsync: variation must be an integer") end
+  if math_type(variation) ~= "integer" then return rt.fail("Vehicle.createMissionTrainAsync: variation must be an integer") end
   ---@type integer[]
   local hashes = {}
   ---@type fx.Promise[]

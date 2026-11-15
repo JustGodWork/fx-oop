@@ -9042,6 +9042,7 @@ end
 
 do
 
+local tostring, table_concat, math_floor, math_type = tostring, table.concat, math.floor, math.type
 local CreatePed, IsModelInCdimage, IsModelAPed = CreatePed, IsModelInCdimage, IsModelAPed
 local IsPedAPlayer, NetworkGetPlayerIndexFromPed = IsPedAPlayer, NetworkGetPlayerIndexFromPed
 
@@ -9139,7 +9140,7 @@ local GetPedHeadOverlayData, SetPedHeadOverlay, SetPedHeadOverlayColor, GetPedHe
 local GetPedDecorations, AddPedDecorationFromHashes, ClearPedDecorations = GetPedDecorations, AddPedDecorationFromHashes, ClearPedDecorations
 local GetEntityModel, NetworkGetEntityIsNetworked, NetworkHasControlOfEntity = GetEntityModel, NetworkGetEntityIsNetworked, NetworkHasControlOfEntity
 local GetHashKey, InvokeNative, ReturnResultAnyway = GetHashKey, Citizen.InvokeNative, Citizen.ReturnResultAnyway
-local ipairs, pairs, type, tostring, error, pcall, mathType = ipairs, pairs, type, tostring, error, pcall, math.type
+local ipairs, pairs, type, error, pcall, mathType = ipairs, pairs, type, error, pcall, math.type
 local string_rep, string_unpack = string.rep, string.unpack
 
 -- natives declared BOOL may return 0 / 1: every condition goes through rt.bool
@@ -9610,7 +9611,7 @@ local function readGroups(self, groups, all, get, what)
   if groups == nil then groups = all end
   if type(groups) ~= "table" then error(("ped:%s: groups must be a list"):format(what), 3) end
   for _, g in ipairs(groups) do
-    if not get[g] then error(("ped:%s: unknown group '%s' (%s)"):format(what, tostring(g), table.concat(all, ", ")), 3) end
+    if not get[g] then error(("ped:%s: unknown group '%s' (%s)"):format(what, tostring(g), table_concat(all, ", ")), 3) end
     t[g] = get[g](h)
   end
   return t
@@ -9628,7 +9629,7 @@ local function writeGroups(self, t, all, set, what)
   requireControl(self, h, what)
   for k in pairs(t) do
     if k ~= "model" and not set[k] then
-      error(("ped:%s: unknown group '%s' (%s)"):format(what, tostring(k), table.concat(all, ", ")), 3)
+      error(("ped:%s: unknown group '%s' (%s)"):format(what, tostring(k), table_concat(all, ", ")), 3)
     end
   end
   for _, g in ipairs(all) do
@@ -9998,7 +9999,7 @@ methods.playAnimAsync = function(self, dict, name, options)
     if flag & 1 ~= 0 then RemoveAnimDict(dict); return self end
     ---@return boolean
     local function playing() local r = IsEntityPlayingAnim(h, dict, name, 3); return r == true or r == 1 end
-    local length = duration > 0 and duration or math.floor((GetAnimDuration(dict, name) or 0.0) * 1000)
+    local length = duration > 0 and duration or math_floor((GetAnimDuration(dict, name) or 0.0) * 1000)
     return rt.waitUntil(label .. " (start)", playing, 1000):next(function()
       return rt.waitUntil(label, function() return not playing() end, length + 2000)
     end):next(function()
@@ -10020,7 +10021,7 @@ local TASK_DONE = 7
 ---@return fx.Promise
 methods.waitForTaskAsync = function(self, task, timeoutMs)
   local hash = type(task) == "string" and GetHashKey(task) or task
-  if math.type(hash) ~= "integer" then return rt.fail(tostring(self) .. ":waitForTaskAsync: task must be a name or a hash") end
+  if math_type(hash) ~= "integer" then return rt.fail(tostring(self) .. ":waitForTaskAsync: task must be a name or a hash") end
   local h = self.handle
   return rt.waitUntil(tostring(self) .. ":waitForTaskAsync", function() return GetScriptTaskStatus(h, hash) == TASK_DONE end,
     timeoutMs, self)
@@ -10039,7 +10040,7 @@ local UNARMED = GetHashKey("WEAPON_UNARMED")
 ---@return integer
 local function weaponHash(label, weapon)
   local t = type(weapon)
-  local h = t == "string" and GetHashKey(weapon) or (math.type(weapon) == "integer" and weapon or nil)
+  local h = t == "string" and GetHashKey(weapon) or (math_type(weapon) == "integer" and weapon or nil)
   if h == nil or not IsWeaponValid(h) then error(("%s: unknown weapon '%s'"):format(label, tostring(weapon)), 0) end
   return h --[[@as integer]]
 end
@@ -10048,7 +10049,7 @@ end
 ---@param n any
 ---@return integer
 local function ammoCount(label, n)
-  if math.type(n) ~= "integer" or n < 0 then error(label .. ": ammo must be a positive integer", 0) end
+  if math_type(n) ~= "integer" or n < 0 then error(label .. ": ammo must be a positive integer", 0) end
   return n --[[@as integer]]
 end
 
@@ -10064,11 +10065,11 @@ getters.weapons = proxy("weapons", {
     GiveWeaponToPed(h, w, o.ammo == nil and 0 or ammoCount("ped.weapons:give", o.ammo), false, o.equip == true)
     for _, c in ipairs(o.components or {}) do
       local ch = type(c) == "string" and GetHashKey(c) or c
-      if math.type(ch) ~= "integer" then error("ped.weapons:give: a component must be a name or a hash", 0) end
+      if math_type(ch) ~= "integer" then error("ped.weapons:give: a component must be a name or a hash", 0) end
       GiveWeaponComponentToPed(h, w, ch)
     end
     if o.tint ~= nil then
-      if math.type(o.tint) ~= "integer" then error("ped.weapons:give: tint must be an integer", 0) end
+      if math_type(o.tint) ~= "integer" then error("ped.weapons:give: tint must be an integer", 0) end
       SetPedWeaponTintIndex(h, w, o.tint)
     end
     return p

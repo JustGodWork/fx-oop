@@ -1798,6 +1798,7 @@ end
 
 do
 
+local math_type, error = math.type, error
 local CreateCamWithParams, SetCamActive, RenderScriptCams, DestroyCam, SetCamActiveWithInterp =
   CreateCamWithParams, SetCamActive, RenderScriptCams, DestroyCam, SetCamActiveWithInterp
 local IsCamRendering = IsCamRendering
@@ -1859,7 +1860,7 @@ local DoScreenFadeOut, DoScreenFadeIn, IsScreenFadedOut, IsScreenFadedIn =
 ---@return integer
 local function fadeDuration(label, duration)
   if duration == nil then return 500 end
-  if math.type(duration) ~= "integer" or duration < 0 then error(label .. ": duration must be a positive integer (ms)", 3) end
+  if math_type(duration) ~= "integer" or duration < 0 then error(label .. ": duration must be a positive integer (ms)", 3) end
   return duration
 end
 

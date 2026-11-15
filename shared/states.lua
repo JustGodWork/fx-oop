@@ -14,7 +14,7 @@ local AddStateBagChangeHandler, RemoveStateBagChangeHandler = AddStateBagChangeH
 local NetworkGetEntityIsNetworked, NetworkGetNetworkIdFromEntity = NetworkGetEntityIsNetworked, NetworkGetNetworkIdFromEntity
 local NetworkGetEntityOwner = NetworkGetEntityOwner
 local PlayerId = PlayerId
-local SetTimeout, ClearTimeout, Wait = Citizen.SetTimeout, Citizen.ClearTimeout, Citizen.Wait
+local SetTimeout, ClearTimeout, Wait, Trace = Citizen.SetTimeout, Citizen.ClearTimeout, Citizen.Wait, Citizen.Trace
 
 ---@class fx.StateBagInfo
 ---@field bag string State bag name
@@ -62,7 +62,7 @@ local function warnIfRejected(i, replicated)
     if owner ~= PlayerId() then why = "this client is not the network owner of the entity" end
   end
   if why then
-    Citizen.Trace(("^3[fx] states:set on %s will be rejected by the server: %s^7\n"):format(i.bag, why))
+    Trace(("^3[fx] states:set on %s will be rejected by the server: %s^7\n"):format(i.bag, why))
   end
 end
 

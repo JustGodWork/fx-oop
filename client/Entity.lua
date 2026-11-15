@@ -2645,6 +2645,7 @@ end
 
 do
 
+local table_pack, table_unpack, DeleteEntity, vector3 = table.pack, table.unpack, DeleteEntity, vector3
 local DoesEntityExist, GetEntityType = DoesEntityExist, GetEntityType
 local NetworkGetEntityIsNetworked, NetworkGetNetworkIdFromEntity = NetworkGetEntityIsNetworked, NetworkGetNetworkIdFromEntity
 local SetModelAsNoLongerNeeded, HasModelLoaded, RequestModel = SetModelAsNoLongerNeeded, HasModelLoaded, RequestModel
@@ -2791,11 +2792,11 @@ function rt.makeCreate(label, isValid, raw, load)
     if type(hash) ~= "number" or not isValid(hash) then
       return P.reject(newError("Error", ("%s: invalid model '%s'"):format(label, tostring(model))))
     end
-    local args = table.pack(...)
+    local args = table_pack(...)
     local options = args[args.n]
     local timeout = type(options) == "table" and options.timeout or DEFAULT_TIMEOUT
     return load(label, hash, timeout):next(function()
-      local e = raw(hash, table.unpack(args, 1, args.n))
+      local e = raw(hash, table_unpack(args, 1, args.n))
       SetModelAsNoLongerNeeded(hash)
       if not e then error(label .. ": creation failed (native returned 0)", 0) end
       return e:readyAsync(timeout):next(nil, function(err)

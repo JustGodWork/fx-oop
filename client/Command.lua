@@ -14,6 +14,7 @@ local statics, staticGetters, staticSetters = T.statics, T.staticGetters, T.stat
 
 do
 
+local print = print
 local RegisterCommand, TriggerEvent, TriggerClientEvent, AddEventHandler =
   RegisterCommand, TriggerEvent, TriggerClientEvent, AddEventHandler
 local type, tostring, tonumber, error, pcall = type, tostring, tonumber, error, pcall

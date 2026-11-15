@@ -11,12 +11,14 @@
 local deps = ...
 local fx, config, isServer = deps.fx, deps.config, deps.isServer
 
-local type, tostring, select, error, pcall, setmetatable, rawget = type, tostring, select, error, pcall, setmetatable, rawget
+local type, tostring, select, error, pcall, print = type, tostring, select, error, pcall, print
+local setmetatable, getmetatable, rawget, math_type = setmetatable, getmetatable, rawget, math.type
 local AddEventHandler, RemoveEventHandler, RegisterNetEvent = AddEventHandler, RemoveEventHandler, RegisterNetEvent
 local TriggerEvent, TriggerServerEvent, TriggerClientEvent = TriggerEvent, TriggerServerEvent, TriggerClientEvent
 local TriggerClientEventInternal, pack_args = TriggerClientEventInternal, msgpack.pack_args
 local GetInvokingResource, GetGameTimer = GetInvokingResource, GetGameTimer
-local table_pack, table_unpack = table.pack, table.unpack
+local table_pack, table_unpack, table_remove = table.pack, table.unpack, table.remove
+local CreateThreadNow = Citizen.CreateThreadNow
 
 local Schema = fx.Schema
 -- typed by fx.ChannelLib (shared/annot/core.d.lua): a ---@class here would declare its members twice
@@ -61,7 +63,7 @@ function Channel.onReject(fn)
   if type(fn) ~= "function" then error("fx.Channel.onReject: expected a function", 2) end
   rejectHooks[#rejectHooks + 1] = fn
   return function()
-    for i = #rejectHooks, 1, -1 do if rejectHooks[i] == fn then table.remove(rejectHooks, i) end end
+    for i = #rejectHooks, 1, -1 do if rejectHooks[i] == fn then table_remove(rejectHooks, i) end end
   end
 end
 
@@ -147,7 +149,7 @@ local function newChannel(name, opts, kind, label)
   local from = opts.from or "local"
   if not FROM[from] then error(("fx.%s(%s): from must be 'client', 'server' or 'local'"):format(kind, name), 3) end
   local rate = opts.rate
-  if rate ~= nil and (type(rate) ~= "table" or math.type(rate[1]) ~= "integer" or rate[1] < 1
+  if rate ~= nil and (type(rate) ~= "table" or math_type(rate[1]) ~= "integer" or rate[1] < 1
     or (rate[2] ~= nil and (type(rate[2]) ~= "number" or rate[2] <= 0))) then
     error(("fx.%s(%s): rate must be { count, windowMs } (count an integer above 0)"):format(kind, label or name), 3)
   end
@@ -208,7 +210,7 @@ function methods.on(self, fn)
       for i = 1, #snapshot do
         local h = snapshot[i]
         -- each handler in its own thread, as FiveM does: a Wait or an error in one does not hold the others
-        Citizen.CreateThreadNow(function() h(ctx, table_unpack(args, 1, args.n)) end)
+        CreateThreadNow(function() h(ctx, table_unpack(args, 1, args.n)) end)
       end
     end)
     self.token = self.from == "local" and AddEventHandler(self.name, dispatch) or RegisterNetEvent(self.name, dispatch)
@@ -216,7 +218,7 @@ function methods.on(self, fn)
   list[#list + 1] = fn
   return function()
     for i = #list, 1, -1 do
-      if list[i] == fn then table.remove(list, i); break end
+      if list[i] == fn then table_remove(list, i); break end
     end
     if #list == 0 and self.handlers == list then
       RemoveEventHandler(self.token)
@@ -250,7 +252,7 @@ end
 local function targetId(t)
   local id = t
   if type(t) == "table" then id = rawget(t, "serverId") or t.serverId or rawget(t, "source") end
-  if math.type(id) == "integer" and id > 0 then return id end
+  if math_type(id) == "integer" and id > 0 then return id end
   return nil
 end
 

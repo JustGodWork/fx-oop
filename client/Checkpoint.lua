@@ -105,6 +105,7 @@ end
 
 do
 
+local error = error
 local CreateCheckpoint, SetCheckpointRgba, SetCheckpointRgba2 = CreateCheckpoint, SetCheckpointRgba, SetCheckpointRgba2
 
 ---@param c? fx.Color

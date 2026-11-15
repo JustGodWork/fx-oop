@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.5.0 (2026-11-15)
+
+API change: minor.
+
+### Features
+
+- **bundle**: build fx as one minified file per side
+- **events**: decode the attacker of onWeaponDamage
+- **bundle**: name the lazy bundle's chunks after the embedding resource
+
+### Fixes
+
+- **runtime**: capture every global a function reads when its file loads
+- **http**: refuse a request body with a NUL byte
+- **enums**: give fx.Enum.NetObjEntityType the FiveM values
+- **weather**: read back the wind speed and direction that were set
+
+### Added (1)
+
+- `server:fx.GameEvent.WeaponDamage.attacker`
+
 ## v0.4.0 (2026-11-14)
 
 API change: minor.

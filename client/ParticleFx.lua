@@ -172,6 +172,7 @@ end
 
 do
 
+local error = error
 local RequestNamedPtfxAsset, HasNamedPtfxAssetLoaded, UseParticleFxAsset = RequestNamedPtfxAsset, HasNamedPtfxAssetLoaded, UseParticleFxAsset
 local StartParticleFxLoopedAtCoord, StartParticleFxLoopedOnEntity, StartParticleFxLoopedOnEntityBone =
   StartParticleFxLoopedAtCoord, StartParticleFxLoopedOnEntity, StartParticleFxLoopedOnEntityBone

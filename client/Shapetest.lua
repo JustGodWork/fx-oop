@@ -245,6 +245,7 @@ end
 
 do
 
+local vector3 = vector3
 local StartShapeTestLosProbe, StartShapeTestSweptSphere = StartShapeTestLosProbe, StartShapeTestSweptSphere
 local GetShapeTestResultIncludingMaterial = GetShapeTestResultIncludingMaterial
 local GetFinalRenderedCamCoord, GetFinalRenderedCamRot = GetFinalRenderedCamCoord, GetFinalRenderedCamRot

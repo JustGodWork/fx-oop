@@ -284,6 +284,7 @@ Game.onWeaponDamage = netEvent("Game.onWeaponDamage", "weaponDamageEvent", funct
   local damageType = K.int(d.damageType) or 0
   local hasVehicleData = d.hasVehicleData == true
   return {
+    attacker = K.entityOfNetId(d.parentGlobalId),
     victim = K.entityOfNetId(d.hitGlobalId),
     victims = entitiesOfNetIds(d.hitGlobalIds),
     weapon = K.hash(d.weaponType),

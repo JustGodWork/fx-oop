@@ -15,8 +15,9 @@ local statics, staticGetters, staticSetters = T.statics, T.staticGetters, T.stat
 do
 
 local PerformHttpRequest = PerformHttpRequest
-local type, error, tostring, pairs, ipairs, pcall, setmetatable, string_format, string_gsub, table_concat, table_sort =
-  type, error, tostring, pairs, ipairs, pcall, setmetatable, string.format, string.gsub, table.concat, table.sort
+local type, error, tostring, pairs, ipairs, pcall, setmetatable, string_format, string_gsub, string_find =
+  type, error, tostring, pairs, ipairs, pcall, setmetatable, string.format, string.gsub, string.find
+local table_concat, table_sort = table.concat, table.sort
 local json = json
 
 ---@class fx.HttpResponseImpl : fx.HttpResponse
@@ -72,6 +73,10 @@ local function request(label, url, options)
   if not METHODS[method] then error(label .. ": unknown method '" .. tostring(method) .. "'", 3) end
   if o.body ~= nil and o.json ~= nil then error(label .. ": give options.body or options.json, not both", 3) end
   if o.body ~= nil and type(o.body) ~= "string" then error(label .. ": options.body must be a string", 3) end
+  -- the server's HTTP client gives curl the body without its length (CURLOPT_POSTFIELDS alone, HttpClient.cpp)
+  if o.body ~= nil and string_find(o.body, "\0", 1, true) then
+    error(label .. ": options.body holds a NUL byte, and FiveM sends the body only up to the first one: encode binary data (base64)", 3)
+  end
   ---@type table<string, string>
   local headers = {}
   local hasType = false

@@ -9,6 +9,7 @@ local rt = deps.rt
 
 local type, tostring, tonumber, select, error, pairs, next, getmetatable, setmetatable, math_type =
   type, tostring, tonumber, select, error, pairs, next, getmetatable, setmetatable, math.type
+local table_concat = table.concat
 
 -- typed by fx.SchemaLib (shared/annot/core.d.lua)
 local Schema = {}
@@ -306,7 +307,7 @@ function Schema.oneOf(...)
   ---@type string[]
   local list = {}
   for i = 1, select("#", ...) do local v = select(i, ...); set[v] = true; list[i] = tostring(v) end
-  local label = "expected one of " .. table.concat(list, ", ")
+  local label = "expected one of " .. table_concat(list, ", ")
   return make(function(v) return v ~= nil and set[v] == true, label end)
 end
 

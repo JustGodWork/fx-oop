@@ -14,6 +14,7 @@ local statics, staticGetters, staticSetters = T.statics, T.staticGetters, T.stat
 
 do
 
+local ipairs, table_unpack, exports, math_max = ipairs, table.unpack, exports, math.max
 local GetResourceState, AddEventHandler, CreateThread = GetResourceState, AddEventHandler, Citizen.CreateThread
 local Wait, GetGameTimer = Citizen.Wait, GetGameTimer
 local GetNumResourceMetadata, GetResourceMetadata = GetNumResourceMetadata, GetResourceMetadata
@@ -154,7 +155,7 @@ end
 local function dispatch(name, field, what)
   local self = byName[name]
   if not self then return end
-  for _, fn in ipairs({ table.unpack(self[field]) }) do run(self, fn, what) end
+  for _, fn in ipairs({ table_unpack(self[field]) }) do run(self, fn, what) end
 end
 
 ---@type table<string, table> The wait of the last onResourceStart, by resource name
@@ -257,7 +258,7 @@ function Resource:isVersionAtLeast(min)
   local version = metadataList(self.name, "version")[1]
   local have = version and versionParts(version)
   if not have then return false end
-  for i = 1, math.max(#have, #want) do
+  for i = 1, math_max(#have, #want) do
     local a, b = have[i] or 0, want[i] or 0
     if a ~= b then return a > b end
   end

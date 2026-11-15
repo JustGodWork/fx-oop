@@ -2435,6 +2435,7 @@ end
 
 do
 
+local math_tointeger, math_huge, ipairs = math.tointeger, math.huge, ipairs
 local DisplayOnscreenKeyboard, UpdateOnscreenKeyboard = DisplayOnscreenKeyboard, UpdateOnscreenKeyboard
 local GetOnscreenKeyboardResult, CancelOnscreenKeyboard = GetOnscreenKeyboardResult, CancelOnscreenKeyboard
 local AddTextEntry = AddTextEntry
@@ -2450,7 +2451,7 @@ statics.keyboardAsync = function(o)
   o = o or {}
   -- the game has one keyboard for the whole client: status 0 means another resource is using it
   if open or UpdateOnscreenKeyboard() == 0 then return rt.fail("Game.keyboardAsync: a keyboard is already open") end
-  local max = math.tointeger(o.max or 64)
+  local max = math_tointeger(o.max or 64)
   if not max or max < 1 or max > 255 then return rt.fail("Game.keyboardAsync: max must be an integer from 1 to 255") end
   AddTextEntry(TITLE_LABEL, tostring(o.title or ""))
   -- maxInputLength counts the terminating null: + 1 for `max` characters
@@ -2461,7 +2462,7 @@ statics.keyboardAsync = function(o)
   return rt.waitUntil("Game.keyboardAsync", function()
     status = UpdateOnscreenKeyboard()
     return status ~= 0
-  end, o.timeout or math.huge):next(function()
+  end, o.timeout or math_huge):next(function()
     open = false
     if status ~= 1 then return nil end
     local text = GetOnscreenKeyboardResult()

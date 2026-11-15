@@ -14,6 +14,7 @@ local statics, staticGetters, staticSetters = T.statics, T.staticGetters, T.stat
 
 do
 
+local rawget, rawset = rawget, rawset
 local SetPlayerRoutingBucket, GetPlayerRoutingBucket = SetPlayerRoutingBucket, GetPlayerRoutingBucket
 local SetEntityRoutingBucket, GetEntityRoutingBucket = SetEntityRoutingBucket, GetEntityRoutingBucket
 local SetRoutingBucketEntityLockdownMode, SetRoutingBucketPopulationEnabled =

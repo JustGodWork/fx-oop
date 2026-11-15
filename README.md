@@ -42,6 +42,25 @@ Start it before the resources that use it, in `server.cfg`:
 ensure fx
 ```
 
+### Embedded in one resource
+
+Each release also has fx as a single minified file per side, for a resource that ships it inside itself instead of
+depending on the `fx` resource. List it before the resource's own scripts:
+
+```lua
+-- fxmanifest.lua
+client_script 'fx.client.min.lua'
+server_script 'fx.server.min.lua'
+client_script 'client.lua'
+```
+
+| File | Loads |
+|---|---|
+| `fx.client.min.lua`, `fx.server.min.lua` | each module on first access, like the `fx` resource |
+| `fx.client.eager.min.lua`, `fx.server.eager.min.lua` | every module and enum at start: no load later, a slower start |
+
+The types stay in the `types` folder of `fx.zip` (see [Editor setup](#editor-setup)).
+
 ## Quick start
 
 A resource loads `fx` with a shared script, never through `exports` (metatables do not cross resources):

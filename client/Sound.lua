@@ -126,6 +126,7 @@ end
 
 do
 
+local tostring = tostring
 local GetSoundId, ReleaseSoundId, StopSound, HasSoundFinished = GetSoundId, ReleaseSoundId, StopSound, HasSoundFinished
 local PlaySoundFromCoord, PlaySoundFromEntity, PlaySoundFrontend = PlaySoundFromCoord, PlaySoundFromEntity, PlaySoundFrontend
 local RequestScriptAudioBank = RequestScriptAudioBank
