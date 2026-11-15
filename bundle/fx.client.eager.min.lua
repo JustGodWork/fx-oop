@@ -1,4 +1,4 @@
--- fx 0.5.0 (client, eager): https://github.com/JustGodWork/fx-oop
+-- fx 0.5.1 (client, eager): https://github.com/JustGodWork/fx-oop
 local FX_BUNDLE={
 ["shared/channel.lua"]=function(...)
 local a=...
@@ -55959,7 +55959,7 @@ local x=u("shared/promise.lua",{
 SetTimeout=Citizen.SetTimeout,ClearTimeout=Citizen.ClearTimeout,Await=Citizen.Await,
 CreateThreadNow=Citizen.CreateThreadNow,trace=Citizen.Trace,config=w,
 })
-local y={__fx=true,version="0.5.0",Promise=x.Promise,async=x.async,await=x.await}
+local y={__fx=true,version="0.5.1",Promise=x.Promise,async=x.async,await=x.await}
 local z=u("shared/core.lua",{fx=y,config=w,Promise=x.Promise,isServer=p})
 z.msgpack=u("shared/msgpack.lua",{rt=z})
 j(y,"msgpack",z.msgpack)

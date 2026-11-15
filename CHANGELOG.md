@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.5.1 (2026-11-15)
+
+API change: patch.
+
+No change in the public API.
+
 ## v0.5.0 (2026-11-15)
 
 API change: minor.
