@@ -481,6 +481,12 @@ function Vehicle:setPropertiesAsync(props, timeoutMs) end
 ---@return fx.Promise<fx.Ped>
 function Vehicle:createPedInsideAsync(model, seat, options) end
 
+---Sets the lights. A boolean switches the entity lights on or off (SET_ENTITY_LIGHTS); a state sets the vehicle
+---light mode (SET_VEHICLE_LIGHTS): 0 normal, 1 forced off, 2 forced on, 3 on, 4 off.
+---@param state boolean|fx.Enum.VehicleLightSetting|integer
+---@return fx.Vehicle
+function Vehicle:setLights(state) end
+
 ---Promise resolved with the entity once it really exists (and, if networked, once it has a network id).
 ---Rejects with a TimeoutError after `timeoutMs` (default 10000). Works on any wrapper.
 ---@param timeoutMs? integer
@@ -4147,34 +4153,6 @@ function Vehicle:setKersAllowed(toggle) end
 --- **Native**: `SET_LAST_DRIVEN_VEHICLE` (`0xACFB2463CC22BED2`)
 ---@return fx.Vehicle self
 function Vehicle:setLastDriven() end
-
---- Sets the vehicle lights state. Allowing for different lighting modes.
----
---- ```
---- NativeDB Introduced: v323
---- ```
----
---- ```cpp
---- enum eVehicleLightSetting {
----     // Normal light behavior. Lights cycle through off, then low beams, then high beams.
----     // Note: It's affected by day or night; high beams don't exist in daytime.
----     NO_VEHICLE_LIGHT_OVERRIDE = 0,
----     // Vehicle doesn't have lights, always off.
----     FORCE_VEHICLE_LIGHTS_OFF  = 1,
----     // Vehicle has always-on lights.
----     // During day: Cycles between low beams and high beams.
----     // At night: Cycles between low beams, low beams, and high beams.
----     FORCE_VEHICLE_LIGHTS_ON   = 2,
----     // Sets vehicle lights on. Behaves like normal lights (same as 0).
----     SET_VEHICLE_LIGHTS_ON     = 3,
----     // Sets vehicle lights off. Behaves like normal lights (same as 0).
----     SET_VEHICLE_LIGHTS_OFF    = 4
---- };
---- ```
---- **Native**: `SET_VEHICLE_LIGHTS` (`0x34E710FF01247C5A`)
----@param state fx.Enum.VehicleLightSetting|integer A value from `eVehicleLightSetting` representing the desired light setting.
----@return fx.Vehicle self
-function Vehicle:setLights(state) end
 
 --- Loads collision grid for an entity spawned outside of a player's loaded area. This allows peds to execute tasks rather than sit dormant because of a lack of a physics grid.
 ---

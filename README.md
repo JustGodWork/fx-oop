@@ -183,4 +183,4 @@ include and how fixes are taken in.
 
 ## License
 
-No license yet: all rights reserved.
+[MIT](LICENSE).

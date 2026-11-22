@@ -1,5 +1,78 @@
 # Changelog
 
+## v0.6.0 (2026-11-22)
+
+API change: major.
+
+### Features
+
+- **vehicle**: Vehicle:setLights takes an entity toggle or a light state
+- **lua**: ship the CfxLua vector, quat and json stubs in the generated types
+
+### Fixes
+
+- **events**: client Cfx.onStop fires on restart
+
+### Added (48)
+
+- `client:CfxJsonLib`
+- `client:CfxJsonLib.null`
+- `client:CfxJsonLib.using_lpeg`
+- `client:CfxJsonLib.version`
+- `client:CfxJsonNull`
+- `client:CfxJsonState`
+- `client:CfxJsonState.buffer`
+- `client:CfxJsonState.bufferlen`
+- `client:CfxJsonState.exception`
+- `client:CfxJsonState.indent`
+- `client:CfxJsonState.keyorder`
+- `client:CfxJsonState.level`
+- `client:CfxJsonState.tables`
+- `client:json.addnewline`
+- `client:json.decode`
+- `client:json.encode`
+- `client:json.encodeexception`
+- `client:json.quotestring`
+- `client:json.use_lpeg`
+- `client:quat`
+- `client:quat.w`
+- `client:quat.x`
+- `client:quat.y`
+- `client:quat.z`
+- `server:CfxJsonLib`
+- `server:CfxJsonLib.null`
+- `server:CfxJsonLib.using_lpeg`
+- `server:CfxJsonLib.version`
+- `server:CfxJsonNull`
+- `server:CfxJsonState`
+- `server:CfxJsonState.buffer`
+- `server:CfxJsonState.bufferlen`
+- `server:CfxJsonState.exception`
+- `server:CfxJsonState.indent`
+- `server:CfxJsonState.keyorder`
+- `server:CfxJsonState.level`
+- `server:CfxJsonState.tables`
+- `server:json.addnewline`
+- `server:json.decode`
+- `server:json.encode`
+- `server:json.encodeexception`
+- `server:json.quotestring`
+- `server:json.use_lpeg`
+- `server:quat`
+- `server:quat.w`
+- `server:quat.x`
+- `server:quat.y`
+- `server:quat.z`
+
+### Widened (1)
+
+- `client:Vehicle:setLights: (state: fx.Enum.VehicleLightSetting|integer): fx.Vehicle -> (state: boolean|fx.Enum.VehicleLightSetting|integer): fx.Vehicle`
+
+### Changed (2)
+
+- `client:PromiseLib.new: (executor?: fun(resolve: fun(...), reject: fun(reason: any))): fx.Promise -> (executor?: fun(resolve: fun(value: T, ...: any), reject: fun(reason: any))): fx.Promise<T>`
+- `server:PromiseLib.new: (executor?: fun(resolve: fun(...), reject: fun(reason: any))): fx.Promise -> (executor?: fun(resolve: fun(value: T, ...: any), reject: fun(reason: any))): fx.Promise<T>`
+
 ## v0.5.1 (2026-11-15)
 
 API change: patch.

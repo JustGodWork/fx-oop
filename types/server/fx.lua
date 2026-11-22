@@ -87,8 +87,9 @@ function PromiseLib.TimeoutError(message, ms) end
 ---Creates a Promise. `executor(resolve, reject)` runs immediately; an error raised in it rejects.
 ---Without an executor: a "deferred" promise settled with `p:resolve(...)` / `p:reject(e)`.
 ---`resolve(...)` accepts several values. A thenable is adopted only when it is the ONLY value.
----@param executor? fun(resolve: fun(...), reject: fun(reason: any))
----@return fx.Promise
+---@generic T
+---@param executor? fun(resolve: fun(value: T, ...: any), reject: fun(reason: any))
+---@return fx.Promise<T>
 function PromiseLib.new(executor) end
 
 ---@generic T
@@ -125,6 +126,7 @@ function PromiseLib.race(list) end
 ---@return fx.Promise
 function PromiseLib.any(list) end
 
+---Resolves after `ms` (SetTimeout). For a per-frame loop use `fx.System.wait(ms)`: no Promise is allocated.
 ---@param ms? integer Default 0
 ---@param ... any resolution values
 ---@return fx.Promise

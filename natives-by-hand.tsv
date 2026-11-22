@@ -7,6 +7,7 @@ CREATE_PED	client	Ped.createRaw / Ped.createAsync
 GET_PLAYER_PED	client	Player(serverId).ped
 PLAYER_ID	client	Player.id / Player.handle
 PLAYER_PED_ID	client	Player.ped
+SET_VEHICLE_LIGHTS	client	Vehicle.setLights
 CREATE_VEHICLE	client	Vehicle.createRaw / Vehicle.createAsync
 CREATE_WEAPON_OBJECT	client	Object.createWeaponRaw / Object.createWeaponAsync
 GET_PLAYER_FROM_SERVER_ID	client	Player(serverId)

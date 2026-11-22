@@ -5416,16 +5416,6 @@ do
 end
 
 do
-  local SetVehicleLights = SetVehicleLights
-  -- SET_VEHICLE_LIGHTS (0x34E710FF01247C5A)
-  methods.setLights = function(self, state)
-    if math_type(state) == "float" then state = math_tointeger((math_modf(state))) or 0 end
-    SetVehicleLights(self.handle, state)
-    return self
-  end
-end
-
-do
   local SetLightsCutoffDistanceTweak = SetLightsCutoffDistanceTweak
   -- SET_LIGHTS_CUTOFF_DISTANCE_TWEAK (0xBC3CCA5844452B06)
   statics.setLightsCutoffDistanceTweak = function(distance)
@@ -8064,6 +8054,25 @@ statics.createMissionTrainAsync = function(variation, position, direction, timeo
     if not v then error("Vehicle.createMissionTrainAsync: creation failed (invalid variation?)", 0) end
     return readyOrDelete(v, timeoutMs)
   end)
+end
+
+do
+  local SetEntityLights, SetVehicleLights = SetEntityLights, SetVehicleLights
+  local luaType, mathType, toInteger, modf = type, math.type, math.tointeger, math.modf
+
+  -- the vehicle state (SET_VEHICLE_LIGHTS) and the entity toggle (SET_ENTITY_LIGHTS) share the name
+  ---@param self fx.Vehicle
+  ---@param state boolean|fx.Enum.VehicleLightSetting|integer
+  ---@return fx.Vehicle
+  methods.setLights = function(self, state)
+    if luaType(state) == "boolean" then
+      SetEntityLights(self.handle, state)
+    else
+      if mathType(state) == "float" then state = toInteger((modf(state))) or 0 end
+      SetVehicleLights(self.handle, state)
+    end
+    return self
+  end
 end
 
 end

@@ -1,4 +1,5 @@
--- fx 0.5.1 (client, lazy): https://github.com/JustGodWork/fx-oop
+-- fx 0.6.0 (client, lazy): https://github.com/JustGodWork/fx-oop
+-- MIT License, Copyright (c) 2026 JustGodWork
 local FX_BUNDLE={
 ["shared/channel.lua"]=[[
 local a=...
@@ -16690,7 +16691,10 @@ L.onResourceStart=u.onResource("Cfx.onResourceStart","onClientResourceStart")
 L.onResourceStop=u.onResource("Cfx.onResourceStop","onClientResourceStop")
 L.onStop=function(M)
 u.checkFn("Cfx.onStop",M)
-return L.onResourceStop(function()M()end,B())
+local N<const> =B()
+return u.listen("onResourceStop",function(O)
+if O==N then u.call("Cfx.onStop",M)end
+end)
 end
 L.onMumbleConnected=u.on("Cfx.onMumbleConnected","mumbleConnected",
 function(M,N)return D(M or""),N==true end)
@@ -53112,14 +53116,6 @@ return M
 end
 end
 do
-local L=SetVehicleLights
-B.setLights=function(M,N)
-if o(N)=="float"then N=q((u(N)))or 0 end
-L(M.handle,N)
-return M
-end
-end
-do
 local L=SetLightsCutoffDistanceTweak
 E.setLightsCutoffDistanceTweak=function(M)
 M=(M or 0)+0.0
@@ -55133,6 +55129,19 @@ if not Bc then mb("Vehicle.createMissionTrainAsync: creation failed (invalid var
 return tc(Bc,yc)
 end)
 end
+do
+local vc,wc=SetEntityLights,SetVehicleLights
+local xc,yc,zc,Ac=j,math.type,math.tointeger,math.modf
+B.setLights=function(Bc,Cc)
+if xc(Cc)=="boolean"then
+vc(Bc.handle,Cc)
+else
+if yc(Cc)=="float"then Cc=zc((Ac(Cc)))or 0 end
+wc(Bc.handle,Cc)
+end
+return Bc
+end
+end
 end
 return f.finalize(A)]=],
 ["client/Water.lua"]=[[
@@ -55769,7 +55778,7 @@ local y=w("shared/promise.lua",{
 SetTimeout=Citizen.SetTimeout,ClearTimeout=Citizen.ClearTimeout,Await=Citizen.Await,
 CreateThreadNow=Citizen.CreateThreadNow,trace=Citizen.Trace,config=x,
 })
-local z={__fx=true,version="0.5.1",Promise=y.Promise,async=y.async,await=y.await}
+local z={__fx=true,version="0.6.0",Promise=y.Promise,async=y.async,await=y.await}
 local A=w("shared/core.lua",{fx=z,config=x,Promise=y.Promise,isServer=p})
 A.msgpack=w("shared/msgpack.lua",{rt=A})
 j(z,"msgpack",A.msgpack)

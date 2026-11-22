@@ -387,8 +387,9 @@ end
 
 --- Promise.new(executor): executor(resolve, reject), called synchronously.
 --- Promise.new(): deferred, native-compatible (p:resolve(...), p:reject(e)).
----@param executor? fun(resolve: fun(...), reject: fun(reason: any))
----@return fx.Promise
+---@generic T
+---@param executor? fun(resolve: fun(value: T, ...: any), reject: fun(reason: any))
+---@return fx.Promise<T>
 function Promise.new(executor)
   local p = newPending()
   if executor ~= nil then
@@ -637,6 +638,7 @@ function Promise.any(list)
   return out
 end
 
+--- Resolves after `ms` through SetTimeout: for a per-frame loop use `fx.System.wait(ms)`, which does not allocate a Promise.
 ---@param ms? integer
 ---@param ... any
 ---@return fx.Promise

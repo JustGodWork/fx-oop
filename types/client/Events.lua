@@ -31,7 +31,7 @@ function EventsCfx.onResourceStart(fn, resource) end
 ---@return fun() off
 function EventsCfx.onResourceStop(fn, resource) end
 
----When the current resource stops.
+---When the current resource stops (also on restart).
 ---@param fn fun()
 ---@return fun() off
 function EventsCfx.onStop(fn) end

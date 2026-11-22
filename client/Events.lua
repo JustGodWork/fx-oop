@@ -29,7 +29,12 @@ Cfx.onResourceStop = K.onResource("Cfx.onResourceStop", "onClientResourceStop")
 ---@return fun() off
 Cfx.onStop = function(fn)
   K.checkFn("Cfx.onStop", fn)
-  return Cfx.onResourceStop(function() fn() end, GetCurrentResourceName())
+  local self <const> = GetCurrentResourceName()
+  -- onClientResourceStop is not sent for the current resource on restart; onResourceStop is
+  ---@param name string
+  return K.listen("onResourceStop", function(name)
+    if name == self then K.call("Cfx.onStop", fn) end
+  end)
 end
 
 Cfx.onMumbleConnected = K.on("Cfx.onMumbleConnected", "mumbleConnected",
